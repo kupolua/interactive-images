@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FSM</title>
+
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/state-machine.min.js"></script>
+    <script src="js/demo.js"></script>
+</head>
+<body>
+<div id="buttons">
+    <button id="prevBtn" onclick="fsmEvents.previous()" style="visibility: hidden">Prev</button>
+    <button id="nextBtn" onclick="fsmEvents.next()" style="">Next</button>
+    <img id="number" src="1.png" alt="Smiley face" height="50" width="50" style="padding-left: 5%">
+</div>
+<div>
+    <label>
+        Show even numbers only <input type="checkbox" id="evenNumbersToggle" style="margin-top: 1%">
+    </label>
+</div>
+</body>
+</html>
