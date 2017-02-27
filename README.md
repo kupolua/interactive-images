@@ -1,2 +1,2 @@
-interactive images app \n
+interactive images app <br />
 `export GIT_REPO`
