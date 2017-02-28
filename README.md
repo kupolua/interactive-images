@@ -1,2 +1,1 @@
-interactive images app ci
-`export GIT_REPO`
+interactive images app on Client Site on DNS example
