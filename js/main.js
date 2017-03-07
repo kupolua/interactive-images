@@ -1,12 +1,13 @@
 "use strict";
 
 $(document).ready(function () {
-    var FSM = StateMachine.factory({
+    var FSM = new StateMachine({
         init: 'initial',
         transitions: [
-            {name: 'step', from: 'initial', to: 'healthy'},
-            {name: 'step', from: 'initial', to: 'partly'},
-            {name: 'step', from: 'initial', to: 'unhealthy'}
+            {name: 'healthy', from: '*', to: 'healthy'},
+            {name: 'partly', from: '*', to: 'partly'},
+            {name: 'unhealthy', from: '*', to: 'unhealthy'}
+            // {name: 'reset', from: '*', to: 'initial'} //todo: do I need to add a reset button
         ],
         data: function (state) {
             return {
@@ -14,42 +15,16 @@ $(document).ready(function () {
             }
         },
         methods: {
-            showState: function () {
-                $("#" + this.setState).show();
-            },
-            resetState: function () {
+            onTransition: function(lifecycle) {
                 $(".dns-state").hide();
-                $("input:radio").prop('checked', false);
+                $("#" + lifecycle.to).show();
             }
         }
     });
 
-    var dnsState = {
-        dns_initial_state: new FSM('dns_initial_state'),
-        active_healthy: new FSM('active_healthy'),
-        active_some_not_healthy: new FSM('active_some_not_healthy'),
-        active_group_unhealthy: new FSM('active_group_unhealthy')
-    };
+    $("#next-button").click(function() {
+        var selectedState = $("#states-list option:selected").val();
 
-    $("input:radio").change(function() {
-        var id = $(this).val();
-
-        if(this.checked) {
-            dnsState[id].resetState();
-            $(this).prop('checked', true);
-
-            dnsState[id].state;
-            dnsState[id].setState;
-            dnsState[id].showState();
-        }
-    });
-    $("#reset-control").click(function() {
-        var id = "dns_initial_state";
-        
-        dnsState[id].resetState();
-
-        dnsState[id].state;
-        dnsState[id].setState;
-        dnsState[id].showState();
+        FSM[selectedState]();
     });
 });

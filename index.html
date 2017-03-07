@@ -11,25 +11,30 @@
 <p>
 <h2>DNS state</h2>
 
-<div id="control">
-    <input type="radio" value="active_healthy">active_healthy<Br>
-    <input type="radio" value="active_some_not_healthy">active_some_not_healthy<Br>
-    <input type="radio" value="active_group_unhealthy">active_group_unhealthy
-</div>
-<p><button id="reset-control">reset</button></p>
 <div id="images-container">
-    <div id="dns_initial_state" class="dns-state" style="display: inline;">
-            <img src="img/dns_initial_state.png" alt="dns_initial_state" style="max-width:100%;">
+    <div id="initial" class="dns-state" style="display: none;">dns initial state</p>
+        <img src="img/dns_initial_state.png" alt="dns initial state" style="max-width:100%;">
     </div>
-    <div id="active_healthy" class="dns-state" style="display: none;">
-        <img src="img/active_healthy.png" alt="dns_initial_state" style="max-width:100%;">
+    <div id="healthy" class="dns-state" style="display: none;">active healthy</p>
+        <img src="img/active_healthy.png" alt="active healthy" style="max-width:100%;">
     </div>
-    <div id="active_some_not_healthy" class="dns-state" style="display: none;">
+    <div id="partly" class="dns-state" style="display: none;">active some not healthy</p>
         <img src="img/active_some_not_healthy.png" alt="active some not healthy" style="max-width:100%;">
     </div>
-    <div id="active_group_unhealthy" class="dns-state" style="display: none;">
+    <div id="unhealthy" class="dns-state" style="display: none;">active group unhealthy</p>
         <img src="img/active_group_unhealthy.png" alt="active group unhealthy" style="max-width:100%;">
     </div>
+</div>
+<div id="route-select">
+    <select id="states-list" name="state">
+        <option selected="selected" disabled>Select state</option>
+        <option value="healthy">healthy</option>
+        <option value="partly">partly</option>
+        <option value="unhealthy">unhealthy</option>
+    </select>
+    <!--<div id="control">-->
+        <button id="next-button">next</button>
+    <!--</div>-->
 </div>
 </body>
 </html>
