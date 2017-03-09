@@ -8,33 +8,7 @@
     <script src="lib/state-machine.js"></script>
     <script src="js/main.js"></script>
 </head>
-<p>
-<h2>DNS state</h2>
-
-<div id="images-container">
-    <div id="initial" class="dns-state" style="display: none;">dns initial state</p>
-        <img src="img/dns_initial_state.png" alt="dns initial state" style="max-width:100%;">
-    </div>
-    <div id="healthy" class="dns-state" style="display: none;">active healthy</p>
-        <img src="img/active_healthy.png" alt="active healthy" style="max-width:100%;">
-    </div>
-    <div id="partly" class="dns-state" style="display: none;">active some not healthy</p>
-        <img src="img/active_some_not_healthy.png" alt="active some not healthy" style="max-width:100%;">
-    </div>
-    <div id="unhealthy" class="dns-state" style="display: none;">active group unhealthy</p>
-        <img src="img/active_group_unhealthy.png" alt="active group unhealthy" style="max-width:100%;">
-    </div>
-</div>
-<div id="route-select">
-    <select id="states-list" name="state">
-        <option selected="selected" disabled>Select state</option>
-        <option value="healthy">healthy</option>
-        <option value="partly">partly</option>
-        <option value="unhealthy">unhealthy</option>
-    </select>
-    <!--<div id="control">-->
-        <button id="next-button">next</button>
-    <!--</div>-->
-</div>
+<body>
+    <div id="interactive-images-component"></div>
 </body>
 </html>
