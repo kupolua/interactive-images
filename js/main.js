@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var templateModelLoader = new TemplateModelLoader(),
         modelBuilder = new ModelBuilder(),
         viewPublisher = new ViewPublisher(),
+        viewHandler = new ViewHandler(),
         nextButtonClickListener = new ComponentListener(),
         resetButtonClickListener = new ComponentListener();
         // componentController = new ComponentController(); //todo: moved business logic here for code readability
@@ -17,28 +18,17 @@ document.addEventListener("DOMContentLoaded", function() {
     var componentModel = modelBuilder.getComponentModel();
 
     viewPublisher.render(componentModel);
+    viewHandler.setComponentModel(componentModel);
 
     nextButtonClickListener
         .setTarget(document.getElementById('next-button'))
         .setType('click')
-        .setCallback(viewPublisher.rebuild)
+        .setCallback(viewHandler.handleNextButton)
         .add();
 
     resetButtonClickListener
         .setTarget(document.getElementById('reset-button'))
         .setType('click')
-        .setCallback(viewPublisher.rebuild)
+        .setCallback(viewHandler.handleResetButton)
         .add();
 });
-
-
-// TemplateModelLoader(remote config) -> TemplateModel
-// ModelBuilder(TemplateModel) -> Model
-// ViewPublisher(Model) -> render component -> propositionRender(proposition) -> getTemplate(MAP(type, template)) -> templateEngine(template, value) -> html -> innerHTML
-//
-// ComponentListener(ComponentView) -> rebuilds Model
-//
-// ComponentController
-// findTargetImage()
-//
-// CurrentImageModel

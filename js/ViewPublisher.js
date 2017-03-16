@@ -41,6 +41,7 @@ function ViewPublisher() {
 
         var transitions = componentModel.transitions.get(currentImageId);
 
+        templateValues.key = image.key;
         templateValues.imageTitle = image.title;
         templateValues.imageBase64 = image.value.imageBase64;
         templateValues.imageName = image.value.imageName;
@@ -74,7 +75,7 @@ function ViewPublisher() {
 
             renderView(htmlComponentView);
 
-            logger.log('component view rendering finish successfully')
+            logger.log('component view rendering finish successfully');
         },
         rebuild: function () {
                 // rebuildView();
