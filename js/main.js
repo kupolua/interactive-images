@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
         viewHandler = new ViewHandler(),
         nextButtonClickListener = new ComponentListener(),
         resetButtonClickListener = new ComponentListener();
-        // componentController = new ComponentController(); //todo: moved business logic here for code readability
+        // componentController = new ComponentController(); //todo: business logic moved here for code readability
 
     templateModelLoader.load();
     var templateModel = templateModelLoader.getTemplateModel();
