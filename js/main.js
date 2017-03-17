@@ -3,32 +3,45 @@
 var logger = new Logger();
 
 document.addEventListener("DOMContentLoaded", function() {
-    var templateModelLoader = new TemplateModelLoader(),
+    var expectedImageSource = 'base64', //todo: known image source: base64, url, path
+        request = {
+            type: 'GET',
+            url: 'http://localhost:3000/api?imageSrc=' + expectedImageSource,
+            contentType: 'application/json'
+        },
+        networkTransporter = new NetworkTransporter(),
         modelBuilder = new ModelBuilder(),
         viewPublisher = new ViewPublisher(),
         viewHandler = new ViewHandler(),
-        nextButtonClickListener = new ComponentListener(),
-        resetButtonClickListener = new ComponentListener();
-        // componentController = new ComponentController(); //todo: business logic moved here for code readability
+        buttonClickListener = new ComponentListener();
 
-    templateModelLoader.load();
-    var templateModel = templateModelLoader.getTemplateModel();
+        networkTransporter.send(request)
+            .then(function (response) {
+                var templateModel = JSON.parse(response);
 
-    modelBuilder.build(templateModel);
-    var componentModel = modelBuilder.getComponentModel();
+                return templateModel;
+            })
+            .then(function (templateModel) {
+                modelBuilder.build(templateModel);
+                var componentModel = modelBuilder.getComponentModel();
 
-    viewPublisher.render(componentModel);
-    viewHandler.setComponentModel(componentModel);
+                return componentModel;
+            })
+            .then(function (componentModel) {
+                viewPublisher.render(componentModel);
+                viewHandler.setComponentModel(componentModel);
+            })
+            .then(function () {
+                buttonClickListener
+                    .setTarget(document.getElementById('next-button'))
+                    .setType('click')
+                    .setCallback(viewHandler.handleNextButton)
+                    .add();
 
-    nextButtonClickListener
-        .setTarget(document.getElementById('next-button'))
-        .setType('click')
-        .setCallback(viewHandler.handleNextButton)
-        .add();
-
-    resetButtonClickListener
-        .setTarget(document.getElementById('reset-button'))
-        .setType('click')
-        .setCallback(viewHandler.handleResetButton)
-        .add();
+                buttonClickListener
+                    .setTarget(document.getElementById('reset-button'))
+                    .setType('click')
+                    .setCallback(viewHandler.handleResetButton)
+                    .add();
+            });
 });
