@@ -9,7 +9,7 @@ function HTMLTemplatesLibrary() {
         htmlComponentTemplate = ' \
                 <div id="image-title">' + templateValues.imageTitle + '</div> \
                 <div id="image-container"> \
-                    <img id="image-state" imgID="' + templateValues.key + '" src="data:image/gif;base64,' + templateValues.imageBase64 + '" alt="' + templateValues.imageName + '" style="max-width:100%;"> \
+                    <img id="image-state" imgID="' + templateValues.key + '" src="' + templateValues.imageSrc + '" alt="' + templateValues.imageName + '" style="max-width:100%;"> \
                 </div> \
                     <div id="state-select" class="popup">' + templateValues.transitionName + ' \
                         <select id="states-list" name="state"> \

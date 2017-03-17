@@ -12,13 +12,6 @@ function ViewHandler() {
         return imageElementId;
     }
 
-    function isCurrentImageHasTransition(currentImageId) {
-        var transitionsMap = componentModel.transitions,
-            isTransitions = transitionsMap.get(currentImageId);
-
-        return isTransitions;
-    }
-
     function getSelectedState() {
         var selectedProposition = document.getElementById('states-list'),
             propositionValue = selectedProposition.options[selectedProposition.selectedIndex].value;
@@ -51,13 +44,15 @@ function ViewHandler() {
     function rebuildView(targetImageId) {
         var imagesMap = componentModel.images,
             targetImage = imagesMap.get(targetImageId),
+            imgPrefix = 'data:image/gif;base64,', //todo: duplicate code with js/ViewPublisher.js 40
             imageTitle = document.getElementById("image-title"),
             stateImage = document.getElementById("image-state");
 
         imageTitle.innerHTML = targetImage.title;
 
+        //todo: duplicate code with js/ViewPublisher.js 44-47
         stateImage.imgID = targetImage.key;
-        stateImage.src = 'data:image/gif;base64,' + targetImage.value.imageBase64;
+        stateImage.src = targetImage.value.isBase64 ? imgPrefix + targetImage.value.imageSrc : targetImage.value.imageSrc;
         stateImage.alt = targetImage.value.imageName;
     }
 

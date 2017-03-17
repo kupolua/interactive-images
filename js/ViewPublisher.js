@@ -36,14 +36,14 @@ function ViewPublisher() {
     }
 
     function getTemplateValues(componentModel, currentImageId) {
-        var templateValues = {};
-        var image = componentModel.images.get(currentImageId);
-
-        var transitions = componentModel.transitions.get(currentImageId);
+        var templateValues = {},
+            imgPrefix = 'data:image/gif;base64,',
+            image = componentModel.images.get(currentImageId),
+            transitions = componentModel.transitions.get(currentImageId);
 
         templateValues.key = image.key;
         templateValues.imageTitle = image.title;
-        templateValues.imageBase64 = image.value.imageBase64;
+        templateValues.imageSrc = image.value.isBase64 ? imgPrefix + image.value.imageSrc : image.value.imageSrc;
         templateValues.imageName = image.value.imageName;
 
         templateValues.transitionName = transitions.transitionName;
@@ -76,9 +76,6 @@ function ViewPublisher() {
             renderView(htmlComponentView);
 
             logger.log('component view rendering finish successfully');
-        },
-        rebuild: function () {
-                // rebuildView();
         }
     }
 }
