@@ -1,3 +1,5 @@
+"use strict";
+
 function NetworkTransporter() {
     this.send = function(request, callback) {
         return new Promise(function (resolve, reject) {

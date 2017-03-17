@@ -1,33 +1,23 @@
 "use strict";
 
 function HTMLTemplatesLibrary() {
-    var templatesMap = new Map();
-
-    function fixedChoiceTemplate(templateValues) {
-        var htmlComponentTemplate = '';
-
-        htmlComponentTemplate = ' \
-                <div id="image-title">' + templateValues.imageTitle + '</div> \
+    var templatesMap = new Map(),
+        fixedChoiceTemplate = ' \
+                <div id="image-title">{{ imageTitle }}</div> \
                 <div id="image-container"> \
-                    <img id="image-state" imgID="' + templateValues.key + '" src="' + templateValues.imageSrc + '" alt="' + templateValues.imageName + '" style="max-width:100%;"> \
+                    <img id="image-state" imgId="{{ imgId }}" src="{{ src }}" alt="{{ alt }}" style="max-width:100%;"> \
                 </div> \
-                    <div id="state-select" class="popup">' + templateValues.transitionName + ' \
+                    <div id="state-select" class="popup">{{ transitionName }} \
                         <select id="states-list" name="state"> \
-                        <option selected disabled></option>';
-
-                    templateValues.proposition.values.forEach(function (item) {
-                        htmlComponentTemplate += '<option>' + item + '</option>';
-                    });
-
-        htmlComponentTemplate += ' \
+                        <option selected disabled></option> \
+                        {{#optionList}} \
+                            <option>{{.}}</option> \
+                        {{/optionList}} \
                 </select>\
-                <span class="popuptext" id="popup-text">Select state</span> \
+                <span class="popuptext" id="popup-text">{{ errorMessage }}</span> \
             </div> \
-            <button id="next-button">next</button> \
-            <button id="reset-button" style="display: none;">reset</button>';
-
-        return htmlComponentTemplate;
-    }
+            <button id="next-button">{{ nextButtonText }}</button> \
+            <button id="reset-button" style="display: none;">{{ resetButtonText }}</button>';
 
     templatesMap.set('FIXED_CHOICE', fixedChoiceTemplate);
 

@@ -35,31 +35,30 @@ function ViewPublisher() {
         return template;
     }
 
-    function getTemplateValues(componentModel, currentImageId) {
-        var templateValues = {},
-            imgPrefix = 'data:image/gif;base64,',
+    function getTemplateValues(componentModel, currentImageId) { //todo: ?? сan be moved getTemplateValues to ModelBuilder ??
+        var imgPrefix = 'data:image/gif;base64,',
             image = componentModel.images.get(currentImageId),
-            transitions = componentModel.transitions.get(currentImageId);
-
-        templateValues.key = image.key;
-        templateValues.imageTitle = image.title;
-        templateValues.imageSrc = image.value.isBase64 ? imgPrefix + image.value.imageSrc : image.value.imageSrc;
-        templateValues.imageName = image.value.imageName;
-
-        templateValues.transitionName = transitions.transitionName;
-        templateValues.proposition = transitions.proposition;
+            transitions = componentModel.transitions.get(currentImageId),
+            templateValues = {
+                imageTitle: image.title,
+                imgId: image.key,
+                src: image.value.isBase64 ? imgPrefix + image.value.imageSrc : image.value.imageSrc,
+                alt: image.value.imageName,
+                transitionName: transitions.transitionName,
+                optionList: transitions.proposition.values,
+                errorMessage: 'Select state',
+                nextButtonText: 'next',
+                resetButtonText: 'reset'
+            };
 
         return templateValues;
     }
 
-    function templateEngine(template, templateValues) {
-        var htmlComponentView = template(templateValues);
+    function renderView(template, templateValues) {
+        Mustache.parse(template);
 
-        return htmlComponentView;
-    }
-    
-    function renderView(view) {
-        var componentContainer = document.getElementById('interactive-images-component');
+        var view = Mustache.render(template, templateValues),
+            componentContainer = document.getElementById('interactive-images-component');
 
         componentContainer.innerHTML = view;
     }
@@ -70,10 +69,9 @@ function ViewPublisher() {
             var currentImageId = getCurrentImageId(componentModel),
                 templateType = getTemplateType(componentModel, currentImageId),
                 template = getTemplate(templateType),
-                templateValues = getTemplateValues(componentModel, currentImageId),
-                htmlComponentView = templateEngine(template, templateValues);
+                templateValues = getTemplateValues(componentModel, currentImageId);
 
-            renderView(htmlComponentView);
+            renderView(template, templateValues);
 
             logger.log('component view rendering finish successfully');
         }
