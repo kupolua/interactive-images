@@ -23,5 +23,4 @@ function NetworkTransporter() {
             xhr.send();
         });
     }
-
 }
