@@ -17,7 +17,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         networkTransporter.send(request)
             .then(function (response) {
-                var templateModel = JSON.parse(response);
+                // var templateModel = JSON.parse(response); //todo: Investigate expressJS json parser
+                var templateModel = response;
 
                 return templateModel;
             })

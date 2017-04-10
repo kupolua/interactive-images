@@ -35,7 +35,7 @@ function ViewPublisher() {
         return template;
     }
 
-    function getTemplateValues(componentModel, currentImageId) { //todo: ?? сan be moved getTemplateValues to ModelBuilder ??
+    function getTemplateValues(componentModel, currentImageId) { //todo: ?? Where we must form template values ??
         var imgPrefix = 'data:image/gif;base64,',
             image = componentModel.images.get(currentImageId),
             transitions = componentModel.transitions.get(currentImageId),
@@ -46,7 +46,7 @@ function ViewPublisher() {
                 alt: image.value.imageName,
                 transitionName: transitions.transitionName,
                 optionList: transitions.proposition.values,
-                errorMessage: 'Select state',
+                errorMessage: 'Set correct number of step',
                 nextButtonText: 'next',
                 resetButtonText: 'reset'
             };

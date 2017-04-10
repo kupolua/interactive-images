@@ -10,7 +10,7 @@ imagenginxlua:
   tag: 0.1
   pullPolicy: IfNotPresent
 env:
-  webuipath: ""
+  webuipath: "webui/html"
   gitrepourl: "https://github.com/kupolua/interactive-images.git"
   gitbranch: "develop"
   gitreposynctime: "10"

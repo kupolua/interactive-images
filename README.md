@@ -1,1 +1,1 @@
-interactive images app on Client Site on DNS example
+Client Side interactive images app.

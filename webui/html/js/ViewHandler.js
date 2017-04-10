@@ -14,7 +14,9 @@ function ViewHandler() {
 
     function getSelectedState() {
         var selectedProposition = document.getElementById('states-list'),
-            propositionValue = selectedProposition.options[selectedProposition.selectedIndex].value;
+        //todo: ?? Where we must store view handlers forms, input etc. ??
+            // propositionValue = selectedProposition.options[selectedProposition.selectedIndex].value;
+            propositionValue = selectedProposition.value;
 
         return propositionValue;
     }
@@ -75,10 +77,12 @@ function ViewHandler() {
     }
 
     function showPropositionContainer(stateSelections) {
-        var propositionSelection = document.getElementById("states-list").getElementsByTagName("option");
+        // var propositionSelection = document.getElementById("states-list").getElementsByTagName("option");
+        var propositionSelection = document.getElementById("states-list");
         stateSelections.style.display = "inline-block";
-        propositionSelection[0].disabled = true;
-        propositionSelection[0].selected = true;
+        // propositionSelection[0].disabled = true;
+        // propositionSelection[0].selected = true;
+        propositionSelection.value = '';
 
 
         logger.log("proposition container showed");
@@ -101,23 +105,24 @@ function ViewHandler() {
             componentModel = data;
         },
         handleNextButton: function () {
-            var stateSelections = document.getElementById("state-select"),
-                nextButton = document.getElementById("next-button"),
-                resetButton = document.getElementById("reset-button"),
-                targetImageId = '',
-                currentImageId = getCurrentImageId(),
-                propositionValue = getSelectedState();
+            try {
+                var stateSelections = document.getElementById("state-select"),
+                    nextButton = document.getElementById("next-button"),
+                    resetButton = document.getElementById("reset-button"),
+                    targetImageId = '',
+                    currentImageId = getCurrentImageId(),
+                    propositionValue = getSelectedState();
 
-            if (propositionValue) {
-                targetImageId = getTargetImageId(currentImageId, propositionValue);
+            // if (propositionValue) {
+                    targetImageId = getTargetImageId(currentImageId, propositionValue);
 
-                rebuildView(targetImageId);
-                hidePropositionContainer(stateSelections);
-                hideNextButton(nextButton);
-                showResetButton(resetButton);
+                    rebuildView(targetImageId);
+                    hidePropositionContainer(stateSelections);
+                    hideNextButton(nextButton);
+                    showResetButton(resetButton);
 
-                logger.log('component view rebuilt');
-            } else {
+                    logger.log('component view rebuilt');
+            } catch (e) {
                 showErrorMessage();
             }
         },
