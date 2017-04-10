@@ -1,0 +1,68 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "fullname" . }}
+  strategy:
+    rollingUpdate:
+      maxSurge: {{ .Values.strategy.rollingUpdate.maxSurge }}
+      maxUnavailable: {{ .Values.strategy.rollingUpdate.maxUnavailable }}
+    type: {{ .Values.strategy.type }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+      annotations:
+        pod.beta.kubernetes.io/init-containers: '[
+            {
+                "name": "{{ .Chart.Name }}-{{ .Values.imagereposync.name }}",
+                "image": "{{ .Values.imagereposync.repository }}:{{ .Values.imagereposync.tag }}",
+                "imagePullPolicy": "{{ .Values.imagereposync.pullPolicy }}",
+                "volumeMounts": [
+                  {
+                    "name": "{{ .Values.volumes.volumename }}",
+                    "mountPath": "{{ .Values.volumes.volumepath }}"
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "WEBUI_PATH",
+                    "value": "{{ .Values.env.apipath }}"
+                  },
+                  {
+                    "name": "GIT_REPO_URL",
+                    "value": "{{ .Values.env.gitrepourl }}"
+                  },
+                  {
+                    "name": "GIT_BRANCH",
+                    "value": "{{ .Values.env.gitbranch }}"
+                  }
+                ]
+            }
+        ]'
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}-{{ .Values.imagenodejs.name }}
+        image: "{{ .Values.imagenodejs.repository }}:{{ .Values.imagenodejs.tag }}"
+        imagePullPolicy: {{ .Values.imagenodejs.pullPolicy }}
+        volumeMounts:
+        - name: {{ .Values.volumes.volumename }}
+          mountPath: {{ .Values.volumes.volumepath }}
+        - name: {{ .Values.volumes.configname }}
+          mountPath: {{ .Values.volumes.configpath }}
+        env:
+        - name: WEBUI_PATH
+          value: {{ .Values.env.apipath }}
+      volumes:
+        - name: {{ .Values.volumes.volumename }}
+          emptyDir: {}
+        - name: {{ .Values.volumes.configname }}
+          configMap:
+            name: {{ template "fullname" . }}-configmap
+      restartPolicy: {{ .Values.restartPolicy }}

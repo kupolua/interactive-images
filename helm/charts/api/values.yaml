@@ -1,0 +1,30 @@
+replicaCount: 1
+imagereposync:
+  name: sync-repo
+  repository: kupolua/sync-repo
+  tag: latest
+  pullPolicy: IfNotPresent
+imagenodejs:
+  name: node
+  repository: node
+  tag: 7.8-alpine
+  pullPolicy: IfNotPresent
+env:
+  apipath: "api"
+  gitrepourl: "https://github.com/kupolua/interactive-images.git"
+  gitbranch: "develop"
+  gitreposynctime: "10"
+service:
+  name: api-port
+  type: LoadBalancer
+  externalPort: 80
+  internalPort: 80
+strategy:
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 1
+  type: RollingUpdate
+volumes:
+  volumename: api-data
+  volumepath: /api-data
+restartPolicy: Always
