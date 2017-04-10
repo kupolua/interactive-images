@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var expectedImageSource = 'base64', //todo: known image source: base64, url, path
         request = {
             type: 'GET',
-            url: 'http://localhost:3000/api?imageSrc=' + expectedImageSource,
+            url: 'http://lab.deepidea.info/api?imageSrc=' + expectedImageSource,
             contentType: 'application/json'
         },
         networkTransporter = new NetworkTransporter(),
