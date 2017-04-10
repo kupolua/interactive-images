@@ -10,7 +10,7 @@ app.use(cors({ origin: '*' }));
 
 app.get('/api', function(req, res){
     // var authorTemplate = require('../js/AuthorTemplateBuilder');
-    var PaperGerberaTemplateBuilder = require('../../backup/PaperGerberaTutorialImages/PaperGerberaTemplateBuilder.js');
+    var PaperGerberaTemplateBuilder = require('../PaperGerberaTutorialImages/PaperGerberaTemplateBuilder.js');
 
     var authorTemplate = new PaperGerberaTemplateBuilder();
 

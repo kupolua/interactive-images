@@ -17,14 +17,14 @@ env:
 service:
   name: api-port
   type: LoadBalancer
-  externalPort: 80
-  internalPort: 80
+  externalPort: 3000
+  internalPort: 3000
 strategy:
   rollingUpdate:
     maxSurge: 1
     maxUnavailable: 1
   type: RollingUpdate
 volumes:
-  volumename: api-data
-  volumepath: /api-data
+  volumename: www-data
+  volumepath: /www-data
 restartPolicy: Always
