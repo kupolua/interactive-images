@@ -1,31 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Interactive Images</title>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Interactive Images</title>
 
-    <link rel="stylesheet" href="css/interactive-images.css">
-    <link  href="lib/cropperjs/src/css/cropper.css" rel="stylesheet">
+        <!-- Bootstrap framework -->
+            <link rel="stylesheet" href="lib/gebo_admin/bootstrap/css/bootstrap.min.css" />
 
-    <script src="lib/cropperjs/src/js/cropper.js"></script>
+        <!-- wizard -->
+            <link rel="stylesheet" href="lib/gebo_admin/lib/stepy/css/jquery.stepy.css" />
 
-    <script src="lib/jquery-1.11.3.min.js"></script>
-    <script src="lib/mustache.min.js"></script>
+        <!-- favicon -->
+            <link rel="shortcut icon" href="favicon.ico" />
 
-    <script src="js/Logger.js"></script>
-    <script src="js/NetworkTransporter.js"></script>
-    <script src="js/ModelBuilder.js"></script>
-    <script src="js/ViewPublisher.js"></script>
-    <script src="js/HTMLTemplatesLibrary.js"></script>
-    <script src="js/ViewHandler.js"></script>
-    <script src="js/ComponentListener.js"></script>
-    <script src="js/main.js?"></script>
+        <!--[if lte IE 8]>
+            <link rel="stylesheet" href="lib/gebo_admin/css/ie.css" />
+        <![endif]-->
 
-</head>
-<body>
-    <div id="interactive-images-component"></div>
-    <div>
-        <img id="image" src="img/dns_initial_state.png">
-    </div>
-</body>
+        <!--[if lt IE 9]>
+			<script src="lib/gebo_admin/js/ie/html5.js"></script>
+			<script src="lib/gebo_admin/js/ie/respond.min.js"></script>
+			<script src="lib/gebo_admin/lib/flot/excanvas.min.js"></script>
+        <![endif]-->
+	</head>
+	<body class="full_width">
+		<div id="contentwrapper">
+			<div class="main_content">
+				<div class="col-sm-12 col-md-12">
+				<h3 class="heading">Teacher page</h3>
+				<div class="row">
+					<div class="col-sm-12 col-md-12">
+						<form id="simple_wizard" class="stepy-wizzard form-horizontal">
+							<fieldset title="Images selection">
+								<legend class="hide">add images to course…</legend>
+							</fieldset>
+							<fieldset title="Predictions configure">
+								<legend class="hide">compose course rules…</legend>
+							</fieldset>
+							<fieldset title="Course preview">
+								<legend class="hide">view final state of course…</legend>
+							</fieldset>
+							<button type="button" class="finish btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Send registration</button>
+						</form>
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
+
+		<script src="lib/gebo_admin/js/jquery.min.js"></script>
+		<script src="lib/gebo_admin/js/jquery-migrate.min.js"></script>
+		<script src="lib/gebo_admin/lib/jquery-ui/jquery-ui-1.10.0.custom.min.js"></script>
+		<script src="lib/gebo_admin/js/jquery_cookie_min.js"></script>
+		<script src="lib/gebo_admin/bootstrap/js/bootstrap.min.js"></script>
+		<script src="lib/gebo_admin/js/bootstrap.plugins.min.js"></script>
+		<script src="lib/gebo_admin/lib/typeahead/typeahead.min.js"></script>
+		<script src="lib/gebo_admin/lib/google-code-prettify/prettify.min.js"></script>
+		<script src="lib/gebo_admin/lib/jBreadcrumbs/js/jquery.jBreadCrumb.1.1.min.js"></script>
+		<script src="lib/gebo_admin/js/jquery.actual.min.js"></script>
+		<script src="lib/gebo_admin/lib/UItoTop/jquery.ui.totop.min.js"></script>
+		<script src="lib/gebo_admin/js/selectNav.js"></script>
+		<script src="lib/gebo_admin/lib/validation/jquery.validate.min.js"></script>
+		<script src="lib/gebo_admin/lib/stepy/js/jquery.stepy.min.js"></script>
+		<script src="lib/gebo_admin/js/pages/gebo_wizard.js"></script>
+
+    </body>
 </html>
