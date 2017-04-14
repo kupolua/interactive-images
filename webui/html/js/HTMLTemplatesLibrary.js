@@ -1,6 +1,6 @@
 "use strict";
 
-function HTMLTemplatesLibrary() {
+function HTMLTemplatesLibrary() { //todo: fix-bug error popup is visible after back to maim page (un correct proposition value -> error popup -> correct proposition value -> reset button -> visible popup)
     var templatesMap = new Map(),
         fixedChoiceTemplate = ' \
                 <div id="image-title">{{ imageTitle }}</div> \

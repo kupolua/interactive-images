@@ -4,10 +4,10 @@ metadata:
   name: {{ template "fullname" . }}
 spec:
   rules:
-    - host: "lab.deepidea.info"
+    - host: {{ .Values.apihost }}
       http:
         paths:
           - backend:
-              serviceName: {{ .Release.Name }}-api
+              serviceName: {{ .Release.Name }}-{{ .Chart.Name }}
               servicePort: 3000
             path: /api
