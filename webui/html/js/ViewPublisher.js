@@ -65,6 +65,7 @@ function ViewPublisher() {
 
     return {
         render: function (data) {
+            // console.log(data);
             componentModel = data;
             var currentImageId = getCurrentImageId(componentModel),
                 templateType = getTemplateType(componentModel, currentImageId),

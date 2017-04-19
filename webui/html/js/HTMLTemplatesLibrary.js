@@ -5,7 +5,7 @@ function HTMLTemplatesLibrary() { //todo: fix-bug error popup is visible after b
         fixedChoiceTemplate = ' \
                 <div id="image-title">{{ imageTitle }}</div> \
                 <div id="image-container"> \
-                    <img id="image-state" imgId="{{ imgId }}" src="{{ src }}" alt="{{ alt }}" style="max-width:100%;"> \
+                    <img id="image-state" imgId="{{ imgId }}" src="{{ src }}" alt="{{ alt }}" style="max-width:30%;"> \
                 </div> \
                     <div id="state-select" class="popup">{{ transitionName }} \
                         <select id="states-list" name="state"> \
@@ -16,8 +16,8 @@ function HTMLTemplatesLibrary() { //todo: fix-bug error popup is visible after b
                 </select>\
                 <span class="popuptext" id="popup-text">{{ errorMessage }}</span> \
             </div> \
-            <button id="next-button">{{ nextButtonText }}</button> \
-            <button id="reset-button" style="display: none;">{{ resetButtonText }}</button>',
+            <span id="next-button">{{ nextButtonText }}</span> \
+            <span id="reset-button" style="display: none;">{{ resetButtonText }}</span>',
         anyNumberChoiceTemplate = ' \
                 <div id="image-title">{{ imageTitle }}</div> \
                 <div id="image-container" style="padding-bottom: 15px; padding-top: 15px;"> \
@@ -27,8 +27,8 @@ function HTMLTemplatesLibrary() { //todo: fix-bug error popup is visible after b
                         <input id="states-list" name="state"> \
                 <span class="popuptext" id="popup-text">{{ errorMessage }}</span> \
             </div> \
-            <button id="next-button">{{ nextButtonText }}</button> \
-            <button id="reset-button" style="display: none;">{{ resetButtonText }}</button>';
+            <span id="next-button">{{ nextButtonText }}</span> \
+            <span id="reset-button" style="display: none;">{{ resetButtonText }}</span>';
 
     templatesMap.set('FIXED_CHOICE', fixedChoiceTemplate);
     templatesMap.set('ANY NUMBER', anyNumberChoiceTemplate);

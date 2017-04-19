@@ -1,7 +1,7 @@
 "use strict";
 
 function NetworkTransporter() {
-    this.send = function(request, callback) {
+    this.send = function(request) {
         return new Promise(function (resolve, reject) {
 
             var xhr = new XMLHttpRequest();

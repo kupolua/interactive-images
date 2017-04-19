@@ -28,7 +28,7 @@ function ModelBuilder() {
         templateModel.transitions.forEach(function (item) {
             conditionsMap.set(item.imageId, item.conditions)
         });
-
+        
         componentModel.conditions = conditionsMap;
     }
 

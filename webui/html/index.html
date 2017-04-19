@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Interactive Images</title>
+        <title>Interactive Presentation</title>
 
         <!-- Bootstrap framework -->
             <link rel="stylesheet" href="lib/gebo_admin/bootstrap/css/bootstrap.min.css" />
@@ -11,7 +11,71 @@
         <!-- wizard -->
             <link rel="stylesheet" href="lib/gebo_admin/lib/stepy/css/jquery.stepy.css" />
 
-        <!-- favicon -->
+		<!-- uniform -->
+		<link rel="stylesheet" href="lib/gebo_admin/lib/uniform/Aristo/uniform.aristo.css" />
+
+		<link rel="stylesheet" href="lib/gebo_admin/css/style.css" />
+
+		<link rel="stylesheet" href="css/interactive-images.css">
+
+			<link rel="stylesheet" href="lib/cropperjs/dist/cropper.css">
+			<style>
+				.container {
+					max-width: 1200px;
+					margin: 20px auto;
+				}
+				img {
+					width: 100%;
+				}
+				.image {
+					width: 20%;
+				}
+				.image-state {
+					width: 30%;
+				}
+				.row,
+				.preview {
+					overflow: hidden;
+				}
+				.col {
+					float: left;
+				}
+				.col-6 {
+					width: 50%;
+				}
+				.col-3 {
+					width: 25%;
+					padding-left: 20px;
+				}
+				.col-2 {
+					width: 16.7%;
+				}
+				.col-1 {
+					width: 8.3%;
+				}
+				#next-button {
+					padding: 2px 10px;
+					background-color: white;
+					color: black;
+					border: 1px solid #393939; /* Green */
+					border-radius: 4px;
+					cursor:pointer
+				}
+				#reset-button {
+					padding: 2px 10px;
+					background-color: white;
+					color: black;
+					border: 1px solid #393939; /* Green */
+					border-radius: 4px;
+					cursor:pointer
+				}
+				#image-container {
+					padding-bottom: 20px;
+				}
+			</style>
+
+
+		<!-- favicon -->
             <link rel="shortcut icon" href="favicon.ico" />
 
         <!--[if lte IE 8]>
@@ -28,22 +92,142 @@
 		<div id="contentwrapper">
 			<div class="main_content">
 				<div class="col-sm-12 col-md-12">
-				<h3 class="heading">Teacher page</h3>
+				<h3 class="heading">Interactive Presentation - Teacher page</h3>
 				<div class="row">
 					<div class="col-sm-12 col-md-12">
 						<form id="simple_wizard" class="stepy-wizzard form-horizontal">
 							<fieldset title="Images selection">
+
+								<div data-provides="fileupload" class="fileupload fileupload-new image-container">
+									<div class="row">
+										<div class="col-sm-6 col-md-6">
+											<label><b>Input image name</b></label>
+											<input class="form-control image-name" type="text">
+											<!--<span class="help-block">image name</span>-->
+										</div>
+									</div>
+									<!--<label>Select image</label>-->
+									<div class="input-group">
+										<div class="form-control">
+											<i class="icon-file fileupload-exists"></i> <span class="fileupload-preview"></span>
+										</div>
+										<div class="input-group-btn">
+											<a data-dismiss="fileupload" class="btn btn-default fileupload-exists" href="#">Remove</a>
+											<span class="btn btn-default btn-file">
+												<span class="fileupload-new">Select file</span>
+												<span class="fileupload-exists">Change</span>
+												<input type="file">
+											</span>
+										</div>
+									</div>
+									<img class="image" src="img/no-image-selected.jpeg" alt="Not selected">
+								</div>
+
+								<div data-provides="fileupload" class="fileupload fileupload-new image-container">
+									<div class="row">
+										<div class="col-sm-6 col-md-6">
+											<label><b>Input image name</b></label>
+											<input class="form-control image-name" type="text">
+											<!--<span class="help-block">image name</span>-->
+										</div>
+									</div>
+
+									<!--<label>Select image</label>-->
+									<div class="input-group">
+										<div class="form-control">
+											<i class="icon-file fileupload-exists"></i> <span class="fileupload-preview"></span>
+										</div>
+										<div class="input-group-btn">
+											<a data-dismiss="fileupload" class="btn btn-default fileupload-exists" href="#">Remove</a>
+											<span class="btn btn-default btn-file">
+												<span class="fileupload-new">Select file</span>
+												<span class="fileupload-exists">Change</span>
+												<input type="file">
+											</span>
+										</div>
+									</div>
+									<img class="image" src="img/no-image-selected.jpeg" alt="Not selected">
+								</div>
+
+								<div data-provides="urlupload" class="urlupload urlupload-new image-container">
+									<div class="row">
+										<div class="col-sm-6 col-md-6">
+											<label><b>Input image name</b></label>
+											<input class="form-control image-name" type="text">
+											<!--<span class="help-block">image name</span>-->
+										</div>
+									</div>
+									<!--<label>Set image url</label>-->
+									<div class="input-group">
+											<input class="form-control image-url" type="url">
+										<div class="input-group-btn">
+											<a data-dismiss="urlupload" class="btn btn-default urlupload-exists" href="#">Remove</a>
+											<span class="btn btn-default btn-url">
+												<span class="urlupload-new get-image">Get image</span>
+												<span class="urlupload-exists">Change</span>
+											</span>
+										</div>
+									</div>
+									<img class="image" src="img/no-image-selected.jpeg" alt="Not selected">
+								</div>
+
+								<div data-provides="urlupload" class="urlupload urlupload-new image-container">
+									<div class="row">
+										<div class="col-sm-6 col-md-6">
+											<label><b>Input image name</b></label>
+											<input class="form-control image-name" type="text">
+											<!--<span class="help-block">image name</span>-->
+										</div>
+									</div>
+									<!--<label>Set image url</label>-->
+									<div class="input-group">
+											<input id="input-url" class="form-control image-url" type="url">
+										<div class="input-group-btn">
+											<a data-dismiss="urlupload" class="btn btn-default urlupload-exists" href="#">Remove</a>
+											<span class="btn btn-default btn-url">
+												<span class="urlupload-new get-image">Get image</span>
+												<span class="urlupload-exists">Change</span>
+											</span>
+										</div>
+									</div>
+									<img class="image" src="img/no-image-selected.jpeg" alt="Not selected">
+								</div>
+
 								<legend class="hide">add images to course…</legend>
+								<div class="container">
+									<!--<h3>Customize image</h3>-->
+
+									<!--<div class="row">-->
+										<!--<div id="image-label" class="col col-6">-->
+											<!--<label>Customize image</label>-->
+										<!--</div>-->
+										<!--<div id="image-preview-label" class="col col-3">-->
+											<!--<label>Preview image</label>-->
+										<!--</div>-->
+									<!--</div>-->
+									<!--<div class="row">-->
+										<!--<div id="image-container" class="col col-6">-->
+											<!--<img id="image" src="img/no-image-selected.jpeg" alt="Not selected">-->
+										<!--</div>-->
+										<!--<div class="col col-3">-->
+											<!--<div class="preview"></div>-->
+										<!--</div>-->
+									<!--</div>-->
+								</div>
 							</fieldset>
 							<fieldset title="Predictions configure">
 								<legend class="hide">compose course rules…</legend>
 							</fieldset>
 							<fieldset title="Course preview">
 								<legend class="hide">view final state of course…</legend>
+								<div id="interactive-images-component"></div>
 							</fieldset>
-							<button type="button" class="finish btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Send registration</button>
+							<button type="button" class="finish btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Create course</button>
 						</form>
 					</div>
+					<!--<div>-->
+						<!--<img id="test-img" src="" alt="Picture">-->
+					<!--</div>-->
 				</div>
 			</div>
 			</div>
@@ -54,16 +238,261 @@
 		<script src="lib/gebo_admin/lib/jquery-ui/jquery-ui-1.10.0.custom.min.js"></script>
 		<script src="lib/gebo_admin/js/jquery_cookie_min.js"></script>
 		<script src="lib/gebo_admin/bootstrap/js/bootstrap.min.js"></script>
-		<script src="lib/gebo_admin/js/bootstrap.plugins.min.js"></script>
+		<script src="lib/gebo_admin/bootstrap/js/bootstrap.plugins.min.js"></script>
+		<script src="lib/gebo_admin/bootstrap/js/bootstrap.plugins.js"></script>
 		<script src="lib/gebo_admin/lib/typeahead/typeahead.min.js"></script>
 		<script src="lib/gebo_admin/lib/google-code-prettify/prettify.min.js"></script>
 		<script src="lib/gebo_admin/lib/jBreadcrumbs/js/jquery.jBreadCrumb.1.1.min.js"></script>
 		<script src="lib/gebo_admin/js/jquery.actual.min.js"></script>
 		<script src="lib/gebo_admin/lib/UItoTop/jquery.ui.totop.min.js"></script>
 		<script src="lib/gebo_admin/js/selectNav.js"></script>
+		<script src="lib/gebo_admin/lib/uniform/jquery.uniform.js"></script>
 		<script src="lib/gebo_admin/lib/validation/jquery.validate.min.js"></script>
 		<script src="lib/gebo_admin/lib/stepy/js/jquery.stepy.min.js"></script>
+		<script src="lib/gebo_admin/js/forms/jquery.ui.touch-punch.min.js"></script>
+		<script src="lib/gebo_admin/js/jquery.easing.1.3.min.js"></script>
+		<script src="lib/gebo_admin/js/jquery.debouncedresize.min.js"></script>
+		<script src="lib/gebo_admin/js/forms/jquery.inputmask.min.js"></script>
+		<script src="lib/gebo_admin/js/forms/jquery.autosize.min.js"></script>
+		<script src="lib/gebo_admin/js/forms/jquery.counter.min.js"></script>
+		<script src="lib/gebo_admin/lib/timepicker/js/bootstrap-timepicker.min.js"></script>
+		<script src="lib/gebo_admin/lib/tag_handler/jquery.taghandler.min.js"></script>
 		<script src="lib/gebo_admin/js/pages/gebo_wizard.js"></script>
+		<!--<script src="lib/gebo_admin/js/pages/gebo_forms.js"></script>-->
+
+		<script src="lib/cropperjs/dist/cropper.js"></script>
+
+		<script src="lib/mustache.min.js"></script>
+		<script src="js/Logger.js"></script>
+		<script src="js/CoursePreviewer.js"></script>
+		<script src="js/NetworkTransporter.js"></script>
+		<script src="js/ModelBuilder.js"></script>
+		<script src="js/ViewPublisher.js"></script>
+		<script src="js/HTMLTemplatesLibrary.js"></script>
+		<script src="js/ViewHandler.js"></script>
+		<script src="js/ComponentListener.js"></script>
+
+		<script>
+			var cropper;
+			var initialImageId = '',
+				targetImageId,
+				images = [];
+
+			var logger = new Logger();
+
+			function makeHash(length) {
+				var text = "";
+				var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+				for( var i=0; i < length; i++ )
+					text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+				return text;
+			}
+
+			function each(arr, callback) {
+				var length = arr.length;
+				var i;
+				for (i = 0; i < length; i++) {
+					callback.call(arr, arr[i], i, arr);
+				}
+				return arr;
+			}
+			window.addEventListener('DOMContentLoaded', function () {
+//				croppImage();
+
+				$('input[type=file]').change(function () {
+//					console.log("click", this)
+					var preview = this;
+//					var preview = document.getElementById('image');
+//					var file    = document.querySelector('input[type=file]').files[0];
+					var file    = this.files[0];
+
+					var reader  = new FileReader();
+					reader.addEventListener("load", function () {
+						$(preview).parents().map(function() {
+							$(this).children('.image').attr('src', reader.result);
+						});
+
+//						cropper.destroy();
+
+//						$('.preview img').remove();
+
+//						preview.src = reader.result;
+
+//						croppImage();
+					}, false);
+
+					if (file) {
+						reader.readAsDataURL(file);
+					}
+				});
+				$('.image-container .get-image').click(function () {
+//					console.log("get-image");
+//					var preview = document.getElementById('image'),
+					var preview = this,
+						url;
+
+					$(preview).parents().map(function() {
+						if ($(this).children('.image-url').val()) {
+							url = $(this).children('.image-url').val();
+						}
+						var img = $(this).children('.image');
+						$(img[0]).attr('src', url);
+					});
+
+
+//					cropper.replace(url);
+
+//					$('.preview img').remove();
+
+//					var imgData = cropper.getCanvasData();
+
+//					console.log(imgData);
+
+//					var previews = document.querySelector('.preview');
+//					var imgInBase64 = getBase64Image(previews);
+//					console.log("base64", imgInBase64);
+
+				});
+				$('.button-next').click(function () {
+					var fileUpload = $('.fileupload'),
+						urlUpload = $('.urlupload'),
+						imageContainer = $('.image-container'),
+						transitions = [
+							{
+								imageId: '',
+								transitionName: 'choose current DNS active group state',
+								proposition: {
+									type: 'FIXED_CHOICE', // other options like 'ANY_STRING', "ANY NUMBER", "ANY INTEGER", "TRUE_FALSE"
+									values: ['all in active group healthy', 'some in active group healthy', 'active group unhealthy']
+								},
+								conditions: [
+									{
+										predicate: "function(value){return value==\'all in active group healthy\';}",
+										targetImageId: ''
+									},
+									{
+										predicate: "function(value){return value==\'some in active group healthy\';}",
+										targetImageId: ''
+									},
+									{
+										predicate: "function(value){return value==\'active group unhealthy\';}",
+										targetImageId: ''
+									}
+								]
+							}
+						];
+
+					for (var i = 0; i < imageContainer.length; i++) {
+						var imageName = $(imageContainer[i]).find('.image-name').val();
+						var imageData = $(imageContainer[i]).find('.image').attr('src');
+						var isBase64 = imageData.match("base64") ? true : false;
+						var imageSrc = imageData.replace(/^data:image\/(png|jpg);base64,/, "");
+						var key = makeHash(32);
+
+						images[i] = {
+							title: imageName, //todo: need an explanation
+							key: key,
+							value: {
+								imageName: imageName,
+								isBase64: isBase64,
+								imageSrc: imageSrc
+							}
+						};
+
+						if(i > 0) {
+							transitions[0].conditions[i - 1].targetImageId = key;
+						}
+						if(i == 0) {
+							transitions[0].imageId = key;
+						}
+					}
+
+					responseData = {
+						initialImageId: images[0].key,
+						images: images,
+						transitions: transitions
+					};
+
+//					console.log(responseData);
+
+					CoursePreviewer(responseData);
+//					console.log("next");
+//					var preview = $('.preview img'),
+//						url = $('#input-url').val(),
+//						imageName = $('#image-name').val();
+//						testImg = $('#test-img');
+
+//					console.log(preview[0]);
+//					var imgBase64 = getBase64Image(preview[0]);
+
+//					console.log("base64", imgBase64);
+
+//					testImg.attr("src", imgInBase64);
+
+//					ImgData.name = imageName;
+//					ImgData.url = url;
+//					ImgData.base64 = imgBase64;
+
+//					console.log(ImgData);
+				});
+
+			});
+			function getBase64Image(img) {
+				var canvas = document.createElement("canvas");
+				canvas.width = img.width;
+				canvas.height = img.height;
+				var ctx = canvas.getContext("2d");
+				ctx.drawImage(img, 0, 0);
+
+//				console.log(canvas);
+				var dataURL = canvas.toDataURL("image/png");
+
+				return dataURL;
+//				return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+			}
+			function croppImage() {
+				var image = document.getElementById('image');
+				var previews = document.querySelectorAll('.preview');
+				cropper = new Cropper(image, {
+					dragMode: 'move',
+					ready: function () {
+						var clone = this.cloneNode();
+						clone.className = ''
+						clone.style.cssText = (
+								'display: block;' +
+								'width: 100%;' +
+								'min-width: 0;' +
+								'min-height: 0;' +
+								'max-width: none;' +
+								'max-height: none;'
+						);
+						each(previews, function (elem) {
+							elem.appendChild(clone.cloneNode());
+						});
+					},
+					crop: function (e) {
+						var data = e.detail;
+						var cropper = this.cropper;
+						var imageData = cropper.getImageData();
+						var previewAspectRatio = data.width / data.height;
+						each(previews, function (elem) {
+							var previewImage = elem.getElementsByTagName('img').item(0);
+							var previewWidth = elem.offsetWidth;
+							var previewHeight = previewWidth / previewAspectRatio;
+							var imageScaledRatio = data.width / previewWidth;
+							elem.style.height = previewHeight + 'px';
+							previewImage.style.width = imageData.naturalWidth / imageScaledRatio + 'px';
+							previewImage.style.height = imageData.naturalHeight / imageScaledRatio + 'px';
+							previewImage.style.marginLeft = -data.x / imageScaledRatio + 'px';
+							previewImage.style.marginTop = -data.y / imageScaledRatio + 'px';
+						});
+					}
+				});
+			}
+			
+		</script>
 
     </body>
 </html>

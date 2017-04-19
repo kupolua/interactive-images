@@ -77,12 +77,12 @@ function ViewHandler() {
     }
 
     function showPropositionContainer(stateSelections) {
-        // var propositionSelection = document.getElementById("states-list").getElementsByTagName("option");
-        var propositionSelection = document.getElementById("states-list");
+        var propositionSelection = document.getElementById("states-list").getElementsByTagName("option");
+        // var propositionSelection = document.getElementById("states-list");
         stateSelections.style.display = "inline-block";
-        // propositionSelection[0].disabled = true;
-        // propositionSelection[0].selected = true;
-        propositionSelection.value = '';
+        propositionSelection[0].disabled = true;
+        propositionSelection[0].selected = true;
+        // propositionSelection.value = '';
 
 
         logger.log("proposition container showed");
