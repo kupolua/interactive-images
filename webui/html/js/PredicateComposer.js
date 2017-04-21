@@ -1,7 +1,6 @@
 "use strict";
 
-function CoursePreviewer(templateModel) {
-    console.log(templateModel)
+function PredictionsComposer(templateModel) {
     var modelBuilder = new ModelBuilder(),
         viewPublisher = new ViewPublisher(),
         viewHandler = new ViewHandler(),
