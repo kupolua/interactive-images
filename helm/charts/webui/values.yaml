@@ -1,4 +1,4 @@
-apihost: "lab.deepidea.info"
+apihost: "lab.deepidea.cloud"
 replicaCount: 1
 imagereposync:
   name: sync-repo

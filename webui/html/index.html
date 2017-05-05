@@ -33,6 +33,9 @@
 				.image {
 					width: 20%;
 				}
+				.preview-image {
+					width: 50%;
+				}
 				.image-state {
 					width: 30%;
 				}
@@ -99,15 +102,15 @@
 					<div class="col-sm-12 col-md-12">
 						<form id="simple_wizard" class="stepy-wizzard form-horizontal">
 							<fieldset id="images-selection" title="Images selection">
-
-								<div data-provides="fileupload" class="fileupload fileupload-new image-container">
+								<div data-provides="fileupload" class="fileupload fileupload-new image-container-btn">
 									<div class="row">
 										<div class="col-sm-6 col-md-6">
 											<label><b>Input image name</b></label>
-											<input class="form-control image-name" type="text">
+											<input class="form-control image-path" type="text">
 										</div>
 									</div>
-									<div class="input-group">
+									<label><b>Upload image</b></label>
+									<div class="input-group col-sm-3 col-md-3">
 										<div class="form-control">
 											<i class="icon-file fileupload-exists"></i> <span class="fileupload-preview"></span>
 										</div>
@@ -120,60 +123,11 @@
 											</span>
 										</div>
 									</div>
-									<img class="image" src="img/no-image-selected.jpeg" alt="Not selected">
 								</div>
 
-								<div data-provides="fileupload" class="fileupload fileupload-new image-container">
-									<div class="row">
-										<div class="col-sm-6 col-md-6">
-											<label><b>Input image name</b></label>
-											<input class="form-control image-name" type="text">
-										</div>
-									</div>
-									<div class="input-group">
-										<div class="form-control">
-											<i class="icon-file fileupload-exists"></i> <span class="fileupload-preview"></span>
-										</div>
-										<div class="input-group-btn">
-											<a data-dismiss="fileupload" class="btn btn-default fileupload-exists" href="#">Remove</a>
-											<span class="btn btn-default btn-file">
-												<span class="fileupload-new">Select file</span>
-												<span class="fileupload-exists">Change</span>
-												<input type="file">
-											</span>
-										</div>
-									</div>
-									<img class="image" src="img/no-image-selected.jpeg" alt="Not selected">
-								</div>
-
-								<div data-provides="urlupload" class="urlupload urlupload-new image-container">
-									<div class="row">
-										<div class="col-sm-6 col-md-6">
-											<label><b>Input image name</b></label>
-											<input class="form-control image-name" type="text">
-										</div>
-									</div>
-									<div class="input-group">
-											<input class="form-control image-url" type="url">
-										<div class="input-group-btn">
-											<a data-dismiss="urlupload" class="btn btn-default urlupload-exists" href="#">Remove</a>
-											<span class="btn btn-default btn-url">
-												<span class="urlupload-new get-image">Get image</span>
-												<span class="urlupload-exists">Change</span>
-											</span>
-										</div>
-									</div>
-									<img class="image" src="img/no-image-selected.jpeg" alt="Not selected">
-								</div>
-
-								<div data-provides="urlupload" class="urlupload urlupload-new image-container">
-									<div class="row">
-										<div class="col-sm-6 col-md-6">
-											<label><b>Input image name</b></label>
-											<input class="form-control image-name" type="text">
-										</div>
-									</div>
-									<div class="input-group">
+								<div data-provides="urlupload" class="urlupload urlupload-new image-container-btn">
+									<label><b>or set image url</b></label>
+									<div class="input-group col-sm-3 col-md-3">
 											<input id="input-url" class="form-control image-url" type="url">
 										<div class="input-group-btn">
 											<a data-dismiss="urlupload" class="btn btn-default urlupload-exists" href="#">Remove</a>
@@ -183,30 +137,20 @@
 											</span>
 										</div>
 									</div>
-									<img class="image" src="img/no-image-selected.jpeg" alt="Not selected">
+								</div>
+
+								<div class="row">
+									<div class="preview-image-container"></div>
+								</div>
+
+								<button type="button" class="add-image btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Add image</button>
+								<button type="button" class="clear-form btn btn-warning"><i class="glyphicon glyphicon-trash"></i> Clear form</button>
+
+								<div class="row">
+									<div class="images-container"></div>
 								</div>
 
 								<legend class="hide">add images to course…</legend>
-								<div class="container">
-									<!--<h3>Customize image</h3>-->
-
-									<!--<div class="row">-->
-										<!--<div id="image-label" class="col col-6">-->
-											<!--<label>Customize image</label>-->
-										<!--</div>-->
-										<!--<div id="image-preview-label" class="col col-3">-->
-											<!--<label>Preview image</label>-->
-										<!--</div>-->
-									<!--</div>-->
-									<!--<div class="row">-->
-										<!--<div id="image-container" class="col col-6">-->
-											<!--<img id="image" src="img/no-image-selected.jpeg" alt="Not selected">-->
-										<!--</div>-->
-										<!--<div class="col col-3">-->
-											<!--<div class="preview"></div>-->
-										<!--</div>-->
-									<!--</div>-->
-								</div>
 							</fieldset>
 							<fieldset id="predictions-configure" title="Predicates configure">
 								<legend class="hide">compose course rules…</legend>
@@ -217,7 +161,7 @@
 									</div>
 								</div>
 									<div class="row">
-										<label><b>Choose an initial transition image</b></label>
+										<label><b>Choose initial image</b></label>
 										<div class="col-sm-6 col-md-6">
 											<select name="chosen_a" id="chosen_a" data-placeholder="Choose a target image" class="chzn_a form-control images-list initial-transition-name">
 												<option value=""></option>
@@ -350,8 +294,11 @@
 				var imageContainer = $('.image-container'),
 					images = [];
 
+				console.log(imageContainer, imageContainer.length);
+
 				for (var i = 0; i < imageContainer.length; i++) {
-					var imageName = $(imageContainer[i]).find('.image-name').val();
+					var imageName = $(imageContainer[i]).find('.image-name').text();
+					console.log(imageName);
 					var imageData = $(imageContainer[i]).find('.image').attr('src');
 					var isBase64 = imageData.match("base64") ? true : false;
 					var imageSrc = imageData.replace(/^data:image\/(png|jpg);base64,/, "");
@@ -434,7 +381,11 @@
 			}
 
 			window.addEventListener('DOMContentLoaded', function () {
-//				croppImage();
+				clearInputFields();
+
+				var imageText,
+					file,
+					isRemoved = false;
 
 				$("li").on('DOMAttrModified', function(e) {
 					if ( $(e.target).hasClass('current-step') ) {
@@ -444,40 +395,68 @@
 					}
 				});
 
-				$('input[type=file]').change(function () {
+				$('.fileupload-exists').click(function () {
+					$(".preview-container").remove();
+					file = '';
+					imageText = '';
+					isRemoved = true;
+				});
+
+				$('input[type=file]').change(function (event) {
 					var preview = this;
-					var file    = this.files[0];
+					file    = this.files[0];
+					imageText = $(".image-path").val();
+					if(!isRemoved) {
+						$(".preview-image-container").html("<div class='preview-container'><label class='image-name'>" + imageText + "</label><img class='preview-image'></div>");
+						var img = $(".preview-image");
 
-					var reader  = new FileReader();
-					reader.addEventListener("load", function () {
-						$(preview).parents().map(function() {
-							$(this).children('.image').attr('src', reader.result);
-						});
+						var reader = new FileReader();
+						reader.addEventListener("load", function () {
+							$(preview).parents().map(function () {
+								if (reader.result) {
+									$(img).attr('src', reader.result);
+									isRemoved = false;
+								}
+							});
+						}, false);
 
-//						cropper.destroy();
-
-//						$('.preview img').remove();
-
-//						preview.src = reader.result;
-
-//						croppImage();
-					}, false);
-
-					if (file) {
-						reader.readAsDataURL(file);
+						if (file) {
+							reader.readAsDataURL(file);
+						}
+					}
+					if (isRemoved) {
+						isRemoved = false;
+						return;
 					}
 				});
-				$('.image-container .get-image').click(function () {
+				$('.image-container-btn .get-image').click(function () {
 					var preview = this,
-						url;
+						url,
+						imageText = $(".image-path").val();
 
 					$(preview).parents().map(function() {
 						if ($(this).children('.image-url').val()) {
+							$(".preview-image-container").html("<div><label class='image-name'>" + imageText + "</label><img class='preview-image'></div>");
+							var img = $(".preview-image");
+
 							url = $(this).children('.image-url').val();
+							$(img).attr('src', url);
 						}
-						var img = $(this).children('.image');
-						$(img[0]).attr('src', url);
 					});
+				});
+				$('.add-image').click(function () {
+					$(".preview-image-container").clone().prependTo(".images-container");
+
+					$('.images-container').find('.preview-image-container').addClass('image-container').removeClass('preview-image-container');
+					$('.images-container').find('.preview-container').removeClass('preview-container');
+					$('.images-container').find('.preview-image').addClass('image').removeClass('preview-image');
+
+					$(".preview-image-container").html("");
+
+					clearInputFields();
+				});
+				$('.clear-form').click(function () {
+					clearInputImagesForm();
 				});
 			});
 			function getBase64Image(img) {
@@ -492,46 +471,22 @@
 				return dataURL;
 //				return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 			}
-			function croppImage() {
-				var image = document.getElementById('image');
-				var previews = document.querySelectorAll('.preview');
-				cropper = new Cropper(image, {
-					dragMode: 'move',
-					ready: function () {
-						var clone = this.cloneNode();
-						clone.className = ''
-						clone.style.cssText = (
-								'display: block;' +
-								'width: 100%;' +
-								'min-width: 0;' +
-								'min-height: 0;' +
-								'max-width: none;' +
-								'max-height: none;'
-						);
-						each(previews, function (elem) {
-							elem.appendChild(clone.cloneNode());
-						});
-					},
-					crop: function (e) {
-						var data = e.detail;
-						var cropper = this.cropper;
-						var imageData = cropper.getImageData();
-						var previewAspectRatio = data.width / data.height;
-						each(previews, function (elem) {
-							var previewImage = elem.getElementsByTagName('img').item(0);
-							var previewWidth = elem.offsetWidth;
-							var previewHeight = previewWidth / previewAspectRatio;
-							var imageScaledRatio = data.width / previewWidth;
-							elem.style.height = previewHeight + 'px';
-							previewImage.style.width = imageData.naturalWidth / imageScaledRatio + 'px';
-							previewImage.style.height = imageData.naturalHeight / imageScaledRatio + 'px';
-							previewImage.style.marginLeft = -data.x / imageScaledRatio + 'px';
-							previewImage.style.marginTop = -data.y / imageScaledRatio + 'px';
-						});
-					}
-				});
-			}
 			
+			function clearInputFields() {
+				$('a.fileupload-exists').click();
+				$('.image-title').val('');
+				$('.image-path').val('');
+				$('.image-url').val('');
+			}
+			function clearInputImagesForm() {
+				clearInputFields();
+				$(".images-container").html('');
+				TemplateModel = {
+					initialImageId: '',
+					images: [],
+					transitions: []
+				}
+			}
 		</script>
 
     </body>
