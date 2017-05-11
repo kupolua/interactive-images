@@ -21,8 +21,32 @@
 
 		<link rel="stylesheet" href="css/interactive-images.css">
 
-			<link rel="stylesheet" href="lib/cropperjs/dist/cropper.css">
+		<link rel="stylesheet" href="lib/cropperjs/dist/cropper.css">
+
+		<link rel="stylesheet" href="lib/thumbnail-scroller-master/jquery.mThumbnailScroller.css">
+
 			<style>
+				.content{
+					overflow: auto;
+					position: relative;
+					padding: 10px;
+					background-color: #f9f9f9;
+					margin: 20px;
+					width: 40%;
+					height: auto;
+					float: left;
+				}
+				.content li{
+					margin: 4px;
+					overflow: hidden;
+				}
+				.content li a{
+					display: inline-block;
+					border: 7px solid rgba(255,255,255,.1);
+				}
+				#content-3 .mTSButton{
+					background-color: #333;
+				}
 				.container {
 					max-width: 1200px;
 					margin: 20px auto;
@@ -35,6 +59,10 @@
 				}
 				.preview-image {
 					width: 50%;
+				}
+				.image-thumb {
+					border-left: 5px;
+					width: 250px;
 				}
 				.image-state {
 					width: 30%;
@@ -95,11 +123,21 @@
         <![endif]-->
 	</head>
 	<body class="full_width">
+
+	<!--<div id="demo">-->
+		<!--<section id="examples">-->
+			<!-- demo content -->
+			<!--<div id="content-3" class="content">-->
+				<!--<ul id="images-tape-container"></ul>-->
+			<!--</div>-->
+			<!-- -//- -->
+		<!--</section>-->
+	<!--</div>-->
 		<div id="contentwrapper">
 			<div class="main_content">
 				<div class="col-sm-12 col-md-12">
 				<h3 class="heading">Interactive Presentation - Teacher page</h3>
-					<div class="col-sm-12 col-md-12">
+					<img class="col-sm-12 col-md-12">
 						<form id="simple_wizard" class="stepy-wizzard form-horizontal">
 							<fieldset id="images-selection" title="Images selection">
 								<div data-provides="fileupload" class="fileupload fileupload-new image-container-btn">
@@ -147,7 +185,7 @@
 								<button type="button" class="clear-form btn btn-warning"><i class="glyphicon glyphicon-trash"></i> Clear form</button>
 
 								<div class="row">
-									<div class="images-container"></div>
+									<div class="images-container"><ul></ul></div>
 								</div>
 
 								<legend class="hide">add images to course…</legend>
@@ -162,11 +200,16 @@
 								</div>
 									<div class="row">
 										<label><b>Choose initial image</b></label>
-										<div class="col-sm-6 col-md-6">
-											<select name="chosen_a" id="chosen_a" data-placeholder="Choose a target image" class="chzn_a form-control images-list initial-transition-name">
-												<option value=""></option>
-											</select>
+										<!--<div class="col-sm-12 col-md-12">-->
+											<!--<div id="images-tape" class="col-sm-12 col-md-12"></div>-->
+										<div id="content-3" class="content">
+											<ul id="images-tape-container"></ul>
 										</div>
+
+											<!--<select name="chosen_a" id="chosen_a" data-placeholder="Choose a target image" class="chzn_a form-control images-list initial-transition-name">-->
+												<!--<option value=""></option>-->
+											<!--</select>-->
+										<!--</div>-->
 								</div>
 								<div class="row">
 									<label><b>Proposition</b></label>
@@ -210,6 +253,7 @@
 							</fieldset>
 							<button type="button" class="finish btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Create course</button>
 						</form>
+						<div id="checkThumb"></div>
 					</div>
 				</div>
 			</div>
@@ -242,6 +286,8 @@
 		<script src="lib/gebo_admin/lib/tag_handler/jquery.taghandler.min.js"></script>
 		<script src="lib/gebo_admin/lib/multi-select/js/jquery.quicksearch.js"></script>
 		<script src="lib/gebo_admin/js/pages/gebo_wizard.js"></script>
+
+		<script src="lib/thumbnail-scroller-master/jquery.mThumbnailScroller.js"></script>
 
 		<script src="lib/cropperjs/dist/cropper.js"></script>
 
@@ -294,11 +340,8 @@
 				var imageContainer = $('.image-container'),
 					images = [];
 
-				console.log(imageContainer, imageContainer.length);
-
 				for (var i = 0; i < imageContainer.length; i++) {
 					var imageName = $(imageContainer[i]).find('.image-name').text();
-					console.log(imageName);
 					var imageData = $(imageContainer[i]).find('.image').attr('src');
 					var isBase64 = imageData.match("base64") ? true : false;
 					var imageSrc = imageData.replace(/^data:image\/(png|jpg);base64,/, "");
@@ -336,9 +379,12 @@
 				$('.images-preview img').remove();
 
 				images.forEach(function (item, i) {
-					$('.images-list').each(function () {
-						$(this).append("<option value=\"" + item.key + "\">" + item.value.imageName + "</option>");
-					});
+					$('#images-tape-container').append("<li><img id='" + item.value.imageName + "' class='image-thumb' src=\"" + (item.value.isBase64 ? ("data:image\/(png|jpg);base64," + item.value.imageSrc) : item.value.imageSrc) + "\" onclick='thumbHandler(this);'></li>");
+				});
+
+				$("#content-3").mThumbnailScroller({
+					type:"click-50",
+					theme:"buttons-in"
 				});
 
 				TemplateModel.images = images;
@@ -378,6 +424,10 @@
 			
 			function buildCoursePreview(TemplateModel) {
 				console.log(TemplateModel)
+			}
+			
+			function thumbHandler(thumb) {
+				$(thumb).css('border', '3px solid #1A693D');
 			}
 
 			window.addEventListener('DOMContentLoaded', function () {
