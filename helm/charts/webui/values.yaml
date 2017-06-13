@@ -14,7 +14,7 @@ env:
   webuipath: "webui/html"
   gitrepourl: "https://github.com/kupolua/interactive-images.git"
   gitbranch: "react"
-  gitreposynctime: ""
+  gitreposynctime: "10"
 service:
   name: webui-port
   type: LoadBalancer
