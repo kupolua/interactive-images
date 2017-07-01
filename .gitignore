@@ -8,3 +8,5 @@ doc/
 docs/
 webui/html/index-no-tape.html
 interactive-images.iml
+docs/
+npm-debug.log
