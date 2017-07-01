@@ -2,5 +2,10 @@
 .gitignore
 .idea/
 backup/
+api/
 backend
+node_modules
 interactive-images.iml
+docs/
+npm-debug.log
+node_modules/
