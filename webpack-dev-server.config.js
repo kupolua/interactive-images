@@ -40,7 +40,7 @@ const config = {
         loader: 'babel-loader',
         query: {
           cacheDirectory: true,
-          presets:['es2015', 'react'],
+          presets:['es2015', 'react', 'stage-2'], //todo: The quickest solution I found to resolve this, after trying to add in specific plugins like transform-object-rest-spread, was to enable the stage-2 preset: presets:[ 'es2015', 'react', 'stage-2' ]
         },
       },
     ],
