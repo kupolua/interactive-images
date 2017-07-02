@@ -12,7 +12,7 @@ const config = {
   devtool: 'source-map',
   // output config
   output: {
-    path: path.resolve(__dirname, 'build'), // Path of output file
+    path: path.resolve(__dirname, 'webui/html'), // Path of output file
     filename: 'app.js', // Name of output file
   },
   plugins: [
@@ -39,7 +39,7 @@ const config = {
         loader: 'babel-loader',
         query: {
           cacheDirectory: true,
-          presets:['es2015', 'react'],
+          presets:['es2015', 'react', 'stage-2'],
         },
       },
     ],
