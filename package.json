@@ -1,10 +1,10 @@
 {
-  "name": "material-ui-example-webpack",
+  "name": "Interactive Images. Teacher page.",
   "version": "0.16.4",
-  "description": "Sample project that uses Material-UI",
+  "description": "Deepidea software education project.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/callemall/material-ui.git"
+    "url": "https://github.com/kupolua/interactive-images.git"
   },
   "scripts": {
     "start": "webpack-dev-server --config webpack-dev-server.config.js --progress --inline --colors",
@@ -19,8 +19,8 @@
     "babel-preset-stage-2": "^6.18.0",
     "html-webpack-plugin": "^2.24.1",
     "transfer-webpack-plugin": "^0.1.4",
-    "webpack": "^2.4.1",
-    "webpack-dev-server": "^2.4.2"
+    "webpack": "^2.5.1",
+    "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
     "axios": "^0.16.1",
