@@ -1,4 +1,4 @@
-##Interactive Images. Teacher page.
+#Interactive Images Teacher page
 
 #Clone project from github
 
@@ -13,6 +13,7 @@ node v6.9.1
 npm 3.10.8
 
 #Installing Node.js via package manager
+
 see the manual on https://nodejs.org/uk/download/package-manager/
 
 #Install node_modules

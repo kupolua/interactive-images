@@ -20,7 +20,6 @@ import Avatar from 'material-ui/Avatar';
 
 
 import TargetImageSelectableList from './TargetImageSelectableList'
-import TransitionQuestion from './TransitionQuestion'
 import { addPredicate } from '../actions/addPredicate'
 import { updatePredicate } from '../actions/updatePredicate'
 import { deleteCondition } from '../actions/deleteCondition';
@@ -220,9 +219,9 @@ class TabsExampleControlled extends React.Component {
                 onChange={this.handleChange}
             >
                 <Tab label="FIXED CHOICE" value="FIXED_CHOICE">
-                            {<TransitionQuestion />}
 
-                            {this.renderRows()}
+                        {this.renderRows()}
+                    
                         <GridList style={styles.gridList} cols={2}>
                             <TextField
                                 id={this._getUnique()}
