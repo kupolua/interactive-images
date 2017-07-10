@@ -220,7 +220,7 @@ class CoursePreview extends Component {
         return conditions.map((condition) => {
             return (
                 <RaisedButton
-                    key={setTimeout(this._getUnique(), 200)}
+                    key={setTimeout(this._getUnique(), 400)}
                     label={this._getPredicateValue(condition, proposition)}
                     primary={true}
                     style={styles.conditionButton}
