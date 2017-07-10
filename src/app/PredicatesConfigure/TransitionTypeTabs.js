@@ -75,7 +75,7 @@ class TabsExampleControlled extends React.Component {
                     values: [this.state.proposedValue]
                 },
                 conditions: [{
-                    predicate: this.state.proposedValue,
+                    predicate: this._getPredicate(this.state.proposedValue),
                     targetImageId: nextProps.imageTape.targetImageId
                 }]
             };
@@ -102,6 +102,27 @@ class TabsExampleControlled extends React.Component {
         });
     };
 
+    _getPredicate(overlayTitle) {
+        return 'function(value){return value==\'' + overlayTitle + '\';}'
+    }
+
+    _getPredicateValue(condition, proposition) {
+        let predicateValue;
+
+        proposition.values.forEach((propositionValue) => {
+            try {
+                if(eval("(" + condition.predicate + ")(propositionValue)")) {
+                    predicateValue = propositionValue;
+                }
+            }
+            catch (e) {
+                predicateValue = condition.predicate;
+            }
+        });
+
+        return predicateValue;
+    }
+
     _onEditProposedValue(overlayTitle) {
         this.setState({
             hintText: '',
@@ -109,10 +130,12 @@ class TabsExampleControlled extends React.Component {
         });
     }
 
-    _onUpdatePredicateValue(condition, overlayTitle) {
+    _onUpdatePredicateValue(condition, proposition, overlayTitle) {
         this.props.updatePredicate({
             condition: condition,
-            proposedValue: overlayTitle || ' '
+            proposition: proposition,
+            currentProposedValue: this._getPredicateValue(condition, proposition),
+            proposedValue: overlayTitle || ' ',
         });
     }
 
@@ -142,7 +165,6 @@ class TabsExampleControlled extends React.Component {
         return this.props.imageTape.model.transitions.map((transition) => {
             if(transition.imageId == this.props.imageTape.predicateSelectedImage) {
 
-                // console.log('!transition.conditions', transition.conditions)
                 if(!transition.conditions.length) {return}
 
                 return transition.conditions.map((condition) => {
@@ -174,7 +196,6 @@ class TabsExampleControlled extends React.Component {
         return this.props.imageTape.model.transitions.map((transition) => {
             if(transition.imageId == this.props.imageTape.predicateSelectedImage) {
 
-                // console.log('!transition.conditions', transition.conditions)
                 if(!transition.conditions.length) {return}
 
                 return transition.conditions.map((condition) => {
@@ -185,15 +206,15 @@ class TabsExampleControlled extends React.Component {
                                     <TextField
                                         id={this._getUnique()}
                                         style={styles.textColumnWidth}
-                                        value={condition.predicate}
-                                        onChange={event => this._onUpdatePredicateValue(condition, event.target.value)}
+                                        value={this._getPredicateValue(condition, transition.proposition)}
+                                        onChange={event => this._onUpdatePredicateValue(condition, transition.proposition, event.target.value)}
                                     />
                                 </TableRowColumn>
                                 <TableRowColumn style={styles.iconColumnWidth}>
                                     <ListItem
                                         style={styles.iconColumnWidth}
-                                        value={condition.predicate}
-                                        primaryText={condition.predicate}
+                                        value={this._getPredicateValue(condition, transition.proposition)}
+                                        primaryText={this._getPredicateValue(condition, transition.proposition)}
                                         leftAvatar={<Avatar src={this._getAvatarSrc(condition.targetImageId)} />}
                                     />
                                 </TableRowColumn>
@@ -221,7 +242,7 @@ class TabsExampleControlled extends React.Component {
                 <Tab label="FIXED CHOICE" value="FIXED_CHOICE">
 
                         {this.renderRows()}
-                    
+
                         <GridList style={styles.gridList} cols={2}>
                             <TextField
                                 id={this._getUnique()}
@@ -345,7 +366,6 @@ class TabsExampleControlled extends React.Component {
 }
 
 function mapStateToProps(state) {
-    // console.log('TabsExampleControlled', state.imageTape)
     return {
         defaults: state.defaults,
         imageTape: state.imageTape

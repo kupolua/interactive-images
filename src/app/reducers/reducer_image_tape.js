@@ -55,11 +55,11 @@ const initialImagesListState = {
                 conditions: [
                     {
                         targetImageId: "710c6126646422d052a7f6d44eb49483",
-                        predicate: "to code"
+                        predicate: "function(value){return value=='to code';}"
                     },
                     {
                         targetImageId: "77e93f2918940dc059fd6c76c49c4300",
-                        predicate: "to map"
+                        predicate: "function(value){return value=='to map';}"
                     }
                 ]
             }
@@ -198,11 +198,17 @@ function deleteCondition(state, deleteCondition) {
 function updatePredicate(state, updateCondition) {
     state.model.transitions.map((transition) => {
         if(state.predicateSelectedImage == transition.imageId) {
-            transition.conditions.forEach((condition, i, conditions) => {
-                if(_.isEqual(condition, updateCondition.condition)) {
-                    condition.predicate = updateCondition.proposedValue;
+            transition.proposition.values.forEach((value, i, values) => {
+                if(value == updateCondition.currentProposedValue) {
+                    values[i] = updateCondition.proposedValue
                 }
-            })
+            });
+
+            transition.conditions.forEach((condition) => {
+                if(_.isEqual(condition, updateCondition.condition)) {
+                    condition.predicate = 'function(value){return value==\'' + updateCondition.proposedValue + '\';}';
+                }
+            });
         }
     })
 }

@@ -109,7 +109,6 @@ class CoursePreview extends Component {
             imageSource: null,
             value: 1
         };
-        // console.log(this.props.imageTape.model.initialImageId === null, this.props.imageTape.model.images[0].key)
         this.props.selectImage({
             key: this.state.initialImageId,
             src: this._getAvatarSrc(this.state.initialImageId),
@@ -120,6 +119,23 @@ class CoursePreview extends Component {
 
         this._onBackToPreviewImage = this._onBackToPreviewImage.bind(this);
         this._changePreviewImage = this._changePreviewImage.bind(this);
+    }
+
+    _getPredicateValue(condition, proposition) {
+        let predicateValue;
+
+        proposition.values.forEach((propositionValue) => {
+            try {
+                if(eval("(" + condition.predicate + ")(propositionValue)")) {
+                    predicateValue = propositionValue;
+                }
+            }
+            catch (e) {
+                this._onUpdatePredicateValue(condition, condition.predicate);
+            }
+        });
+
+        return predicateValue;
     }
 
     _getAvatarSrc(targetImageId) {
@@ -161,6 +177,19 @@ class CoursePreview extends Component {
 
         return conditions;
     }
+
+    _getProposition(imageKey) {
+        let proposition;
+
+        this.props.imageTape.model.transitions.map((transition) => {
+            if (transition.imageId == imageKey) {
+                proposition = transition.proposition;
+            }
+        });
+
+        return proposition;
+    }
+
     _getConditionsLength(imageKey) {
         let conditionsLength;
 
@@ -186,12 +215,13 @@ class CoursePreview extends Component {
 
     renderConditions(imageKey) {
         let conditions = this._getConditions(imageKey);
+        let proposition = this._getProposition(imageKey);
 
         return conditions.map((condition) => {
             return (
                 <RaisedButton
                     key={condition.targetImageId}
-                    label={condition.predicate}
+                    label={this._getPredicateValue(condition, proposition)}
                     primary={true}
                     style={styles.conditionButton}
                     onTouchTap={(e)=>this._changePreviewImage(this._getAvatarSrc(condition.targetImageId), condition.targetImageId)}
@@ -258,9 +288,6 @@ class CoursePreview extends Component {
     }
 
     _onPreviewButton() {
-        // console.log('_onPreviewButton', this.props.image.key)
-        // console.log('_isImageTransition', this._isImageTransition(this.props.image.key))
-
         if(this._isImageTransition(this.props.image.key)) {
             this.props.imageTape.model.initialImageId = this.props.image.key;
 
@@ -299,7 +326,6 @@ class CoursePreview extends Component {
 }
 
 function mapStateToProps(state) {
-    // console.log('CoursePreview', state.imageTape)
     return {
         imageTape: state.imageTape,
         image: state.previewImage
