@@ -1,7 +1,7 @@
 {
-  "name": "Interactive Images. Teacher page.",
+  "name": "interactive-images-teacher-page",
   "version": "0.16.4",
-  "description": "Deepidea software education project.",
+  "description": "Interactive Images. Teacher page. Deepidea software education project.",
   "repository": {
     "type": "git",
     "url": "https://github.com/kupolua/interactive-images.git"

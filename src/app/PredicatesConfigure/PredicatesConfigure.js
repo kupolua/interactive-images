@@ -2,12 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ImagesTape from '../ImagesSelection/ImagesTape';
+import TransitionQuestion from './TransitionQuestion'
 import TransitionTypeTabs from './TransitionTypeTabs'
 
 const styles = {
     root: {
         flexWrap: 'wrap',
         justifyContent: 'space-around'
+    },
+    transitionQuestion: {
+        paddingTop: "50px"
     },
 };
 
@@ -19,7 +23,10 @@ class PredicatesConfigure extends Component {
     _isImageSelected() {
         if(this.props.imageTape.predicateSelectedImage) {
             return (
-                <TransitionTypeTabs />
+                <div style={styles.transitionQuestion}>
+                    <TransitionQuestion />
+                    <TransitionTypeTabs />
+                </div>
             )
         }
 
