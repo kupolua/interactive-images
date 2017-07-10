@@ -251,9 +251,9 @@ class CoursePreview extends Component {
                 let conditionsLength = this._getConditionsLength(image.key);
 
                 return (
-                    <div key={this._getUnique()}>
+                    <div key={setTimeout(this._getUnique(), 400)}>
                         <TextField
-                            id={this._getUnique()}
+                            id={image.key}
                             style={styles.textColumnWidth}
                             value={this._getTransitionQuestion(image.key)}
                         />
