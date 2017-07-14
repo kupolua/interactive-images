@@ -2,11 +2,220 @@ import _ from 'lodash';
 
 const initialImagesListState = {
     model: {
+        "initialImageId": "394ea686d94cb68f79ea40b9e2ff8d5a",
+        "images": [
+            {
+                "title": "",
+                "key": "394ea686d94cb68f79ea40b9e2ff8d5a",
+                "value": {
+                    "imageName": "title",
+                    "isBase64": false,
+                    "imageSrc": "http://localhost/title.png"
+                }
+            },
+            {
+                "title": "",
+                "key": "1a462407d129becd2396fe229747f885",
+                "value": {
+                    "imageName": "React",
+                    "isBase64": false,
+                    "imageSrc": "http://localhost/react-intro/React.png"
+                }
+            },
+            {
+                "title": "",
+                "key": "28a0a22f65f4a2a4353b18af2db3b981",
+                "value": {
+                    "imageName": "react_intro",
+                    "isBase64": false,
+                    "imageSrc": "http://localhost/react-intro/react_intro.png"
+                }
+            },
+            {
+                "title": "",
+                "key": "e0cc7f8c53d3458ba846dc5d825dc9fc",
+                "value": {
+                    "imageName": "Redux",
+                    "isBase64": false,
+                    "imageSrc": "http://localhost/redux-intro/Redux.png"
+                }
+            },
+            {
+                "title": "",
+                "key": "16eb9cd8456d8acd15b5109af10d68ba",
+                "value": {
+                    "imageName": "redux_intro-store",
+                    "isBase64": false,
+                    "imageSrc": "http://localhost/redux-intro/redux_intro-store.png"
+                }
+            },
+            {
+                "title": "",
+                "key": "aee005ea53dc6281e53002dbeb7539c9",
+                "value": {
+                    "imageName": "redux_intro-actions",
+                    "isBase64": false,
+                    "imageSrc": "http://localhost/redux-intro/redux_intro-actions.png"
+                }
+            },
+            {
+                "title": "",
+                "key": "83670003c81d96eb2cf4ab33d317139c",
+                "value": {
+                    "imageName": "redux_intro-reducer",
+                    "isBase64": false,
+                    "imageSrc": "http://localhost/redux-intro/redux_intro-reducer.png"
+                }
+            },
+            {
+                "title": "",
+                "key": "d077934db966e56128aa83a2e5bfde8e",
+                "value": {
+                    "imageName": "redux_intro-reducers",
+                    "isBase64": false,
+                    "imageSrc": "http://localhost/redux-intro/redux_intro-reducers.png"
+                }
+            },
+            {
+                "title": "",
+                "key": "29479b5f8248586ccb6365cc73149428",
+                "value": {
+                    "imageName": "redux_intro-combineReducers",
+                    "isBase64": false,
+                    "imageSrc": "http://localhost/redux-intro/redux_intro-combineReducers.png"
+                }
+            },
+            {
+                "title": "",
+                "key": "6cd8471cb323d28e7e6dac72bccc232e",
+                "value": {
+                    "imageName": "code_review",
+                    "isBase64": false,
+                    "imageSrc": "http://localhost/code-review/code_review.png"
+                }
+            },
+            {
+                "title": "",
+                "key": "c813b0db704778b4cb07d4b5a5533591",
+                "value": {
+                    "imageName": "redux_in_action",
+                    "isBase64": false,
+                    "imageSrc": "http://localhost/redux-in-action/redux_in_action.png"
+                }
+            }
+        ],
+        "transitions": [
+            {
+                "imageId": "394ea686d94cb68f79ea40b9e2ff8d5a",
+                "transitionQuestion": {
+                    "transitionQuestion": "next step",
+                    "transitionQuestionImageId": "394ea686d94cb68f79ea40b9e2ff8d5a"
+                },
+                "proposition": {
+                    "type": "FIXED_CHOICE",
+                    "values": [
+                        "to react",
+                        "to redux",
+                        "to code review",
+                        "to redux in action"
+                    ]
+                },
+                "conditions": [
+                    {
+                        "predicate": "function(value){return value=='to react';}",
+                        "targetImageId": "1a462407d129becd2396fe229747f885"
+                    },
+                    {
+                        "predicate": "function(value){return value=='to redux';}",
+                        "targetImageId": "e0cc7f8c53d3458ba846dc5d825dc9fc"
+                    },
+                    {
+                        "predicate": "function(value){return value=='to code review';}",
+                        "targetImageId": "6cd8471cb323d28e7e6dac72bccc232e"
+                    },
+                    {
+                        "predicate": "function(value){return value=='to redux in action';}",
+                        "targetImageId": "c813b0db704778b4cb07d4b5a5533591"
+                    }
+                ]
+            },
+            {
+                "imageId": "1a462407d129becd2396fe229747f885",
+                "transitionQuestion": {
+                    "transitionQuestion": "next step",
+                    "transitionQuestionImageId": "394ea686d94cb68f79ea40b9e2ff8d5a"
+                },
+                "proposition": {
+                    "type": "FIXED_CHOICE",
+                    "values": [
+                        "to react intro",
+                        "to title"
+                    ]
+                },
+                "conditions": [
+                    {
+                        "predicate": "function(value){return value=='to react intro';}",
+                        "targetImageId": "28a0a22f65f4a2a4353b18af2db3b981"
+                    },
+                    {
+                        "predicate": "function(value){return value=='to title';}",
+                        "targetImageId": "394ea686d94cb68f79ea40b9e2ff8d5a"
+                    }
+                ]
+            },
+            {
+                "imageId": "e0cc7f8c53d3458ba846dc5d825dc9fc",
+                "transitionQuestion": {
+                    "transitionQuestion": "next step",
+                    "transitionQuestionImageId": "e0cc7f8c53d3458ba846dc5d825dc9fc"
+                },
+                "proposition": {
+                    "type": "FIXED_CHOICE",
+                    "values": [
+                        "to store",
+                        "to action",
+                        "to reducer",
+                        "to reducers",
+                        "to combineReducers",
+                        "to title"
+                    ]
+                },
+                "conditions": [
+                    {
+                        "predicate": "function(value){return value=='to store';}",
+                        "targetImageId": "16eb9cd8456d8acd15b5109af10d68ba"
+                    },
+                    {
+                        "predicate": "function(value){return value=='to action';}",
+                        "targetImageId": "aee005ea53dc6281e53002dbeb7539c9"
+                    },
+                    {
+                        "predicate": "function(value){return value=='to reducer';}",
+                        "targetImageId": "83670003c81d96eb2cf4ab33d317139c"
+                    },
+                    {
+                        "predicate": "function(value){return value=='to reducers';}",
+                        "targetImageId": "d077934db966e56128aa83a2e5bfde8e"
+                    },
+                    {
+                        "predicate": "function(value){return value=='to combineReducers';}",
+                        "targetImageId": "29479b5f8248586ccb6365cc73149428"
+                    },
+                    {
+                        "predicate": "function(value){return value=='to title';}",
+                        "targetImageId": "394ea686d94cb68f79ea40b9e2ff8d5a"
+                    }
+                ]
+            }
+        ]
+    },
+    predicateSelectedImage: "394ea686d94cb68f79ea40b9e2ff8d5a",
+    __model: {
         initialImageId: null,
         images: [],
         transitions: []
     },
-    predicateSelectedImage: "",
+    __predicateSelectedImage: "",
     _model: {
         initialImageId: null,
         images: [
@@ -327,7 +536,6 @@ export default function (state = initialImagesListState, action) {
             // let transition = addTransition(state, action.payload);
 
         return { ...state };
-        // return action.payload;
     }
 
     return state

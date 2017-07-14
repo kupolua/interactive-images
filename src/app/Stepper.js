@@ -1,4 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import  { storeCourse } from './actions/storeCourse';
+
 import {
     Step,
     Stepper,
@@ -17,11 +22,13 @@ import CoursePreview from './CoursePreview/CoursePreview'
  * Linear steppers require users to complete one step in order to move on to the next.
  */
 class HorizontalLinearStepper extends React.Component {
-
-    state = {
-        finished: false,
-        stepIndex: 0,
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            finished: false,
+            stepIndex: 2,
+        };
+    }
 
     handleNext = () => {
         const {stepIndex} = this.state;
@@ -51,6 +58,14 @@ class HorizontalLinearStepper extends React.Component {
         }
     }
 
+    _storeCourse() {
+        // this.setState({stepIndex: 0, finished: false})
+        // console.log(JSON.stringify(this.props.imageTape.model, null, 4))
+        this.props.storeCourse({
+            json: this.props.imageTape.model
+        })
+    }
+
     render() {
         const {finished, stepIndex} = this.state;
         const contentStyle = {margin: '0 16px'};
@@ -70,17 +85,7 @@ class HorizontalLinearStepper extends React.Component {
                 </Stepper>
                 <div style={contentStyle}>
                     {finished ? (
-                        <div>
-                            <a
-                                href="#"
-                                onClick={(event) => {
-                  event.preventDefault();
-                  this.setState({stepIndex: 0, finished: false});
-                }}
-                            >
-                                Click here
-                            </a> to reset the example.
-                        </div>
+                        <div>{this._storeCourse()}</div>
                     ) : (
                         <div>
                             <div>{this.getStepContent(stepIndex)}</div>
@@ -105,4 +110,16 @@ class HorizontalLinearStepper extends React.Component {
     }
 }
 
-export default HorizontalLinearStepper;
+function mapStateToProps(state) {
+    return {
+        imageTape: state.imageTape
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        storeCourse: storeCourse,
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HorizontalLinearStepper)

@@ -317,7 +317,7 @@ class CoursePreview extends Component {
                 <hr />
                 {(
                     <pre style={styles.preStyle}>
-                        {JSON.stringify(this.props.imageTape.model, null, 4)}
+                        {/*JSON.stringify(this.props.imageTape.model, null, 4)*/}
                     </pre>
                 )}
             </div>

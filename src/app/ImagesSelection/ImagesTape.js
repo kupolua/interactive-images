@@ -94,7 +94,6 @@ class ImageTape extends Component {
                     <GridTile
                         key={image.key}
                         title={image.value.imageName}
-                        // title={image.key}
                         actionIcon={
                             <IconMenu
                               iconButtonElement={
@@ -144,7 +143,6 @@ class ImageTape extends Component {
 }
 
 function mapStateToProps(state) {
-    // console.log(state.imageTape.model)
     return {
         imageTape: state.imageTape
     }

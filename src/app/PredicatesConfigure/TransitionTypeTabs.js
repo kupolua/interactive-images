@@ -209,7 +209,7 @@ class TabsExampleControlled extends React.Component {
         });
     }
 
-    render() {
+    render() { //todo: refactor code to separate small components
         return (
             <Tabs
                 style={styles.tabsPadding}
