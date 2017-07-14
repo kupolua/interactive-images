@@ -8,6 +8,7 @@ import Main from './Main'; // Our custom react component
 import reducers from './reducers';
 
 const createStoreWithMiddleware = applyMiddleware()(createStore);
+const rootElementId = document.getElementById('app').getAttribute('data-id');
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -21,6 +22,6 @@ injectTapEventPlugin();
 
 ReactDOM.render(
     <Provider store={createStoreWithMiddleware(reducers)}>
-        <Main />
+        <Main rootElementId={rootElementId} />
     </Provider>
     , document.getElementById('app'));

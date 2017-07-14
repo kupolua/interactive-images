@@ -42,7 +42,7 @@ export default function (state = initialDefaults, action) {
         case 'SET_DEFAULTS':
             state = initialDefaults;
 
-            return state;
+            return { ...state };
 
         case 'SET_INPUT_DATA':
             state = action.payload;
