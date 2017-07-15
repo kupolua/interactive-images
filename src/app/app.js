@@ -5,9 +5,10 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import Main from './Main'; // Our custom react component
+import ReduxPromise from 'redux-promise'
 import reducers from './reducers';
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
+const createStoreWithMiddleware = applyMiddleware(ReduxPromise)(createStore);
 const rootElementId = document.getElementById('app').getAttribute('data-id');
 
 // Needed for onTouchTap

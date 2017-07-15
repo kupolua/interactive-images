@@ -28,7 +28,7 @@ const muiTheme = getMuiTheme({
 class Main extends Component {
   constructor(props, context) {
     super(props, context);
-    console.log(props)
+    // console.log(props)
 
     this.state = {
       open: false,
