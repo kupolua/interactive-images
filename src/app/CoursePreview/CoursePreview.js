@@ -117,8 +117,39 @@ class CoursePreview extends Component {
             initialImageId: this.state.initialImageId
         });
 
+        // console.log('constructor CoursePreview')
+
         this._onBackToPreviewImage = this._onBackToPreviewImage.bind(this);
         this._changePreviewImage = this._changePreviewImage.bind(this);
+    }
+
+    _getImageSrc(imagesList, imageId) {
+        let imageSrc;
+
+        imagesList.map((image) => {
+            if(image.key == imageId) {
+                imageSrc = image.value.imageSrc;
+            }
+        });
+
+        return imageSrc;
+    }
+    componentWillReceiveProps(nextProps) {
+        // console.log('componentWillReceiveProps', nextProps.imageTape.model.initialImageId)
+
+        // console.log('componentWillReceiveProps', this.state.initialImageId , nextProps.imageTape.model.initialImageId)
+        if(this.state.initialImageId !== nextProps.imageTape.model.initialImageId) {
+        console.log('componentWillReceiveProps', this.state.initialImageId, this._getImageSrc(nextProps.imageTape.model.images, nextProps.imageTape.model.initialImageId))
+            this.setState({
+                initialImageId: nextProps.imageTape.model.initialImageId === null ? nextProps.imageTape.model.initialImageId[0].key : nextProps.imageTape.model.initialImageId,
+                isInitialImage: true,
+                imageSource: this._getImageSrc(nextProps.imageTape.model.images, nextProps.imageTape.model.initialImageId)
+            });
+            this.props.selectImage({
+                key: nextProps.imageTape.model.initialImageId,
+                src: this._getImageSrc(nextProps.imageTape.model.images, nextProps.imageTape.model.initialImageId)
+            });
+        }
     }
 
     _getPredicateValue(condition, proposition) {
@@ -139,6 +170,7 @@ class CoursePreview extends Component {
     }
 
     _getAvatarSrc(targetImageId) {
+        console.log(this.props.imageTape.model.images)
         let imageSrc;
 
         this.props.imageTape.model.images.map((image) => {
@@ -201,6 +233,7 @@ class CoursePreview extends Component {
 
         return conditionsLength;
     }
+
     _getTransitionQuestion(imageKey) {
         let transitionQuestion;
 

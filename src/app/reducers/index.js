@@ -2,7 +2,9 @@ import { combineReducers } from 'redux';
 import DefaultsReducer from './reducer_defaults'
 import PreviewImage from './reducer_preview_image'
 import ImageTape from './reducer_image_tape'
-import StoreCouse from './reducer_store_course'
+import ApiGet from './reducer_apiGet'
+import ApiPut from './reducer_apiPut'
+import ApiPost from './reducer_apiPost'
 
 const rootReducer = combineReducers({
   defaults: DefaultsReducer,
@@ -16,7 +18,10 @@ const rootReducer = combineReducers({
   addTargetImage: ImageTape,
   addTransitionQuestion: ImageTape,
   deleteCondition: ImageTape,
-  storeCourse: StoreCouse,
+  coursesList: ApiGet,
+  storeCourse: ApiPut,
+  course: ApiPost,
+  setCourse: ImageTape
 });
 
 export default rootReducer;

@@ -2,8 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import  { storeCourse } from './actions/storeCourse';
-
 import {
     Step,
     Stepper,
@@ -14,6 +12,9 @@ import FlatButton from 'material-ui/FlatButton';
 import ImagesSelection from './ImagesSelection/ImagesSelection';
 import PredicatesConfigure from './PredicatesConfigure/PredicatesConfigure'
 import CoursePreview from './CoursePreview/CoursePreview'
+import ApiTesting from './ApiTesting/ApiTesting'
+
+import  { storeCourse } from './actions/storeCourse';
 
 /**
  * Horizontal steppers are ideal when the contents of one step depend on an earlier step.
@@ -21,12 +22,18 @@ import CoursePreview from './CoursePreview/CoursePreview'
  *
  * Linear steppers require users to complete one step in order to move on to the next.
  */
+
+const styles = {
+    conditionButton: {
+        margin: 12,
+    }
+};
 class HorizontalLinearStepper extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             finished: false,
-            stepIndex: 2,
+            stepIndex: 0,
         };
     }
 
@@ -34,7 +41,7 @@ class HorizontalLinearStepper extends React.Component {
         const {stepIndex} = this.state;
         this.setState({
             stepIndex: stepIndex + 1,
-            finished: stepIndex >= 2,
+            finished: stepIndex >= 3,
         });
     };
 
@@ -45,6 +52,17 @@ class HorizontalLinearStepper extends React.Component {
         }
     };
 
+    _getUnique() {
+        return Math.floor(Date.now() / 1000).toString();
+    }
+
+    _saveToStore() {
+        // console.log('_saveToStore', this.props.imageTape.model)
+        this.props.storeCourse({
+            course: this.props.imageTape.model
+        })
+    }
+
     getStepContent(stepIndex) {
         switch (stepIndex) {
             case 0:
@@ -52,18 +70,21 @@ class HorizontalLinearStepper extends React.Component {
             case 1:
                 return <PredicatesConfigure />;
             case 2:
-                return <CoursePreview />;
+                return <div>
+                    <CoursePreview />
+                    <RaisedButton
+                        key={setTimeout(this._getUnique(), 400)}
+                        label="save to store"
+                        secondary={true}
+                        style={styles.conditionButton}
+                        onTouchTap={event => this._saveToStore(event)}
+                    />
+                </div>;
+            case 3:
+                return <ApiTesting />;
             default:
                 return 'You\'re a long way from home sonny jim!';
         }
-    }
-
-    _storeCourse() {
-        // this.setState({stepIndex: 0, finished: false})
-        // console.log(JSON.stringify(this.props.imageTape.model, null, 4))
-        this.props.storeCourse({
-            json: this.props.imageTape.model
-        })
     }
 
     render() {
@@ -82,10 +103,13 @@ class HorizontalLinearStepper extends React.Component {
                     <Step>
                         <StepLabel>Course preview</StepLabel>
                     </Step>
+                    <Step>
+                        <StepLabel>Api testing</StepLabel>
+                    </Step>
                 </Stepper>
                 <div style={contentStyle}>
                     {finished ? (
-                        <div>{this._storeCourse()}</div>
+                        <div>Hi</div>
                     ) : (
                         <div>
                             <div>{this.getStepContent(stepIndex)}</div>
@@ -97,7 +121,7 @@ class HorizontalLinearStepper extends React.Component {
                                     style={{marginRight: 12}}
                                 />
                                 <RaisedButton
-                                    label={stepIndex === 2 ? 'Finish' : 'Next'}
+                                    label={stepIndex === 3 ? 'Finish' : 'Next'}
                                     primary={true}
                                     onTouchTap={this.handleNext}
                                 />
@@ -110,10 +134,12 @@ class HorizontalLinearStepper extends React.Component {
     }
 }
 
+
 function mapStateToProps(state) {
     return {
-        imageTape: state.imageTape
-    }
+        imageTape: state.imageTape,
+        image: state.previewImage
+    };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -122,4 +148,7 @@ function mapDispatchToProps(dispatch) {
     }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HorizontalLinearStepper)
+
+export default connect(mapStateToProps, mapDispatchToProps)(HorizontalLinearStepper);
+
+// export default HorizontalLinearStepper;

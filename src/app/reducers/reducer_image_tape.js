@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 const initialImagesListState = {
-    model: {
+    _model: {
         "initialImageId": "394ea686d94cb68f79ea40b9e2ff8d5a",
         "images": [
             {
@@ -209,14 +209,14 @@ const initialImagesListState = {
             }
         ]
     },
-    predicateSelectedImage: "394ea686d94cb68f79ea40b9e2ff8d5a",
-    __model: {
+    _predicateSelectedImage: "394ea686d94cb68f79ea40b9e2ff8d5a",
+    model: {
         initialImageId: null,
         images: [],
         transitions: []
     },
-    __predicateSelectedImage: "",
-    _model: {
+    predicateSelectedImage: "",
+    __model: {
         initialImageId: null,
         images: [
             {
@@ -274,7 +274,7 @@ const initialImagesListState = {
             }
         ]
     },
-    _predicateSelectedImage: "110c6126646422d072a7f6d44eb4948a",
+    __predicateSelectedImage: "110c6126646422d072a7f6d44eb4948a",
     transitionQuestion: '',
     targetImageId: null,
     predicate: null,
@@ -536,6 +536,13 @@ export default function (state = initialImagesListState, action) {
             // let transition = addTransition(state, action.payload);
 
         return { ...state };
+
+        case 'SET_COURSE':
+
+            // console.log('SET_COURSE', state, action.payload);
+            // let transition = addTransition(state, action.payload);
+
+        return { ...state, model: action.payload.course };
     }
 
     return state

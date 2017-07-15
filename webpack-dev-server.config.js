@@ -16,7 +16,6 @@ const config = {
   devServer: {
     contentBase: 'src/www', // Relative directory for base of server
     hot: true, // Live-reload
-    headers: { "Access-Control-Allow-Origin": "*" },
     inline: true,
     port: 3000, // Port Number
     host: 'localhost', // Change to '0.0.0.0' for external facing server
