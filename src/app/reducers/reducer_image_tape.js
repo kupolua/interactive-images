@@ -210,13 +210,13 @@ const initialImagesListState = {
         ]
     },
     _predicateSelectedImage: "394ea686d94cb68f79ea40b9e2ff8d5a",
-    __model: {
+    model: {
         initialImageId: null,
         images: [],
         transitions: []
     },
-    __predicateSelectedImage: "",
-    model: {
+    predicateSelectedImage: "",
+    __model: {
         initialImageId: null,
         images: [
             {
@@ -274,7 +274,7 @@ const initialImagesListState = {
             }
         ]
     },
-    predicateSelectedImage: "110c6126646422d072a7f6d44eb4948a",
+    __predicateSelectedImage: "110c6126646422d072a7f6d44eb4948a",
     transitionQuestion: '',
     targetImageId: null,
     predicate: null,
