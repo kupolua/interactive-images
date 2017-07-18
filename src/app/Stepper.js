@@ -70,6 +70,10 @@ class HorizontalLinearStepper extends React.Component {
             case 1:
                 return <PredicatesConfigure />;
             case 2:
+                if (this.props.imageTape.model.images.length < 1) {
+                    return <div></div>;
+                }
+                
                 return <div>
                     <CoursePreview />
                     <RaisedButton

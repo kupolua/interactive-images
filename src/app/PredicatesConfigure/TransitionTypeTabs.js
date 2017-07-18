@@ -51,7 +51,7 @@ const styles = {
     }
 };
 
-class TabsExampleControlled extends React.Component {
+class PredicateTabsControlled extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -231,44 +231,16 @@ class TabsExampleControlled extends React.Component {
                         </GridList>
                 </Tab>
                 <Tab label="ANY STRING" value="ANY_STRING">
-                    <div>
-                        <h2 style={styles.headline}>Controllable Tab ANY_STRING</h2>
-                        <p>
-                            This is another example of a controllable tab. Remember, if you
-                            use controllable Tabs, you need to give all of your tabs values or else
-                            you wont be able to select them.
-                        </p>
-                    </div>
+                    <h2 style={styles.headline}>Controllable Tab ANY_STRING</h2>
                 </Tab>
                 <Tab label="ANY NUMBER" value="ANY_NUMBER">
-                    <div>
-                        <h2 style={styles.headline}>Controllable Tab ANY_NUMBER</h2>
-                        <p>
-                            This is another example of a controllable tab. Remember, if you
-                            use controllable Tabs, you need to give all of your tabs values or else
-                            you wont be able to select them.
-                        </p>
-                    </div>
+                    <h2 style={styles.headline}>Controllable Tab ANY_NUMBER</h2>
                 </Tab>
                 <Tab label="ANY INTEGER" value="ANY_INTEGER">
-                    <div>
-                        <h2 style={styles.headline}>Controllable Tab ANY_INTEGER</h2>
-                        <p>
-                            This is another example of a controllable tab. Remember, if you
-                            use controllable Tabs, you need to give all of your tabs values or else
-                            you wont be able to select them.
-                        </p>
-                    </div>
+                    <h2 style={styles.headline}>Controllable Tab ANY_INTEGER</h2>
                 </Tab>
                 <Tab label="TRUE FALSE" value="TRUE_FALSE">
-                    <div>
-                        <h2 style={styles.headline}>Controllable Tab TRUE_FALSE</h2>
-                        <p>
-                            This is another example of a controllable tab. Remember, if you
-                            use controllable Tabs, you need to give all of your tabs values or else
-                            you wont be able to select them.
-                        </p>
-                    </div>
+                    <h2 style={styles.headline}>Controllable Tab TRUE_FALSE</h2>
                 </Tab>
             </Tabs>
         );
@@ -290,4 +262,4 @@ function mapDispatchToProps(dispatch) {
     }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TabsExampleControlled);
+export default connect(mapStateToProps, mapDispatchToProps)(PredicateTabsControlled);

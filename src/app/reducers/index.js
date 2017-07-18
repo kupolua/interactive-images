@@ -13,6 +13,7 @@ const rootReducer = combineReducers({
   removeTapeImage: ImageTape,
   setSelectedImage: ImageTape,
   setInitialImage: ImageTape,
+  updateImageName: ImageTape,
   addPredicate: ImageTape,
   updatePredicate: ImageTape,
   addTargetImage: ImageTape,

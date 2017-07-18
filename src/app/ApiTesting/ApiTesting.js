@@ -84,6 +84,7 @@ class ApiTesting extends Component {
 
         // _.isEqual(a, b)
         // console.log(nextProps, nextProps.imageTape.model, JSON.parse( nextProps.course.course.js_object))
+        // console.log(nextProps, nextProps.imageTape.model, JSON.parse( nextProps.course.course.js_object))
         // console.log(_.isEqual(nextProps.imageTape.model, JSON.parse( nextProps.course.course.js_object)))
         // console.log(c)
         if(c < 10) {
@@ -91,13 +92,34 @@ class ApiTesting extends Component {
                 return
             } else {
                 c++;
-                this.setState({
-                    course: JSON.parse( nextProps.course.course.js_object)
-                });
 
-                this.props.setCourse({
-                    course: JSON.parse( nextProps.course.course.js_object)
-                })
+                if(this.props.course.course) {
+                    if(_.isEqual(JSON.parse( this.props.course.course.js_object), JSON.parse(nextProps.course.course.js_object))) {
+                        this.setState({
+                            course: nextProps.imageTape.model
+                        });
+
+                        this.props.setCourse({
+                            course: nextProps.imageTape.model
+                        })
+                    } else {
+                        this.setState({
+                            course: JSON.parse( nextProps.course.course.js_object)
+                        });
+
+                        this.props.setCourse({
+                            course: JSON.parse( nextProps.course.course.js_object)
+                        })
+                    }
+                } else {
+                    this.setState({
+                        course: JSON.parse( nextProps.course.course.js_object)
+                    });
+
+                    this.props.setCourse({
+                        course: JSON.parse( nextProps.course.course.js_object)
+                    })
+                }
             }
         } else {
             return

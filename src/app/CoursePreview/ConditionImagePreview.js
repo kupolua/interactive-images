@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import TextField from 'material-ui/TextField';
+
+import  { updateImageName } from '../actions/updateImageName';
 
 const styles = {
     height: '50%',
@@ -14,6 +17,9 @@ const styles = {
         // display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'space-around'
+    },
+    imageName: {
+        color: 'rgb(0, 188, 212)',
     }
 };
 
@@ -22,15 +28,48 @@ class ConditionImagePreview extends Component {
         super(props);
     }
 
+    _getImageName(imageKey) {
+        let imageName;
+
+        this.props.imageTape.model.images.map((image) => {
+            if(image.key == imageKey) {
+                imageName = image.value.imageName;
+            }
+        });
+
+        return imageName;
+    }
+    _getImage(imageKey) {
+        let returnedImage;
+
+        this.props.imageTape.model.images.map((image) => {
+            if(image.key == imageKey) {
+                returnedImage = image
+            }
+        });
+
+        return returnedImage;
+    }
+
+    _onChangeImageTitle(event, image) {
+        // console.log(event.target.value)
+        this.props.updateImageName({
+            image: image,
+            nextImageName: event.target.value
+        })
+    }
 
     render() {
-        console.log(this.props.image.src)
         return (
             <div>
                 <hr />
-                <div>
-                    image name
-                </div>
+                <TextField
+                    id={this.props.image.key}
+                    multiLine={true}
+                    textareaStyle={styles.imageName}
+                    value={this._getImageName(this.props.image.key)}
+                    onChange={event => this._onChangeImageTitle(event, this._getImage(this.props.image.key))}
+                />
                 <div>
                     <Card style={styles}>
                         <CardMedia>
@@ -45,9 +84,17 @@ class ConditionImagePreview extends Component {
 }
 
 function mapStateToProps(state) {
+    // console.log('mapStateToProps(state)', state.imageTape)
     return {
+        imageTape: state.imageTape,
         image: state.previewImage
     }
 }
 
-export default connect(mapStateToProps)(ConditionImagePreview);
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        updateImageName: updateImageName,
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ConditionImagePreview);

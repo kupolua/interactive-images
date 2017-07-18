@@ -4,6 +4,7 @@ import {findDOMNode} from 'react-dom'
 
 import { bindActionCreators } from 'redux';
 
+import TextField from 'material-ui/TextField';
 import {GridList, GridTile} from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
 import RemoveImage from 'material-ui/svg-icons/content/clear';
@@ -13,6 +14,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import ReactTooltip from 'react-tooltip'
 
 import  { selectImage } from '../actions/selectImage';
+import  { updateImageName } from '../actions/updateImageName';
 import  { setSelectedImage } from '../actions/setSelectedImage';
 import  { setInitialImage } from '../actions/setInitialImage';
 import  { removeTapeImage } from '../actions/removeTapeImage';
@@ -42,6 +44,9 @@ const styles = {
         borderColor: "rgb(0, 188, 212)",
         borderStyle: "solid"
     },
+    imageName: {
+        color: 'rgb(0, 188, 212)',
+    }
 };
 
 const iconStyles = {
@@ -88,12 +93,28 @@ class ImageTape extends Component {
         });
     }
 
+    _onChangeImageTitle(event, image) {
+        // console.log('_onChangeImageTitle', event.target.value, image)
+        this.props.updateImageName({
+            image: image,
+            nextImageName: event.target.value
+        })
+    }
+
     renderList() {
         return this.props.imageTape.model.images.map((image) => {
             return (
                     <GridTile
                         key={image.key}
-                        title={image.value.imageName}
+                        title={
+                            <TextField
+                                id={image.key}
+                                multiLine={true}
+                                textareaStyle={styles.imageName}
+                                value={image.value.imageName}
+                                onChange={event => this._onChangeImageTitle(event, image)}
+                            />
+                        }
                         actionIcon={
                             <IconMenu
                               iconButtonElement={
@@ -112,8 +133,6 @@ class ImageTape extends Component {
                               />
                             </IconMenu>
                         }
-                        titleStyle={styles.titleStyle}
-                        titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
                     >
                         <img
                             onClick={event => this._onSelectedImage(image)}
@@ -151,6 +170,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         selectImage: selectImage,
+        updateImageName: updateImageName,
         setSelectedImage: setSelectedImage,
         setInitialImage: setInitialImage,
         removeTapeImage: removeTapeImage

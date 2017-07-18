@@ -422,6 +422,14 @@ function updatePredicate(state, updateCondition) {
     })
 }
 
+function updateImageName(state, nextImage) {
+    state.model.images.forEach((image, i, images) => {
+        if(image.key == nextImage.image.key) {
+            images[i].value.imageName = nextImage.nextImageName
+        }
+    })
+}
+
 export default function (state = initialImagesListState, action) {
     switch (action.type) {
         case 'ADD_IMAGE':
@@ -524,6 +532,14 @@ export default function (state = initialImagesListState, action) {
 
         return { ...state };
 
+        case 'UPDATE_IMAGE_NAME':
+
+            updateImageName(state, action.payload);
+
+            // console.log('UPDATE_IMAGE_NAME', state)
+
+        return { ...state };
+
         case 'DELETE_CONDITION':
 
             deleteCondition(state, action.payload.condition);
@@ -539,7 +555,7 @@ export default function (state = initialImagesListState, action) {
 
         case 'SET_COURSE':
 
-            // console.log('SET_COURSE', state, action.payload);
+            // console.log('SET_COURSE', action.payload.course);
             // let transition = addTransition(state, action.payload);
 
         return { ...state, model: action.payload.course };

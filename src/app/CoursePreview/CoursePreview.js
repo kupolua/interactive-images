@@ -103,12 +103,14 @@ SelectableList = wrapState(SelectableList);
 class CoursePreview extends Component {
     constructor(props) {
         super(props);
+        // console.log("constructor before",  this.props.imageTape.model)
         this.state = {
-            initialImageId: this.props.imageTape.model.initialImageId === null ? this.props.imageTape.model.images[0].key : this.props.imageTape.model.initialImageId,
+            initialImageId: this.props.imageTape.model.initialImageId === null ? this.props.imageTape.model.images.length > 0 ? this.props.imageTape.model.images[0].key : null : this.props.imageTape.model.initialImageId,
             isInitialImage: true,
             imageSource: null,
             value: 1
         };
+        // console.log("constructor after")
         this.props.selectImage({
             key: this.state.initialImageId,
             src: this._getAvatarSrc(this.state.initialImageId),
@@ -139,7 +141,7 @@ class CoursePreview extends Component {
 
         // console.log('componentWillReceiveProps', this.state.initialImageId , nextProps.imageTape.model.initialImageId)
         if(this.state.initialImageId !== nextProps.imageTape.model.initialImageId) {
-        console.log('componentWillReceiveProps', this.state.initialImageId, this._getImageSrc(nextProps.imageTape.model.images, nextProps.imageTape.model.initialImageId))
+        // console.log('componentWillReceiveProps', this.state.initialImageId, this._getImageSrc(nextProps.imageTape.model.images, nextProps.imageTape.model.initialImageId))
             this.setState({
                 initialImageId: nextProps.imageTape.model.initialImageId === null ? nextProps.imageTape.model.initialImageId[0].key : nextProps.imageTape.model.initialImageId,
                 isInitialImage: true,
@@ -170,7 +172,7 @@ class CoursePreview extends Component {
     }
 
     _getAvatarSrc(targetImageId) {
-        console.log(this.props.imageTape.model.images)
+        // console.log(this.props.imageTape.model.images)
         let imageSrc;
 
         this.props.imageTape.model.images.map((image) => {
@@ -251,6 +253,7 @@ class CoursePreview extends Component {
         let proposition = this._getProposition(imageKey);
 
         return conditions.map((condition) => {
+            // console.log('renderConditions()',condition)
             return (
                 <RaisedButton
                     key={setTimeout(this._getUnique(), 400)}
@@ -341,6 +344,10 @@ class CoursePreview extends Component {
     }
 
     render() {
+        if (this.props.imageTape.model.images.length < 1) {
+            return <div></div>;
+        }
+
         return (
             <div style={styles.root}>
                 <ConditionImagePreview />
@@ -350,7 +357,7 @@ class CoursePreview extends Component {
                 <hr />
                 {(
                     <pre style={styles.preStyle}>
-                        {/*JSON.stringify(this.props.imageTape.model, null, 4)*/}
+                        {JSON.stringify(this.props.imageTape.model, null, 4)}
                     </pre>
                 )}
             </div>
