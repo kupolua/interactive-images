@@ -63,8 +63,15 @@ class HorizontalLinearStepper extends React.Component {
         })
     }
 
+    _loadStepContent(stepIndex) {
+        this.setState({
+            stepIndex: stepIndex,
+            finished: false,
+        });
+    }
+
     getStepContent(stepIndex) {
-        switch (stepIndex) {
+        switch ('getStepContent(stepIndex)', stepIndex) {
             case 0:
                 return <ImagesSelection />;
             case 1:
@@ -99,16 +106,24 @@ class HorizontalLinearStepper extends React.Component {
             <div style={{width: '100%', maxWidth: '70%', margin: 'auto'}}>
                 <Stepper activeStep={stepIndex}>
                     <Step>
-                        <StepLabel>Images selection</StepLabel>
+                        <StepLabel
+                            onTouchTap={event => this._loadStepContent(0)}
+                        >Images selection</StepLabel>
                     </Step>
                     <Step>
-                        <StepLabel>Predicates configure</StepLabel>
+                        <StepLabel
+                            onTouchTap={event => this._loadStepContent(1)}
+                        >Predicates configure</StepLabel>
                     </Step>
                     <Step>
-                        <StepLabel>Course preview</StepLabel>
+                        <StepLabel
+                            onTouchTap={event => this._loadStepContent(2)}
+                        >Course preview</StepLabel>
                     </Step>
                     <Step>
-                        <StepLabel>Api testing</StepLabel>
+                        <StepLabel
+                            onTouchTap={event => this._loadStepContent(3)}
+                        >Api testing</StepLabel>
                     </Step>
                 </Stepper>
                 <div style={contentStyle}>
