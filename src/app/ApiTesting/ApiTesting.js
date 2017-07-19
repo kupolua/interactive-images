@@ -69,6 +69,10 @@ class ApiTesting extends Component {
 
     }
     componentWillReceiveProps(nextProps) {
+        if(c > 100) {
+            console.log('Looping... ');
+            return;
+        }
         this.setState({
             coursesList: nextProps.coursesList
         });
@@ -84,46 +88,76 @@ class ApiTesting extends Component {
 
         // _.isEqual(a, b)
         // console.log(nextProps, nextProps.imageTape.model, JSON.parse( nextProps.course.course.js_object))
-        // console.log(nextProps, nextProps.imageTape.model, JSON.parse( nextProps.course.course.js_object))
+        //     console.log(nextProps.imageTape.model, JSON.parse(nextProps.course.course.js_object))
         // console.log(_.isEqual(nextProps.imageTape.model, JSON.parse( nextProps.course.course.js_object)))
         // console.log(c)
-        if(c < 10) {
-            if(_.isEqual(nextProps.imageTape.model, JSON.parse( nextProps.course.course.js_object))) {
-                return
-            } else {
-                c++;
 
-                if(this.props.course.course) {
-                    if(_.isEqual(JSON.parse( this.props.course.course.js_object), JSON.parse(nextProps.course.course.js_object))) {
-                        this.setState({
-                            course: nextProps.imageTape.model
-                        });
-
-                        this.props.setCourse({
-                            course: nextProps.imageTape.model
-                        })
-                    } else {
-                        this.setState({
-                            course: JSON.parse( nextProps.course.course.js_object)
-                        });
-
-                        this.props.setCourse({
-                            course: JSON.parse( nextProps.course.course.js_object)
-                        })
-                    }
-                } else {
-                    this.setState({
-                        course: JSON.parse( nextProps.course.course.js_object)
-                    });
-
-                    this.props.setCourse({
-                        course: JSON.parse( nextProps.course.course.js_object)
-                    })
-                }
-            }
+        // c++;
+        if(_.isEqual(nextProps.imageTape.model, JSON.parse( nextProps.course.course.js_object))) {
+            // console.log('course state changed')
+            // console.log('course state changed', JSON.parse( nextProps.course.course.js_object))
         } else {
-            return
+            // console.log('instance course changed')
+            // console.log(this.state.course, JSON.parse( nextProps.course.course.js_object))
+            // console.log('instance course changed', this.state.course, JSON.parse( nextProps.course.course.js_object))
+
+            if(_.isEqual(this.state.course, JSON.parse( nextProps.course.course.js_object))) {
+                return;
+            } else {
+                this.setState({
+                    course: JSON.parse(nextProps.course.course.js_object)
+                    // course: nextProps.imageTape.model
+                });
+            }
+
+            this.props.setCourse({
+                course: JSON.parse(nextProps.course.course.js_object)
+                // course: nextProps.imageTape.model
+            })
         }
+
+
+
+
+
+
+        // if(c <= 2) {
+        //     if(_.isEqual(nextProps.imageTape.model, JSON.parse( nextProps.course.course.js_object))) {
+        //         return
+        //     } else {
+        //         c++;
+        //         // console.log(this.props.course.course)
+        //         if(this.props.course.course) {
+        //             if(_.isEqual(JSON.parse( this.props.course.course.js_object), JSON.parse(nextProps.course.course.js_object))) {
+        //                 this.setState({
+        //                     course: nextProps.imageTape.model
+        //                 });
+        //
+        //                 this.props.setCourse({
+        //                     course: nextProps.imageTape.model
+        //                 })
+        //             } else {
+        //                 this.setState({
+        //                     course: JSON.parse( nextProps.course.course.js_object)
+        //                 });
+        //
+        //                 this.props.setCourse({
+        //                     course: JSON.parse( nextProps.course.course.js_object)
+        //                 })
+        //             }
+        //         } else {
+        //             this.setState({
+        //                 course: JSON.parse( nextProps.course.course.js_object)
+        //             });
+        //
+        //             this.props.setCourse({
+        //                 course: JSON.parse( nextProps.course.course.js_object)
+        //             })
+        //         }
+        //     }
+        // } else {
+        //     return
+        // }
     }
 
     _getUnique() {
