@@ -30,6 +30,8 @@ class ImagePreview extends Component {
     constructor(props) {
         super(props);
 
+        this.props.selectImage(null);
+
         this.state = {
             overlayTitle: props.image ? this._getImageName(props.images.model.images, props.image.key) : "Image title",
             imageTitleValue: ''

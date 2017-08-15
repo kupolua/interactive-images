@@ -158,7 +158,7 @@ class HorizontalLinearStepper extends React.Component {
 function mapStateToProps(state) {
     return {
         imageTape: state.imageTape,
-        image: state.previewImage
+        // image: state.previewImage
     };
 }
 

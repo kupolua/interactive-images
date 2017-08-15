@@ -85,7 +85,6 @@ class ConditionImagePreview extends Component {
 }
 
 function mapStateToProps(state) {
-    // console.log('mapStateToProps(state)', state.previewImage)
     return {
         imageTape: state.imageTape,
         image: state.previewImage
