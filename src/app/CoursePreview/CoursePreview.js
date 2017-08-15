@@ -330,7 +330,7 @@ class CoursePreview extends Component {
     }
 
     _changePreviewImage(imageSource, imageId) {
-        console.log('_changePreviewImage(imageSource, imageId)', imageSource, imageId)
+        // console.log('_changePreviewImage(imageSource, imageId)', imageSource, imageId)
         this.props.selectImage({
             key: imageId,
             src: imageSource
@@ -346,7 +346,7 @@ class CoursePreview extends Component {
     }
 
     _onBackToPreviewImage(event) {
-        console.log('_onBackToPreviewImage', this.props.imageTape.model.initialImageId, this.state.parentImage)
+        // console.log('_onBackToPreviewImage', this.props.imageTape.model.initialImageId, this.state.parentImage)
         // this.setState({
         //     isInitialImage: true,
         // });

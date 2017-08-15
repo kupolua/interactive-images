@@ -31,7 +31,7 @@ class ImagePreview extends Component {
         super(props);
 
         this.state = {
-            overlayTitle: "Image title",
+            overlayTitle: props.image ? this._getImageName(props.images.model.images, props.image.key) : "Image title",
             imageTitleValue: ''
         };
     }
@@ -45,6 +45,18 @@ class ImagePreview extends Component {
                 imageTitleValue: ''
             });
         }
+    }
+
+    _getImageName(images, imageKey) {
+        let imageName;
+
+        images.map((image) => {
+            if(image.key == imageKey) {
+                imageName = image.value.imageName;
+            }
+        });
+
+        return imageName;
     }
 
     _addImageToTape() {
@@ -111,6 +123,7 @@ class ImagePreview extends Component {
 
 function mapStateToProps(state) {
     return {
+        images: state.imageTape,
         image: state.previewImage
     }
 }
