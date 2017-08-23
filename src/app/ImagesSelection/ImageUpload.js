@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import  { setInputData } from '../actions/setInputData';
-import  { selectImage } from '../actions/selectImage';
 import { bindActionCreators } from 'redux';
 import md5 from 'md5';
+
+import  { setDefaults } from '../actions/setDefaults';
+import  { setInputData } from '../actions/setInputData';
+import  { selectImage } from '../actions/selectImage';
+import  { imageTape } from '../actions/imageTape';
 
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
@@ -57,17 +60,30 @@ class ImageUpload extends Component {
         this.onUpdate = this.onUpdate.bind(this);
     }
 
+    componentWillReceiveProps(nextProps) {
+        if(!Array.isArray(nextProps.defaults)) {
+            this.onUpdate(nextProps);
+        }
+    }
+
+    componentWillUnmount() {
+        if(this.props.defaults.length == 0) {
+            // console.log('componentWillUnmount', this.props.defaults.length, this.state)
+            this.props.imageTape({
+                imageName: this.state.proposalImageName,
+                key: this.state.key,
+                src: this.state.value,
+            });
+            this.props.setDefaults();
+            this.props.selectImage(null);
+        }
+    }
+
     onUpdate(props) {
         this.setState({
             hintText: props.defaults.hintText,
             value: props.defaults.value
         });
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if(!Array.isArray(nextProps.defaults)) {
-            this.onUpdate(nextProps);
-        }
     }
 
     onUploadUrl(e) {
@@ -81,7 +97,8 @@ class ImageUpload extends Component {
             key: imageID,
             imagePreviewUrl: imageSrc,
             hintText: null,
-            value: imageSrc
+            value: imageSrc,
+            proposalImageName: proposalImageName
         });
 
         this.props.setInputData({
@@ -116,7 +133,7 @@ class ImageUpload extends Component {
                 key: imageID,
                 src: reader.result,
                 proposalImageName: proposalImageName
-            })
+            });
         };
 
         reader.readAsDataURL(file)
@@ -150,15 +167,19 @@ class ImageUpload extends Component {
 }
 
 function mapStateToProps(state) {
+    // console.log('class ImageUpload::mapStateToProps(state)', state)
     return {
-        defaults: state.defaults
+        defaults: state.defaults,
+        selectedImage: state.selectImage
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         selectImage: selectImage,
-        setInputData: setInputData
+        setInputData: setInputData,
+        imageTape: imageTape,
+        setDefaults: setDefaults
     }, dispatch)
 }
 

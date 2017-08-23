@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import  { setDefaults } from '../actions/setDefaults';
 import  { imageTape } from '../actions/imageTape';
 import  { selectImage } from '../actions/selectImage';
-import { bindActionCreators } from 'redux';
 
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
@@ -88,6 +88,7 @@ class ImagePreview extends Component {
         if (!this.props.image) {
             return <div></div>
         }
+
 
         return (
             <div>

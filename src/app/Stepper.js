@@ -41,7 +41,7 @@ class HorizontalLinearStepper extends React.Component {
         const {stepIndex} = this.state;
         this.setState({
             stepIndex: stepIndex + 1,
-            finished: stepIndex >= 3,
+            finished: stepIndex >= 4,
         });
     };
 

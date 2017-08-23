@@ -22,7 +22,7 @@ const rootReducer = combineReducers({
   coursesList: ApiGet,
   storeCourse: ApiPut,
   course: ApiPost,
-  setCourse: ImageTape
+  setCourse: ImageTape,
 });
 
 export default rootReducer;
