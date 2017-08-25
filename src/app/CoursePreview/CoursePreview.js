@@ -357,13 +357,15 @@ class CoursePreview extends Component {
     }
 
     _onBackToPreviewImage(event) {
-        // console.log('_onBackToPreviewImage', this.props.imageTape.model.initialImageId, this.state.parentImage)
+        let imageKey = this.state.parentImage || this.props.imageTape.model.initialImageId
+        console.log('_onBackToPreviewImage', this.props.imageTape.model.initialImageId, this.state.parentImage)
+
         // this.setState({
         //     isInitialImage: true,
         // });
         this.props.selectImage({
-            key: this.state.parentImage,
-            src: this._getAvatarSrc(this.state.parentImage)
+            key: imageKey,
+            src: this._getAvatarSrc(imageKey)
             // key: this.props.imageTape.model.initialImageId,
             // src: this._getAvatarSrc(this.props.imageTape.model.initialImageId)
         });
