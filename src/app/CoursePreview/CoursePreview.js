@@ -108,7 +108,8 @@ class CoursePreview extends Component {
             initialImageId: this.props.imageTape.model.initialImageId === null ? this.props.imageTape.model.images.length > 0 ? this.props.imageTape.model.images[0].key : null : this.props.imageTape.model.initialImageId,
             isInitialImage: true,
             imageSource: null,
-            value: 1
+            value: 1,
+            open: false,
         };
         // console.log("constructor after")
         this.props.selectImage({
@@ -125,6 +126,18 @@ class CoursePreview extends Component {
         this._changePreviewImage = this._changePreviewImage.bind(this);
     }
 
+    handleToggle = () => {
+        this.setState({
+            open: !this.state.open,
+        });
+    };
+
+    handleNestedListToggle = (item) => {
+        this.setState({
+            open: item.state.open,
+        });
+    };
+
     _getImageSrc(imagesList, imageId) {
         let imageSrc;
 
@@ -138,8 +151,6 @@ class CoursePreview extends Component {
     }
     componentWillReceiveProps(nextProps) {
         // console.log('componentWillReceiveProps', nextProps.imageTape.model.initialImageId)
-
-
         if(this._getConditions(nextProps.imageTape.model.initialImageId)) {
             this.setState({
                 isInitialImage: true,
@@ -378,6 +389,15 @@ class CoursePreview extends Component {
         }
     }
 
+    _jsonParsed(json) {
+
+        return (
+            <pre style={styles.preStyle}>
+                        {JSON.stringify(json, null, 4)}
+                    </pre>
+        )
+    }
+
     render() {
         if (this.props.imageTape.model.images.length < 1) {
             return <div></div>;
@@ -390,11 +410,15 @@ class CoursePreview extends Component {
                     {this.state.isInitialImage ? this.renderConditionsList() : this._onPreviewButton()}
 
                 <hr />
-                {(
-                    <pre style={styles.preStyle}>
-                        {JSON.stringify(this.props.imageTape.model, null, 4)}
-                    </pre>
-                )}
+
+                <List>
+                    <ListItem
+                        key={2}
+                        primaryText="Show JSON"
+                        disabled={true}
+                        nestedItems={[<ListItem key={3} primaryText={this._jsonParsed(this.props.imageTape.model)}/>]}
+                    />
+                </List>
             </div>
         );
     }
