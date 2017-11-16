@@ -287,7 +287,7 @@ class PredicateTabsControlled extends React.Component {
                 value={this.state.value}
                 onChange={this.handleChange}
             >
-                <Tab label="FIXED CHOICE" value="FIXED_CHOICE">
+                <Tab label="OPEN CHOICE" value="FIXED_CHOICE">
 
                         {this.renderRows()}
 
@@ -322,7 +322,7 @@ class PredicateTabsControlled extends React.Component {
                         <TargetImageNoSelectableList targetComponentValue="NO" propositionType="YES_NO"/>
                     </GridList>
                 </Tab>
-                <Tab label="CUSTOM CHOICE" value="CUSTOM_CHOICE">
+                <Tab label="CUSTOM PREDICATE" value="CUSTOM_PREDICATE">
                     <h2 style={styles.headline}>Controllable Tab ANY_STRING, ANY INTEGER, ANY_NUMBER</h2>
                 </Tab>
                 <Tab label="GEO" value="GEO">
