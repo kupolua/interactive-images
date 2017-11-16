@@ -31,9 +31,12 @@ const styles = {
 class HorizontalLinearStepper extends React.Component {
     constructor(props) {
         super(props);
+        // console.log('this.props.InitStore();', this.props.InitStore);
+        // this.props.InitStore({initStore: {}});
+
         this.state = {
             finished: false,
-            stepIndex: 0,
+            stepIndex: 1,
         };
     }
 

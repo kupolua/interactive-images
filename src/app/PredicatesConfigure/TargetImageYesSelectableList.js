@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import {List, ListItem, makeSelectable} from 'material-ui/List';
+import {GridList, GridTile} from 'material-ui/GridList';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Avatar from 'material-ui/Avatar';
@@ -17,7 +18,10 @@ const styles = {
     },
     selectTargetImage: {
         float: "left",
-    }
+    },
+    iconColumnWidth: {
+        width: '48%',
+    },
 };
 
 let SelectableList = makeSelectable(List);
@@ -59,7 +63,32 @@ SelectableList = wrapState(SelectableList);
 class ImagesListSelectable extends Component {
     constructor(props) {
         super(props);
-        this.state = {value: 1};
+        this.state = {
+            value: 1,
+            targetComponentTrueId: this._getTargetComponentTrueId()
+        };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.state.targetComponentTrueId = this._getTargetComponentTrueId();
+    }
+
+    _getTargetComponentTrueId() {
+        if(this.props.imageTape.model.transitions < 1) {return}
+
+        let targetComponentTrueId;
+
+        this.props.imageTape.model.transitions.map((transition) => {
+            if(transition.proposition.type == "YES_NO") {
+                transition.proposition.values.forEach((value, i) => {
+                    if(value == "YES") {
+                        targetComponentTrueId = transition.conditions[i].targetImageId;
+                    }
+                })
+            }
+        });
+
+        return targetComponentTrueId;
     }
 
     _getPredicate(overlayTitle) {
@@ -67,24 +96,15 @@ class ImagesListSelectable extends Component {
     }
 
     _addTargetImage(targetImage) {
-        // this.props.imageTape.transition.conditions[0].targetImageId = targetImage.key;
-
-        console.log(
-            // ' _addTargetImage(targetImage), ' +
-        //     '\ntargetImage', targetImage,
-        //     '\nthis.props', this.props,
-        //     '\nthis.props.imageTape.targetComponentValue', this.props.imageTape.targetComponentValue,
-        );
-
         let transition = {
             imageId: this.props.imageTape.predicateSelectedImage,
             transitionQuestion: this.props.imageTape.transitionQuestion.transitionQuestion || '',
             proposition: {
                 type: this.props.propositionType,
-                values: [ this.props.imageTape.targetComponentValue || '' ]
+                values: [ this.props.targetComponentValue ]
             },
             conditions: [{
-                predicate: this._getPredicate(this.props.imageTape.targetComponentValue || ''),
+                predicate: this._getPredicate(this.props.targetComponentValue),
                 targetImageId: targetImage.key
             }]
         };
@@ -92,9 +112,15 @@ class ImagesListSelectable extends Component {
         // console.log('transition', transition);
         this.props.addTransition(transition);
 
+        // console.log(
+        //     ' _addTargetImage(targetImage), this.props.imageTape', this.props.imageTape,
+        //     '\ntargetImage', targetImage,
+        //     '\nthis.props.targetComponentValue', this.props.targetComponentValue,
+        // );
+
         // this.props.addTargetImage({
         //     targetImageId: targetImage.key,
-        //     targetComponentId: this.props.targetComponentId
+        //     targetComponentValue: this.props.targetComponentValue
         // });
 
         // console.log('this.props.imageTape.predicateSelectedImage', this.props.imageTape.predicateSelectedImage, 'this.props.imageTape.transition', this.props.imageTape.transition)
@@ -106,6 +132,26 @@ class ImagesListSelectable extends Component {
 
     _getUnique() {
         return Math.floor(Date.now() / 1000).toString();
+    }
+    
+    _getImageName(key) {
+        return this.props.imageTape.model.images.map((image) => {
+            if(image.key == key) {
+                return image.value.imageName
+            }
+        })
+    }
+
+    _getAvatarSrc(targetImageId) {
+        let imageSrc;
+
+        this.props.imageTape.model.images.map((image) => {
+            if(image.key == targetImageId) {
+                imageSrc = image.value.imageSrc;
+            }
+        });
+
+        return imageSrc;
     }
 
     renderList() {
@@ -133,15 +179,23 @@ class ImagesListSelectable extends Component {
     }
 
     render() {
+        // console.log(this.props.imageTape.model.transitions);
         return (
             // <div>
+            <GridList cols={2}>
+                {this.state.targetComponentTrueId ? <Avatar src={this._getAvatarSrc(this.state.targetComponentTrueId)}/> : <div></div>}
                 <DropDownMenu
                     style={styles.customWidth}
                     value={this.state.value}
                 >
-                    <MenuItem value={1} primaryText="Select target image"/>
-                    {this.renderList()}
+                        <MenuItem
+                            value={1}
+                            style={styles.iconColumnWidth}
+                            primaryText={this.state.targetComponentTrueId ? this._getImageName(this.state.targetComponentTrueId) : "Select target image"}
+                        />
+                        {this.renderList()}
                 </DropDownMenu>
+            </GridList>
                 // <ReactTooltip />
             // </div>
         )

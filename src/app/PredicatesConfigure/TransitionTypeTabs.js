@@ -20,6 +20,11 @@ import Avatar from 'material-ui/Avatar';
 
 
 import TargetImageSelectableList from './TargetImageSelectableList'
+import TargetImageYesSelectableList from './TargetImageYesSelectableList'
+import TargetImageNoSelectableList from './TargetImageNoSelectableList'
+
+import { setTabValue } from '../actions/setTabValue'
+import { setProposedValue } from '../actions/setProposedValue'
 import { addPredicate } from '../actions/addPredicate'
 import { updatePredicate } from '../actions/updatePredicate'
 import { deleteCondition } from '../actions/deleteCondition';
@@ -33,6 +38,11 @@ const styles = {
     },
     predicateGrid: {
         width: '100%',
+        cellHeight: 70
+    },
+    predicateTextField: {
+        // height: '35px',
+        // cellHeight: 80
     },
     textColumnWidth: {
         width: '48%',
@@ -56,50 +66,75 @@ class PredicateTabsControlled extends React.Component {
         super(props);
         this.state = {
             value: 'FIXED_CHOICE', //todo: set proposition type depend of current tab
+            // value: 'TRUE_FALSE', //todo: set proposition type depend of current tab
             hintText: this.props.defaults.proposedHintText,
             proposedValue: this.props.defaults.proposedValue,
             showCheckboxes: false,
             isTransitionAdd: false,
-            enterProposedValue: null
+            enterProposedValue: null,
         };
+
+        // this.props.setTabValue({tabValue: this.state.value})
+        // console.log('this.props', this.props);
+        this.props.imageTape.tabValue = this.state.value;
     }
 
     componentWillReceiveProps(nextProps) {
-        if(this.state.proposedValue.length) {
-            let isSetTransition = false;
-            let nextTransition = {
-                imageId: this.props.imageTape.predicateSelectedImage,
-                transitionQuestion: this.props.imageTape.transitionQuestion,
-                proposition: {
-                    type: this.state.value,
-                    values: [this.state.proposedValue]
-                },
-                conditions: [{
-                    predicate: this._getPredicate(this.state.proposedValue),
-                    targetImageId: nextProps.imageTape.targetImageId
-                }]
-            };
+            // console.log('componentWillReceiveProps,  nextProps', nextProps)
+            // console.log('componentWillReceiveProps,  nextProps.imageTape.targetComponentValue', nextProps.imageTape.targetComponentValue)
 
-            this.props.imageTape.model.transitions.map((transition) => {
-                if(transition.imageId == this.props.imageTape.predicateSelectedImage) {
-                    transition.proposition.values.push(this.state.proposedValue);
-                    transition.conditions.push(nextTransition.conditions[0]);
-                    isSetTransition = true;
-                }
-            });
+        this.state.proposedValue = nextProps.imageTape.targetComponentValue;
+        // if(this.state.proposedValue.length || nextProps.imageTape.targetComponentId) {
+            // console.log(
+            //     "imageId: this.props.imageTape.predicateSelectedImage", this.props.imageTape.predicateSelectedImage,
+            //     "\ntransitionQuestion: this.props.imageTape.transitionQuestion", this.props.imageTape.transitionQuestion,
+            //     "\nproposition.type: this.state.value", this.state.value,
+            //     "\nproposition.values: [this.state.proposedValue || nextProps.imageTape.targetComponentValue]", [this.state.proposedValue || nextProps.imageTape.targetComponentValue],
+            //     "\nconditions.predicate: this._getPredicate(this.state.proposedValue || nextProps.imageTape.targetComponentValue)", this._getPredicate(this.state.proposedValue || nextProps.imageTape.targetComponentValue),
+            //     "\nconditions.targetImageId: nextProps.imageTape.targetImageId", nextProps.imageTape.targetImageId,
+            //     '\ncomponentWillReceiveProps::this.props', this.props,
+            //     '\ncomponentWillReceiveProps::this.state', this.state,
+            // );
+            // let isSetTransition = false;
+            // let nextTransition = {
+            //     imageId: this.props.imageTape.predicateSelectedImage,
+            //     transitionQuestion: this.props.imageTape.transitionQuestion,
+            //     proposition: {
+            //         type: this.state.value,
+            //         values: [this.state.proposedValue || nextProps.imageTape.targetComponentValue]
+            //     },
+            //     conditions: [{
+            //         predicate: this._getPredicate(this.state.proposedValue || nextProps.imageTape.targetComponentValue),
+            //         targetImageId: nextProps.imageTape.targetImageId
+            //     }]
+            // };
+            //
+            // this.props.imageTape.model.transitions.map((transition) => {
+            //     if(transition.imageId == this.props.imageTape.predicateSelectedImage) {
+            //         transition.proposition.values.push(this.state.proposedValue || nextProps.imageTape.targetComponentValue);
+            //         transition.conditions.push(nextTransition.conditions[0]);
+            //         isSetTransition = true;
+            //     }
+            // });
+            //
+            // if(!isSetTransition) {
+            //     // console.log('props.imageTape.model.transitions.push(nextTransition)', nextTransition)
+            //     this.props.imageTape.model.transitions.push(nextTransition);
+            // }
 
-            if(!isSetTransition) {
-                this.props.imageTape.model.transitions.push(nextTransition);
-            }
+            // this.state.proposedValue = "";
+        // }
 
-            this.state.proposedValue = "";
-        }
+        // console.log('nextProps.imageTape.targetImageId', nextProps.imageTape)
     }
 
     handleChange = (value) => {
+        // console.log('handleChange = (value) => {', value);
         this.setState({
             value: value,
         });
+
+        this.props.setTabValue({tabValue: value})
     };
 
     _getPredicate(overlayTitle) {
@@ -124,13 +159,20 @@ class PredicateTabsControlled extends React.Component {
     }
 
     _onEditProposedValue(overlayTitle) {
-        this.setState({
-            hintText: '',
-            proposedValue: overlayTitle
-        });
+        console.log(
+            // '_onEditProposedValue(overlayTitle) {, overlayTitle', overlayTitle,
+            // '\nthis.props', this.props,
+        );
+        // this.setState({
+        //     hintText: '',
+        //     proposedValue: overlayTitle
+        // });
+
+        this.props.setProposedValue({targetComponentValue: overlayTitle})
     }
 
     _onUpdatePredicateValue(condition, proposition, overlayTitle) {
+        // console.log('_onUpdatePredicateValue(condition, proposition, overlayTitle) {');
         this.props.updatePredicate({
             condition: condition,
             proposition: proposition,
@@ -164,16 +206,43 @@ class PredicateTabsControlled extends React.Component {
     }
 
     _onDeleteCondition(condition) {
+        console.log('_onDeleteCondition(condition) {, condition', condition)
         this.props.deleteCondition({
             condition: condition,
         })
     }
 
-    renderRows() {
-        return this.props.imageTape.model.transitions.map((transition) => {
-            if(transition.imageId == this.props.imageTape.predicateSelectedImage) {
+    _setProposedValue(value) {
+        this.setState({
+            proposedValue: value
+        });
+    }
 
+    renderRows() {
+        // console.log('renderRows() {, this.props', this.props);
+
+        return this.props.imageTape.model.transitions.map((transition) => {
+            // console.log(
+            //     'transition.proposition.type', transition.proposition.type,
+            //     '\nthis.props.imageTape.tabValue', this.props.imageTape.tabValue,
+            // );
+            if(transition.proposition.type !== this.props.imageTape.tabValue) {return}
+
+            // console.log('transition.imageId == this.props.imageTape.predicateSelectedImage', transition.imageId, this.props.imageTape.predicateSelectedImage);
+
+            if(transition.imageId == this.props.imageTape.predicateSelectedImage) {
+                    // console.log(
+                    //     'transition.proposition.type == this.state.value',
+                    //     transition.proposition.type,
+                    //     this.state.value,
+                    //     '\n!transition.conditions.length',
+                    //     transition.conditions.length
+                    // );
+
+                // if(!transition.conditions.length || transition.proposition.type != this.state.value) {return}
                 if(!transition.conditions.length) {return}
+
+                // console.log('transition', transition);
 
                 return transition.conditions.map((condition) => {
                     if(condition.predicate && condition.targetImageId) {
@@ -210,6 +279,8 @@ class PredicateTabsControlled extends React.Component {
     }
 
     render() { //todo: refactor code to separate small components
+        // console.log('this.props.imageTape.targetComponentId', this.props.imageTape.targetComponentId)
+        // console.log('render() {', this.props.imageTape);
         return (
             <Tabs
                 style={styles.tabsPadding}
@@ -220,27 +291,42 @@ class PredicateTabsControlled extends React.Component {
 
                         {this.renderRows()}
 
-                        <GridList style={styles.gridList} cols={2}>
+                        <GridList style={styles.predicateGrid} cols={2}>
                             <TextField
                                 id={this._getUnique()}
                                 hintText={this.state.hintText}
                                 value={this.state.proposedValue}
                                 onChange={event => this._onEditProposedValue(event.target.value)}
                             />
-                            <TargetImageSelectableList />
+                            <TargetImageSelectableList propositionType="FIXED_CHOICE"/>
                         </GridList>
                 </Tab>
-                <Tab label="ANY STRING" value="ANY_STRING">
-                    <h2 style={styles.headline}>Controllable Tab ANY_STRING</h2>
+                <Tab label="YES/NO" value="YES_NO">
+                    <GridList style={styles.predicateGrid} cellHeight={styles.predicateGrid.cellHeight} cols={2}>
+                        <TextField
+                            style={styles.predicateTextField}
+                            id={this._getUnique()}
+                            value="YES"
+                            hintText="YES"
+                        />
+
+                        <TargetImageYesSelectableList targetComponentValue="YES" propositionType="YES_NO"/>
+
+                        <TextField
+                            style={styles.predicateTextField}
+                            id={this._getUnique()}
+                            value="NO"
+                            hintText="NO"
+                        />
+
+                        <TargetImageNoSelectableList targetComponentValue="NO" propositionType="YES_NO"/>
+                    </GridList>
                 </Tab>
-                <Tab label="ANY NUMBER" value="ANY_NUMBER">
-                    <h2 style={styles.headline}>Controllable Tab ANY_NUMBER</h2>
+                <Tab label="CUSTOM CHOICE" value="CUSTOM_CHOICE">
+                    <h2 style={styles.headline}>Controllable Tab ANY_STRING, ANY INTEGER, ANY_NUMBER</h2>
                 </Tab>
-                <Tab label="ANY INTEGER" value="ANY_INTEGER">
-                    <h2 style={styles.headline}>Controllable Tab ANY_INTEGER</h2>
-                </Tab>
-                <Tab label="TRUE FALSE" value="TRUE_FALSE">
-                    <h2 style={styles.headline}>Controllable Tab TRUE_FALSE</h2>
+                <Tab label="GEO" value="GEO">
+                    <h2 style={styles.headline}>Controllable Tab Of select any image area</h2>
                 </Tab>
             </Tabs>
         );
@@ -256,6 +342,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
+        setTabValue: setTabValue,
+        setProposedValue: setProposedValue,
         addPredicate: addPredicate,
         updatePredicate: updatePredicate,
         deleteCondition: deleteCondition,

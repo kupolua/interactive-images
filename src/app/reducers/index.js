@@ -17,12 +17,15 @@ const rootReducer = combineReducers({
   addPredicate: ImageTape,
   updatePredicate: ImageTape,
   addTargetImage: ImageTape,
+  addTransition: ImageTape,
   addTransitionQuestion: ImageTape,
   deleteCondition: ImageTape,
   coursesList: ApiGet,
   storeCourse: ApiPut,
   course: ApiPost,
   setCourse: ImageTape,
+  setTabValue: ImageTape,
+  setProposedValue: ImageTape,
 });
 
 export default rootReducer;

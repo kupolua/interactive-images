@@ -21,6 +21,11 @@ import {
     TableRowColumn,
 } from 'material-ui/Table';
 
+import createLogger from 'logging';
+
+const logger = createLogger('class CoursePreview');
+
+
 import  { selectImage } from '../actions/selectImage';
 import  { setInitialImage } from '../actions/setInitialImage';
 
@@ -103,7 +108,10 @@ SelectableList = wrapState(SelectableList);
 class CoursePreview extends Component {
     constructor(props) {
         super(props);
-        // console.log("constructor before",  this.props.imageTape.model)
+        // console.log("constructor", props)
+        // log.info('constructor');
+        // log.on();
+        // console.log(logger.info())
         this.state = {
             initialImageId: this.props.imageTape.model.initialImageId === null ? this.props.imageTape.model.images.length > 0 ? this.props.imageTape.model.images[0].key : null : this.props.imageTape.model.initialImageId,
             isInitialImage: true,
@@ -116,9 +124,9 @@ class CoursePreview extends Component {
             key: this.state.initialImageId,
             src: this._getAvatarSrc(this.state.initialImageId),
         });
-        this.props.setInitialImage({
-            initialImageId: this.state.initialImageId
-        });
+        // this.props.setInitialImage({
+        //     initialImageId: this.props.imageTape.model.initialImageId === null ? this.props.imageTape.model.images.length > 0 ? this.props.imageTape.model.images[0].key : null : this.props.imageTape.model.initialImageId,
+        // });
 
         // console.log('constructor CoursePreview')
 
@@ -150,7 +158,7 @@ class CoursePreview extends Component {
         return imageSrc;
     }
     componentWillReceiveProps(nextProps) {
-        // console.log('componentWillReceiveProps', nextProps.imageTape.model.initialImageId)
+        // console.log('componentWillReceiveProps', nextProps)
         if(this._getConditions(nextProps.imageTape.model.initialImageId)) {
             this.setState({
                 isInitialImage: true,
@@ -180,6 +188,13 @@ class CoursePreview extends Component {
                 src: this._getImageSrc(nextProps.imageTape.model.images, nextProps.imageTape.model.initialImageId)
             });
         }
+    }
+
+    componentWillUnmount() {
+        this.props.setInitialImage({
+            initialImageId: this.state.parentImage
+        });
+        // console.log('this.state.parentImage', this.state.parentImage);
     }
 
     _getPredicateValue(condition, proposition) {
@@ -231,9 +246,17 @@ class CoursePreview extends Component {
 
     _getConditions(imageKey) {
         let conditions;
+        // console.log('this.props.imageTape.tabValue', this.props.imageTape.tabValue);
 
         this.props.imageTape.model.transitions.map((transition) => {
-            if (transition.imageId == imageKey) {
+            // console.log(
+            //     'transition', transition.proposition.type,
+            //     '\nthis.props.imageTape.tabValue', this.props.imageTape.tabValue,
+            // );
+
+            // if(transition.proposition.type !== this.props.imageTape.tabValue) {return}
+
+            if (transition.imageId == imageKey && transition.proposition.type == this.props.imageTape.tabValue) {
                 conditions = transition.conditions;
             }
         });
@@ -245,7 +268,7 @@ class CoursePreview extends Component {
         let proposition;
 
         this.props.imageTape.model.transitions.map((transition) => {
-            if (transition.imageId == imageKey) {
+            if (transition.imageId == imageKey && transition.proposition.type == this.props.imageTape.tabValue) {
                 proposition = transition.proposition;
             }
         });
@@ -281,7 +304,7 @@ class CoursePreview extends Component {
         let conditions = this._getConditions(imageKey);
         let proposition = this._getProposition(imageKey);
 
-            // console.log('renderConditions()',conditions, imageKey)
+            // console.log('this.props', this.props);
         if(!conditions) {
             // this.setState({
             //     isInitialImage: false,
@@ -291,7 +314,6 @@ class CoursePreview extends Component {
         }
 
         return conditions.map((condition) => {
-            // console.log('renderConditions()',condition)
             return (
                 <RaisedButton
                     key={setTimeout(this._getUnique(), 400)}
@@ -299,21 +321,6 @@ class CoursePreview extends Component {
                     primary={true}
                     style={styles.conditionButton}
                     onTouchTap={(e)=>this._changePreviewImage(this._getAvatarSrc(condition.targetImageId), condition.targetImageId)}
-                />
-            )
-        });
-    }
-    _renderConditions(imageKey) {
-        let conditions = this._getConditions(imageKey);
-
-        return conditions.map((condition) => {
-            return (
-                <ListItem
-                    key={condition.targetImageId}
-                    value={condition.predicate}
-                    primaryText={condition.predicate}
-                    onTouchTap={(e)=>this._changePreviewImage(this._getAvatarSrc(condition.targetImageId), condition.targetImageId)}
-                    leftAvatar={<Avatar src={this._getAvatarSrc(condition.targetImageId)} />}
                 />
             )
         });
@@ -346,10 +353,6 @@ class CoursePreview extends Component {
             key: imageId,
             src: imageSource
         });
-        // this.setState({
-        //     isInitialImage: false,
-        //     imageSource: imageSource
-        // });
         this.props.setInitialImage({
             initialImageId: imageId
         });
@@ -358,16 +361,11 @@ class CoursePreview extends Component {
 
     _onBackToPreviewImage(event) {
         let imageKey = this.state.parentImage || this.props.imageTape.model.initialImageId
-        console.log('_onBackToPreviewImage', this.props.imageTape.model.initialImageId, this.state.parentImage)
+        // console.log('_onBackToPreviewImage', this.props.imageTape.model.initialImageId, this.state.parentImage)
 
-        // this.setState({
-        //     isInitialImage: true,
-        // });
         this.props.selectImage({
             key: imageKey,
             src: this._getAvatarSrc(imageKey)
-            // key: this.props.imageTape.model.initialImageId,
-            // src: this._getAvatarSrc(this.props.imageTape.model.initialImageId)
         });
     }
 
@@ -404,6 +402,8 @@ class CoursePreview extends Component {
         if (this.props.imageTape.model.images.length < 1) {
             return <div></div>;
         }
+
+        // console.log('this.state.isInitialImage', this.state.isInitialImage);
 
         return (
             <div style={styles.root}>

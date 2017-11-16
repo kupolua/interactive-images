@@ -1,12 +1,125 @@
 import _ from 'lodash';
 
 const initialImagesListState = {
-    model: {
-        initialImageId: null,
-        images: [],
-        transitions: []
+    // model: {
+    //     initialImageId: null,
+    //     images: [],
+    //     transitions: []
+    // },
+    // predicateSelectedImage: "",
+    _model: {
+        "initialImageId": "a4ac7cbc09f7f86b4ce24055763ecf07",
+        "images": [
+            {
+                "title": "",
+                "key": "a4ac7cbc09f7f86b4ce24055763ecf07",
+                "value": {
+                    "imageName": "smallfish",
+                    "isBase64": false,
+                    "imageSrc": "http://www.seobook.com/images/smallfish.jpg?refresh"
+                }
+            },
+            {
+                "title": "",
+                "key": "b8f4b7e61246005c94949f665deb34a2",
+                "value": {
+                    "imageName": "diffbot",
+                    "isBase64": false,
+                    "imageSrc": "http://www.cs.cmu.edu/~robosoccer/image-gallery/small/2002/diffbot.jpg?refresh"
+                }
+            },
+            {
+                "title": "",
+                "key": "f351cbdcc29ad663c1736112cac7f27a",
+                "value": {
+                    "imageName": "small_better_small",
+                    "isBase64": false,
+                    "imageSrc": "http://blogs.worldbank.org/africacan/files/africacan/small_better_small.jpg"
+                }
+            }
+        ],
+        "transitions": [
+            {
+                "imageId": "a4ac7cbc09f7f86b4ce24055763ecf07",
+                "transitionQuestion": {
+                    "transitionQuestion": "next step",
+                    "transitionQuestionImageId": "a4ac7cbc09f7f86b4ce24055763ecf07"
+                },
+                "proposition": {
+                    "type": "FIXED_CHOICE",
+                    "values": [
+                        "to diffbot",
+                        "to balls"
+                    ]
+                },
+                "conditions": [
+                    {
+                        "predicate": "function(value){return value=='to diffbot';}",
+                        "targetImageId": "b8f4b7e61246005c94949f665deb34a2"
+                    },
+                    {
+                        "predicate": "function(value){return value=='to balls';}",
+                        "targetImageId": "f351cbdcc29ad663c1736112cac7f27a"
+                    }
+                ]
+            },
+            {
+                "imageId": "a4ac7cbc09f7f86b4ce24055763ecf07",
+                "transitionQuestion": "",
+                "proposition": {
+                    "type": "YES_NO",
+                    "values": [
+                        "YES",
+                        "NO"
+                    ]
+                },
+                "conditions": [
+                    {
+                        "predicate": "function(value){return value=='YES';}",
+                        "targetImageId": "b8f4b7e61246005c94949f665deb34a2"
+                    },
+                    {
+                        "predicate": "function(value){return value=='NO';}",
+                        "targetImageId": "f351cbdcc29ad663c1736112cac7f27a"
+                    }
+                ]
+            }
+        ]
     },
-    predicateSelectedImage: "",
+    model: {
+        "initialImageId": "a4ac7cbc09f7f86b4ce24055763ecf07",
+        "images": [
+            {
+                "title": "",
+                "key": "a4ac7cbc09f7f86b4ce24055763ecf07",
+                "value": {
+                    "imageName": "smallfish",
+                    "isBase64": false,
+                    "imageSrc": "http://www.seobook.com/images/smallfish.jpg?refresh"
+                }
+            },
+            {
+                "title": "",
+                "key": "b8f4b7e61246005c94949f665deb34a2",
+                "value": {
+                    "imageName": "diffbot",
+                    "isBase64": false,
+                    "imageSrc": "http://www.cs.cmu.edu/~robosoccer/image-gallery/small/2002/diffbot.jpg?refresh"
+                }
+            },
+            {
+                "title": "",
+                "key": "f351cbdcc29ad663c1736112cac7f27a",
+                "value": {
+                    "imageName": "small_better_small",
+                    "isBase64": false,
+                    "imageSrc": "http://blogs.worldbank.org/africacan/files/africacan/small_better_small.jpg"
+                }
+            }
+        ],
+        "transitions": []
+    },
+    predicateSelectedImage: "a4ac7cbc09f7f86b4ce24055763ecf07",
     transitionQuestion: '',
     targetImageId: null,
     predicate: null,
@@ -99,6 +212,7 @@ function addTargetImage(state, targetImageId) {
 }
 
 function addTransitionQuestion(state, transitionQuestion) {
+    // console.log('function addTransitionQuestion(state, transitionQuestion) {');
     if(state.model.transitions.length < 1) {
         state.transitionQuestion = transitionQuestion.transitionQuestion
     }
@@ -111,6 +225,7 @@ function addTransitionQuestion(state, transitionQuestion) {
         }
     });
 
+    console.log('function addTransitionQuestion(state, transitionQuestion) {, state', state);
     return state;
 }
 
@@ -191,10 +306,68 @@ function updateImageName(state, nextImage) {
     })
 }
 
+function isPropositionValue(propositions, value) {
+    let isPropositionValue = false;
+
+    propositions.map((proposition) => {
+        if(proposition == value) {
+            isPropositionValue = true;
+        }
+    });
+
+    return isPropositionValue;
+}
+
+function isTransition(state, type) {
+    let isTransition = false;
+
+    state.model.transitions.map((transition) => {
+        if(transition.proposition.type == type) {
+            isTransition = true;
+        }
+    });
+
+    return isTransition;
+}
+
+function addTransition(state, nextTransition) {
+    // console.log('addTransition(state, nextTransition) {, state, nextTransition', state, nextTransition);
+    if(state.model.transitions.length < 1) {
+        state.model.transitions.push(nextTransition);
+
+        state.targetComponentValue = '';
+
+        return;
+    }
+
+    state.model.transitions.map((transition) => {
+        if(isTransition(state, nextTransition.proposition.type)) {
+            if(transition.proposition.type == nextTransition.proposition.type) {
+                if (transition.imageId == nextTransition.imageId) {
+                    if (!isPropositionValue(transition.proposition.values, nextTransition.proposition.values[0])) {
+                        transition.proposition.values.push(nextTransition.proposition.values[0]);
+                        transition.conditions.push(nextTransition.conditions[0])
+                    } else {
+                        transition.proposition.values.forEach((value, i) => {
+                            if (value == nextTransition.proposition.values[0]) {
+                                transition.conditions[i] = nextTransition.conditions[0];
+                            }
+                        })
+                    }
+                }
+            }
+        } else {
+            state.model.transitions.push(nextTransition);
+        }
+    });
+
+    state.targetComponentValue = '';
+}
+
 export default function (state = initialImagesListState, action) {
     switch (action.type) {
         case 'ADD_IMAGE':
-
+        console.log('case \'ADD_IMAGE\':');
         return {
             ...state,
             model: {
@@ -251,55 +424,68 @@ export default function (state = initialImagesListState, action) {
             // };
         };
 
-        case 'ADD_NEW_TRANSITION':
+        case 'ADD_TRANSITION':
 
-        return {
-            ...state,
-                model: {
-                    initialImageId: action.payload.selectedImage.key,
-                    images: [...state.model.images],
-                    transitions: [
-                        ...state.model.transitions, {
-                            imageId: action.payload.selectedImage.key,
-                            transitionQuestion: '',
-                            proposition: {
-                                type: '',
-                                values: []
-                            },
-                            conditions: []
-                        }
-                    ]
-                },
-                predicateSelectedImage: action.payload.selectedImage.key
-        };
+
+            addTransition(state, action.payload);
+
+        return { ...state };
+        // return {
+        //     ...state,
+        //         model: {
+        //             initialImageId: action.payload.selectedImage.key,
+        //             images: [...state.model.images],
+        //             transitions: [
+        //                 ...state.model.transitions, {
+        //                     imageId: action.payload.selectedImage.key,
+        //                     transitionQuestion: '',
+        //                     proposition: {
+        //                         type: '',
+        //                         values: []
+        //                     },
+        //                     conditions: []
+        //                 }
+        //             ]
+        //         },
+        //         predicateSelectedImage: action.payload.selectedImage.key
+        // };
 
         case 'ADD_TARGET_IMAGE':
 
             // let targetImage = addTargetImage(state, action.payload.targetImage);
 
-            // console.log('targetImage', targetImage)
+            // console.log('reducer_image_tape::ADD_TARGET_IMAGE::, action.payload', action.payload)
+            // console.log('reducer_image_tape::ADD_TARGET_IMAGE::, state', state)
 
-        return { ...state,  targetImageId: action.payload.targetImageId};
+        return { ...state,
+            targetImageId: action.payload.targetImageId,
+            targetComponentId: action.payload.targetComponentValue,
+            targetComponentValue: action.payload.targetComponentValue == "YES" ? "YES" : "NO",
+            targetComponentTrueId: action.payload.targetComponentValue == "YES" ? action.payload.targetImageId : state.targetComponentTrueId,
+            targetComponentFalseId: action.payload.targetComponentValue == "NO" ? action.payload.targetImageId : state.targetComponentFalseId
+        };
 
         case 'ADD_PREDICATE':
 
             // let condition = addCondition(state, action.payload.predicate);
 
-            // console.log('condition', state.condition)
+            // console.log('case ADD_PREDICATE:, predicate', action.payload)
 
         return { ...state, predicate: action.payload.predicate };
 
         case 'UPDATE_PREDICATE':
+
+            // console.log('case \'UPDATE_PREDICATE\':')
 
             updatePredicate(state, action.payload);
 
         return { ...state };
 
         case 'UPDATE_IMAGE_NAME':
+            console.log('UPDATE_IMAGE_NAME', state)
 
             updateImageName(state, action.payload);
 
-            // console.log('UPDATE_IMAGE_NAME', state)
 
         return { ...state };
 
@@ -310,6 +496,7 @@ export default function (state = initialImagesListState, action) {
         return { ...state };
 
         case 'ADD_TRANSITION_QUESTION':
+            // console.log('case \'ADD_TRANSITION_QUESTION\':');
 
             addTransitionQuestion(state, action.payload);
             // let transition = addTransition(state, action.payload);
@@ -318,10 +505,15 @@ export default function (state = initialImagesListState, action) {
 
         case 'SET_COURSE':
 
-            // console.log('SET_COURSE', action.payload.course);
-            // let transition = addTransition(state, action.payload);
-
         return { ...state, model: action.payload.course };
+
+        case 'SET_TAB_VALUE':
+
+        return { ...state, tabValue: action.payload.tabValue };
+
+        case 'SET_PROPOSED_VALUE':
+
+        return { ...state, targetComponentValue: action.payload.targetComponentValue };
     }
 
     return state
