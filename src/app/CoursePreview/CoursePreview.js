@@ -28,6 +28,7 @@ const logger = createLogger('class CoursePreview');
 
 import  { selectImage } from '../actions/selectImage';
 import  { setInitialImage } from '../actions/setInitialImage';
+import  { setProposedValue } from '../actions/setProposedValue';
 
 import ConditionImagePreview from './ConditionImagePreview';
 
@@ -66,7 +67,11 @@ const styles = {
     },
     conditionButton: {
         margin: 12,
-    }
+    },
+    predicateGrid: {
+        width: '100%',
+        cellHeight: "400px"
+    },
 };
 
 let SelectableList = makeSelectable(List);
@@ -124,14 +129,15 @@ class CoursePreview extends Component {
             key: this.state.initialImageId,
             src: this._getAvatarSrc(this.state.initialImageId),
         });
-        // this.props.setInitialImage({
-        //     initialImageId: this.props.imageTape.model.initialImageId === null ? this.props.imageTape.model.images.length > 0 ? this.props.imageTape.model.images[0].key : null : this.props.imageTape.model.initialImageId,
-        // });
+        this.props.setInitialImage({
+            initialImageId: this.props.imageTape.model.initialImageId === null ? this.props.imageTape.model.images.length > 0 ? this.props.imageTape.model.images[0].key : null : this.props.imageTape.model.initialImageId,
+        });
 
         // console.log('constructor CoursePreview')
 
         this._onBackToPreviewImage = this._onBackToPreviewImage.bind(this);
         this._changePreviewImage = this._changePreviewImage.bind(this);
+        this._onEditInputValue = this._onEditInputValue.bind(this);
     }
 
     handleToggle = () => {
@@ -159,30 +165,39 @@ class CoursePreview extends Component {
     }
     componentWillReceiveProps(nextProps) {
         // console.log('componentWillReceiveProps', nextProps)
+
+        // this.setState({
+        //     inputValue: nextProps.imageTape.targetComponentValue,
+        // });
+        this.state.inputValue = nextProps.imageTape.targetComponentValue;
+
         if(this._getConditions(nextProps.imageTape.model.initialImageId)) {
-            this.setState({
-                isInitialImage: true,
-                parentImage: this.state.initialImageId
-            });
+            this.state.isInitialImage = true;
+            this.state.parentImage = this.state.initialImageId;
+            // this.setState({
+            //     isInitialImage: true,
+            //     parentImage: this.state.initialImageId
+            // });
         } else {
-            this.setState({
-                isInitialImage: false,
-            });
+            this.state.isInitialImage = false;
+            // this.setState({
+            //     isInitialImage: false,
+            // });
         }
 
-
-
-
         // console.log('componentWillReceiveProps', nextProps.imageTape.model.initialImageId)
-
+        
         // console.log('componentWillReceiveProps', this.state.initialImageId , nextProps.imageTape.model.initialImageId)
         if(this.state.initialImageId !== nextProps.imageTape.model.initialImageId) {
         // // console.log('componentWillReceiveProps', this.state.initialImageId, this._getImageSrc(nextProps.imageTape.model.images, nextProps.imageTape.model.initialImageId))
-            this.setState({
-                initialImageId: nextProps.imageTape.model.initialImageId === null ? nextProps.imageTape.model.initialImageId[0].key : nextProps.imageTape.model.initialImageId,
-                isInitialImage: true,
-                imageSource: this._getImageSrc(nextProps.imageTape.model.images, nextProps.imageTape.model.initialImageId)
-            });
+            this.state.initialImageId = nextProps.imageTape.model.initialImageId === null ? nextProps.imageTape.model.initialImageId[0].key : nextProps.imageTape.model.initialImageId;
+            this.state.isInitialImage = true;
+            this.state.imageSource = this._getImageSrc(nextProps.imageTape.model.images, nextProps.imageTape.model.initialImageId);
+            // this.setState({
+            //     initialImageId: nextProps.imageTape.model.initialImageId === null ? nextProps.imageTape.model.initialImageId[0].key : nextProps.imageTape.model.initialImageId,
+            //     isInitialImage: true,
+            //     imageSource: this._getImageSrc(nextProps.imageTape.model.images, nextProps.imageTape.model.initialImageId)
+            // });
             this.props.selectImage({
                 key: nextProps.imageTape.model.initialImageId,
                 src: this._getImageSrc(nextProps.imageTape.model.images, nextProps.imageTape.model.initialImageId)
@@ -229,7 +244,7 @@ class CoursePreview extends Component {
     }
 
     _getUnique() {
-        return Math.floor(Date.now() / 1000).toString();
+        return Math.floor(Date.now() * 1000).toString();
     }
 
     _isImageTransition(imageKey) {
@@ -300,6 +315,63 @@ class CoursePreview extends Component {
         return transitionQuestion;
     }
 
+    _onEditInputValue(overlayTitle) {
+        console.log(
+            // '_onEditProposedValue(overlayTitle) {, overlayTitle', overlayTitle,
+            // '\nthis.props', this.props,
+        );
+        // this.setState({
+        //     inputValue: overlayTitle
+        // });
+
+        this.props.setProposedValue({targetComponentValue: overlayTitle})
+    }
+
+    _onSubmit() {
+        let inputValue;
+        let targetImageId = this.props.imageTape.model.initialImageId;
+
+        if(typeof this.state.inputValue == "string") {
+            inputValue = this.state.inputValue;
+        }
+
+        if(this.state.inputValue == "true" || this.state.inputValue == "false") {
+            inputValue = this.state.inputValue;
+        }
+
+        if(Math.floor(this.state.inputValue)) {
+            inputValue = Math.floor(this.state.inputValue);
+        }
+
+        this.props.imageTape.model.transitions.forEach((transition) => {
+            if(transition.proposition.type !== this.props.imageTape.tabValue) {return}
+
+
+            transition.conditions.map((condition) => {
+                try {
+                    console.log(condition.predicate, eval("(" + condition.predicate + ")(inputValue)"));
+                    if(eval("(" + condition.predicate + ")(inputValue)")) {
+                        targetImageId = condition.targetImageId;
+                    }
+                }
+                catch (e) {
+                    targetImageId = this.props.imageTape.model.initialImageId;
+                }
+            })
+        });
+
+        this.props.selectImage({
+            key: targetImageId,
+            src: this._getAvatarSrc(targetImageId)
+        });
+
+        this.props.setInitialImage({
+            initialImageId: targetImageId
+        });
+
+
+    }
+
     renderConditions(imageKey) {
         let conditions = this._getConditions(imageKey);
         let proposition = this._getProposition(imageKey);
@@ -313,17 +385,41 @@ class CoursePreview extends Component {
             return;
         }
 
-        return conditions.map((condition) => {
-            return (
-                <RaisedButton
-                    key={setTimeout(this._getUnique(), 400)}
-                    label={this._getPredicateValue(condition, proposition)}
-                    primary={true}
-                    style={styles.conditionButton}
-                    onTouchTap={(e)=>this._changePreviewImage(this._getAvatarSrc(condition.targetImageId), condition.targetImageId)}
-                />
-            )
-        });
+
+        switch (this.props.imageTape.tabValue) {
+            case 'CUSTOM_PREDICATE':
+                return (
+                    <GridList style={styles.predicateGrid} cols={2}>
+                        <TextField
+                            id={"customInputId"}
+                            style={styles.textColumnWidth}
+                            value={this.state.inputValue}
+                            onChange={event => this._onEditInputValue(event.target.value)}
+                        />
+                        <RaisedButton
+                            label={"Submit"}
+                            primary={true}
+                            style={styles.conditionButton}
+                            onTouchTap={(e)=>this._onSubmit()}
+                        />
+                    </GridList>
+                );
+
+            default:
+                return conditions.map((condition) => {
+                    return (
+                        <RaisedButton
+                            label={this._getPredicateValue(condition, proposition)}
+                            primary={true}
+                            style={styles.conditionButton}
+                            onTouchTap={(e)=>this._changePreviewImage(this._getAvatarSrc(condition.targetImageId), condition.targetImageId)}
+                        />
+                    )
+                });
+
+
+
+        }
     }
 
     renderConditionsList() {
@@ -332,16 +428,16 @@ class CoursePreview extends Component {
                 let conditionsLength = this._getConditionsLength(image.key);
 
                 return (
-                    <div key={setTimeout(this._getUnique(), 400)}>
+                    <GridList key={image.key} cellHeight={50} style={styles.predicateGrid} cols={2}>
                         <TextField
                             id={image.key}
                             style={styles.textColumnWidth}
                             value={this._getTransitionQuestion(image.key)}
                         />
-                        <div>
-                            {this.renderConditions(image.key)}
-                        </div>
-                    </div>
+
+                        {this.renderConditions(image.key)}
+
+                    </GridList>
                 )
             }
         });
@@ -356,7 +452,6 @@ class CoursePreview extends Component {
         this.props.setInitialImage({
             initialImageId: imageId
         });
-
     }
 
     _onBackToPreviewImage(event) {
@@ -403,13 +498,13 @@ class CoursePreview extends Component {
             return <div></div>;
         }
 
-        // console.log('this.state.isInitialImage', this.state.isInitialImage);
+        // console.log('render', this.state);
 
         return (
             <div style={styles.root}>
                 <ConditionImagePreview />
 
-                    {this.state.isInitialImage ? this.renderConditionsList() : this._onPreviewButton()}
+                {this.state.isInitialImage ? this.renderConditionsList() : this._onPreviewButton()}
 
                 <hr />
 
@@ -437,6 +532,7 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         selectImage: selectImage,
         setInitialImage: setInitialImage,
+        setProposedValue: setProposedValue,
     }, dispatch)
 }
 

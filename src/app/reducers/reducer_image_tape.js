@@ -1,13 +1,12 @@
 import _ from 'lodash';
 
 const initialImagesListState = {
-    // model: {
-    //     initialImageId: null,
-    //     images: [],
-    //     transitions: []
-    // },
-    // predicateSelectedImage: "",
-    _model: {
+    model: {
+        initialImageId: null,
+        images: [],
+        transitions: []
+    },
+    __model: {
         "initialImageId": "a4ac7cbc09f7f86b4ce24055763ecf07",
         "images": [
             {
@@ -46,7 +45,7 @@ const initialImagesListState = {
                     "transitionQuestionImageId": "a4ac7cbc09f7f86b4ce24055763ecf07"
                 },
                 "proposition": {
-                    "type": "FIXED_CHOICE",
+                    "type": "OPEN_CHOICE",
                     "values": [
                         "to diffbot",
                         "to balls"
@@ -83,10 +82,34 @@ const initialImagesListState = {
                         "targetImageId": "f351cbdcc29ad663c1736112cac7f27a"
                     }
                 ]
+            },
+            {
+                "imageId": "a4ac7cbc09f7f86b4ce24055763ecf07",
+                "transitionQuestion": {
+                    "transitionQuestion": "Input value",
+                    "transitionQuestionImageId": "a4ac7cbc09f7f86b4ce24055763ecf07"
+                },
+                "proposition": {
+                    "type": "CUSTOM_PREDICATE",
+                    "values": [
+                        " to bot",
+                        "m"
+                    ]
+                },
+                "conditions": [
+                    {
+                        "predicate": "function isBot(value){if(value == \"bot\"){return true}else{return false}}",
+                        "targetImageId": "b8f4b7e61246005c94949f665deb34a2"
+                    },
+                    {
+                        "predicate": "function isEven(value){if(value % 2 == 0){return true}else{return false}}",
+                        "targetImageId": "f351cbdcc29ad663c1736112cac7f27a"
+                    }
+                ]
             }
         ]
     },
-    model: {
+    _model: {
         "initialImageId": "a4ac7cbc09f7f86b4ce24055763ecf07",
         "images": [
             {
@@ -119,6 +142,7 @@ const initialImagesListState = {
         ],
         "transitions": []
     },
+    _predicateSelectedImage: "",
     predicateSelectedImage: "a4ac7cbc09f7f86b4ce24055763ecf07",
     transitionQuestion: '',
     targetImageId: null,
@@ -284,7 +308,9 @@ function updatePredicate(state, updateCondition) {
     state.model.transitions.map((transition) => {
         if(state.predicateSelectedImage == transition.imageId) {
             transition.proposition.values.forEach((value, i, values) => {
+                console.log('if(value == updateCondition.currentProposedValue) {', value, updateCondition.currentProposedValue);
                 if(value == updateCondition.currentProposedValue) {
+                    // console.log('values[i] = updateCondition.proposedValue', values[i], updateCondition.proposedValue);
                     values[i] = updateCondition.proposedValue
                 }
             });
@@ -296,6 +322,40 @@ function updatePredicate(state, updateCondition) {
             });
         }
     })
+}
+
+// this.props.updatePredicateCode({
+//     targetImageId: condition.targetImageId,
+//     predicate: condition
+// });
+
+
+function updatePredicateCode(state, predicateCode) {
+    state.model.transitions.map((transition) => {
+        if(state.predicateSelectedImage == transition.imageId) {
+            transition.conditions.forEach((condition, i, conditions) => {
+                if(condition.targetImageId == predicateCode.targetImageId) {
+                    console.log(predicateCode.predicate);
+                    condition.predicate = predicateCode.predicate;
+                }
+            });
+        }
+    })
+}
+
+function updateCondition(state, nextCondition) {
+
+    state.model.transitions.map((transition) => {
+       if(transition.proposition.type == state.tabValue) {
+           transition.conditions[0].predicate = nextCondition.predicateCode;  //todo: implement search by proposition.values
+       }
+    });
+
+    // console.log(
+    //     'nextCondition', nextCondition,
+    //     '\nstate', state
+    // );
+    
 }
 
 function updateImageName(state, nextImage) {
@@ -478,6 +538,23 @@ export default function (state = initialImagesListState, action) {
             // console.log('case \'UPDATE_PREDICATE\':')
 
             updatePredicate(state, action.payload);
+
+        return { ...state };
+
+        case 'UPDATE_PREDICATE_CODE':
+
+
+            updatePredicateCode(state, action.payload);
+
+            console.log('case \'UPDATE_PREDICATE_CODE\':', state)
+
+        return { ...state };
+
+        case 'UPDATE_CONDITION':
+
+            // console.log('case \'UPDATE_CONDITION\':')
+
+            updateCondition(state, action.payload);
 
         return { ...state };
 

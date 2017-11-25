@@ -181,6 +181,7 @@ class ApiTesting extends Component {
     _renderList() {
         if(this.state.coursesList.length == 0) {return;}
         return this.state.coursesList.coursesList.map((course) => {
+            console.log(this.state.coursesList.coursesList);
             return (
                 <div
                     key={course}
@@ -194,10 +195,14 @@ class ApiTesting extends Component {
 
     render() {
         return (
-            <div style={styles.root}>
-                {this._renderList()}
-                {this._renderCoursePreview()}
-            </div>
+        <List>
+            <ListItem
+                key={2}
+                primaryText="List courses"
+                disabled={true}
+                nestedItems={[this._renderList()]}
+            />
+        </List>
         );
     }
 }

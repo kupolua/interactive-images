@@ -12,7 +12,6 @@ import FlatButton from 'material-ui/FlatButton';
 import ImagesSelection from './ImagesSelection/ImagesSelection';
 import PredicatesConfigure from './PredicatesConfigure/PredicatesConfigure'
 import CoursePreview from './CoursePreview/CoursePreview'
-import ApiTesting from './ApiTesting/ApiTesting'
 
 import  { storeCourse } from './actions/storeCourse';
 
@@ -36,7 +35,7 @@ class HorizontalLinearStepper extends React.Component {
 
         this.state = {
             finished: false,
-            stepIndex: 1,
+            stepIndex: 0,
         };
     }
 
@@ -94,9 +93,6 @@ class HorizontalLinearStepper extends React.Component {
                         onTouchTap={event => this._saveToStore(event)}
                     />
                 </div>;
-            case 3:
-                // return <div></div>;
-                return <ApiTesting />;
             default:
                 return 'You\'re a long way from home sonny jim!';
         }
@@ -123,11 +119,6 @@ class HorizontalLinearStepper extends React.Component {
                         <StepLabel
                             onTouchTap={event => this._loadStepContent(2)}
                         >Course preview</StepLabel>
-                    </Step>
-                    <Step>
-                        <StepLabel
-                            onTouchTap={event => this._loadStepContent(3)}
-                        >Api testing</StepLabel>
                     </Step>
                 </Stepper>
                 <div style={contentStyle}>

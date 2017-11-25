@@ -10,7 +10,10 @@ import {deepOrange500} from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import PresentationName from './PresentationName';
 import Stepper from './Stepper';
+import CoursePreview from '../app/CoursePreview/CoursePreview'
+import ApiTesting from './ApiTesting/ApiTesting'
 import AppVersionFooter from './AppVersionFooter';
 
 const styles = {
@@ -48,10 +51,21 @@ class Main extends Component {
   }
 
   render() {
+    // return (
+    //   <MuiThemeProvider muiTheme={muiTheme}>
+    //     <div style={styles.container}>
+    //       <CoursePreview />
+    //     </div>
+    //   </MuiThemeProvider>
+    // );
+
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <div style={styles.container}>
+          {/*<PresentationName />*/}
           <Stepper />
+          <hr />
+          <ApiTesting />
           <AppVersionFooter />
         </div>
       </MuiThemeProvider>

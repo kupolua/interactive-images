@@ -22,11 +22,12 @@ import Avatar from 'material-ui/Avatar';
 import TargetImageSelectableList from './TargetImageSelectableList'
 import TargetImageYesSelectableList from './TargetImageYesSelectableList'
 import TargetImageNoSelectableList from './TargetImageNoSelectableList'
+import CustomPredicate from './CustomPredicate'
 
 import { setTabValue } from '../actions/setTabValue'
-import { setProposedValue } from '../actions/setProposedValue'
 import { addPredicate } from '../actions/addPredicate'
 import { updatePredicate } from '../actions/updatePredicate'
+import { updatePredicateCode } from '../actions/updatePredicateCode'
 import { deleteCondition } from '../actions/deleteCondition';
 
 const styles = {
@@ -65,8 +66,9 @@ class PredicateTabsControlled extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: 'FIXED_CHOICE', //todo: set proposition type depend of current tab
-            // value: 'TRUE_FALSE', //todo: set proposition type depend of current tab
+            value: 'OPEN_CHOICE', //todo: set proposition type depend of current tab
+            // value: 'YES_NO', //todo: set proposition type depend of current tab
+            // value: 'CUSTOM_PREDICATE', //todo: set proposition type depend of current tab
             hintText: this.props.defaults.proposedHintText,
             proposedValue: this.props.defaults.proposedValue,
             showCheckboxes: false,
@@ -80,52 +82,8 @@ class PredicateTabsControlled extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-            // console.log('componentWillReceiveProps,  nextProps', nextProps)
-            // console.log('componentWillReceiveProps,  nextProps.imageTape.targetComponentValue', nextProps.imageTape.targetComponentValue)
-
+        // console.log('nextProps.imageTape', nextProps.imageTape);
         this.state.proposedValue = nextProps.imageTape.targetComponentValue;
-        // if(this.state.proposedValue.length || nextProps.imageTape.targetComponentId) {
-            // console.log(
-            //     "imageId: this.props.imageTape.predicateSelectedImage", this.props.imageTape.predicateSelectedImage,
-            //     "\ntransitionQuestion: this.props.imageTape.transitionQuestion", this.props.imageTape.transitionQuestion,
-            //     "\nproposition.type: this.state.value", this.state.value,
-            //     "\nproposition.values: [this.state.proposedValue || nextProps.imageTape.targetComponentValue]", [this.state.proposedValue || nextProps.imageTape.targetComponentValue],
-            //     "\nconditions.predicate: this._getPredicate(this.state.proposedValue || nextProps.imageTape.targetComponentValue)", this._getPredicate(this.state.proposedValue || nextProps.imageTape.targetComponentValue),
-            //     "\nconditions.targetImageId: nextProps.imageTape.targetImageId", nextProps.imageTape.targetImageId,
-            //     '\ncomponentWillReceiveProps::this.props', this.props,
-            //     '\ncomponentWillReceiveProps::this.state', this.state,
-            // );
-            // let isSetTransition = false;
-            // let nextTransition = {
-            //     imageId: this.props.imageTape.predicateSelectedImage,
-            //     transitionQuestion: this.props.imageTape.transitionQuestion,
-            //     proposition: {
-            //         type: this.state.value,
-            //         values: [this.state.proposedValue || nextProps.imageTape.targetComponentValue]
-            //     },
-            //     conditions: [{
-            //         predicate: this._getPredicate(this.state.proposedValue || nextProps.imageTape.targetComponentValue),
-            //         targetImageId: nextProps.imageTape.targetImageId
-            //     }]
-            // };
-            //
-            // this.props.imageTape.model.transitions.map((transition) => {
-            //     if(transition.imageId == this.props.imageTape.predicateSelectedImage) {
-            //         transition.proposition.values.push(this.state.proposedValue || nextProps.imageTape.targetComponentValue);
-            //         transition.conditions.push(nextTransition.conditions[0]);
-            //         isSetTransition = true;
-            //     }
-            // });
-            //
-            // if(!isSetTransition) {
-            //     // console.log('props.imageTape.model.transitions.push(nextTransition)', nextTransition)
-            //     this.props.imageTape.model.transitions.push(nextTransition);
-            // }
-
-            // this.state.proposedValue = "";
-        // }
-
-        // console.log('nextProps.imageTape.targetImageId', nextProps.imageTape)
     }
 
     handleChange = (value) => {
@@ -141,43 +99,43 @@ class PredicateTabsControlled extends React.Component {
         return 'function(value){return value==\'' + overlayTitle + '\';}'
     }
 
-    _getPredicateValue(condition, proposition) {
-        let predicateValue;
-
-        proposition.values.forEach((propositionValue) => {
-            try {
-                if(eval("(" + condition.predicate + ")(propositionValue)")) {
-                    predicateValue = propositionValue;
-                }
-            }
-            catch (e) {
-                predicateValue = condition.predicate;
-            }
-        });
-
-        return predicateValue;
+    _getPredicateValue(condition, proposition, i) {
+        return proposition.values[i];
+        // let predicateValue;
+        //
+        // proposition.values.forEach((propositionValue) => {
+        //     try {
+        //         if(eval("(" + condition.predicate + ")(propositionValue)")) {
+        //             predicateValue = propositionValue;
+        //         }
+        //     }
+        //     catch (e) {
+        //         predicateValue = condition.predicate;
+        //     }
+        // });
+        //
+        // return predicateValue;
     }
 
     _onEditProposedValue(overlayTitle) {
-        console.log(
-            // '_onEditProposedValue(overlayTitle) {, overlayTitle', overlayTitle,
-            // '\nthis.props', this.props,
-        );
-        // this.setState({
-        //     hintText: '',
-        //     proposedValue: overlayTitle
-        // });
-
         this.props.setProposedValue({targetComponentValue: overlayTitle})
     }
 
-    _onUpdatePredicateValue(condition, proposition, overlayTitle) {
-        // console.log('_onUpdatePredicateValue(condition, proposition, overlayTitle) {');
+    _onUpdatePredicateValue(condition, proposition, overlayTitle, i) {
+        console.log('_onUpdatePredicateValue(condition, proposition, overlayTitle) {', proposition.values[i], i);
         this.props.updatePredicate({
             condition: condition,
             proposition: proposition,
-            currentProposedValue: this._getPredicateValue(condition, proposition),
+            currentProposedValue: proposition.values[i],
             proposedValue: overlayTitle || ' ',
+        });
+    }
+
+    _onUpdatePredicateCode(condition, i, overlayTitle) {
+        console.log('_onUpdatePredicateValue(condition, proposition, overlayTitle) {', condition, i, overlayTitle);
+        this.props.updatePredicateCode({
+            targetImageId: condition.targetImageId,
+            predicate: overlayTitle
         });
     }
 
@@ -218,6 +176,23 @@ class PredicateTabsControlled extends React.Component {
         });
     }
 
+    _isCustomPredicate(condition, transition, i) {
+        if(this.props.imageTape.tabValue != "CUSTOM_PREDICATE") {return;}
+
+        return (
+            <TableRowColumn style={styles.textColumnWidth}>
+                <TextField
+                    hintText="input code"
+                    multiLine={true}
+                    fullWidth={true}
+                    value={transition.conditions[i].predicate}
+                    rows={1}
+                    onChange={event => this._onUpdatePredicateCode(condition, i, event.target.value)}
+                />
+            </TableRowColumn>
+        )
+    }
+
     renderRows() {
         // console.log('renderRows() {, this.props', this.props);
 
@@ -244,18 +219,22 @@ class PredicateTabsControlled extends React.Component {
 
                 // console.log('transition', transition);
 
-                return transition.conditions.map((condition) => {
+                return transition.conditions.map((condition, i) => {
                     if(condition.predicate && condition.targetImageId) {
+
                         return (
                             <TableRow>
                                 <TableRowColumn style={styles.textColumnWidth}>
                                     <TextField
                                         id={this._getUnique()}
                                         style={styles.textColumnWidth}
-                                        value={this._getPredicateValue(condition, transition.proposition)}
-                                        onChange={event => this._onUpdatePredicateValue(condition, transition.proposition, event.target.value)}
+                                        value={this._getPredicateValue(condition, transition.proposition, i)}
+                                        onChange={event => this._onUpdatePredicateValue(condition, transition.proposition, event.target.value, i)}
                                     />
                                 </TableRowColumn>
+
+                                {this._isCustomPredicate(condition, transition, i)}
+
                                 <TableRowColumn style={styles.iconColumnWidth}>
                                     <ListItem
                                         style={styles.iconColumnWidth}
@@ -287,7 +266,7 @@ class PredicateTabsControlled extends React.Component {
                 value={this.state.value}
                 onChange={this.handleChange}
             >
-                <Tab label="OPEN CHOICE" value="FIXED_CHOICE">
+                <Tab label="OPEN CHOICE" value="OPEN_CHOICE">
 
                         {this.renderRows()}
 
@@ -298,7 +277,7 @@ class PredicateTabsControlled extends React.Component {
                                 value={this.state.proposedValue}
                                 onChange={event => this._onEditProposedValue(event.target.value)}
                             />
-                            <TargetImageSelectableList propositionType="FIXED_CHOICE"/>
+                            <TargetImageSelectableList propositionType="OPEN_CHOICE"/>
                         </GridList>
                 </Tab>
                 <Tab label="YES/NO" value="YES_NO">
@@ -323,11 +302,15 @@ class PredicateTabsControlled extends React.Component {
                     </GridList>
                 </Tab>
                 <Tab label="CUSTOM PREDICATE" value="CUSTOM_PREDICATE">
-                    <h2 style={styles.headline}>Controllable Tab ANY_STRING, ANY INTEGER, ANY_NUMBER</h2>
+                    {this.renderRows()}
+
+                    <CustomPredicate targetComponentValue="CUSTOM PREDICATE" propositionType="CUSTOM_PREDICATE"></CustomPredicate>
                 </Tab>
+                {/*
                 <Tab label="GEO" value="GEO">
                     <h2 style={styles.headline}>Controllable Tab Of select any image area</h2>
                 </Tab>
+                */}
             </Tabs>
         );
     }
@@ -343,9 +326,9 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         setTabValue: setTabValue,
-        setProposedValue: setProposedValue,
         addPredicate: addPredicate,
         updatePredicate: updatePredicate,
+        updatePredicateCode: updatePredicateCode,
         deleteCondition: deleteCondition,
     }, dispatch)
 }

@@ -54,6 +54,7 @@ class PredicatesConfigure extends Component {
         return (
             <div style={styles.root}>
                 <ImagesTape />
+
                 {this._isImageSelected()}
 
                 <List>
