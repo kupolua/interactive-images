@@ -372,6 +372,19 @@ class CoursePreview extends Component {
 
     }
 
+    _renderConditionsButtons(conditions, proposition) {
+        return conditions.map((condition) => {
+            return (
+                <RaisedButton
+                    label={this._getPredicateValue(condition, proposition)}
+                    primary={true}
+                    style={styles.conditionButton}
+                    onTouchTap={(e)=>this._changePreviewImage(this._getAvatarSrc(condition.targetImageId), condition.targetImageId)}
+                />
+            )
+        })
+    }
+
     renderConditions(imageKey) {
         let conditions = this._getConditions(imageKey);
         let proposition = this._getProposition(imageKey);
@@ -406,19 +419,11 @@ class CoursePreview extends Component {
                 );
 
             default:
-                return conditions.map((condition) => {
-                    return (
-                        <RaisedButton
-                            label={this._getPredicateValue(condition, proposition)}
-                            primary={true}
-                            style={styles.conditionButton}
-                            onTouchTap={(e)=>this._changePreviewImage(this._getAvatarSrc(condition.targetImageId), condition.targetImageId)}
-                        />
-                    )
-                });
-
-
-
+                return (
+                    <GridList style={styles.predicateGrid} cols={conditions.length}>
+                        {this._renderConditionsButtons(conditions, proposition)}
+                    </GridList>
+                )
         }
     }
 
@@ -428,7 +433,7 @@ class CoursePreview extends Component {
                 let conditionsLength = this._getConditionsLength(image.key);
 
                 return (
-                    <GridList key={image.key} cellHeight={50} style={styles.predicateGrid} cols={2}>
+                    <GridList key={image.key} cellHeight={50} style={styles.predicateGrid} cols={1}>
                         <TextField
                             id={image.key}
                             style={styles.textColumnWidth}

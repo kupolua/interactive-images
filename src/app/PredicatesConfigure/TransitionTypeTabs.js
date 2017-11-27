@@ -84,7 +84,7 @@ class PredicateTabsControlled extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('nextProps.imageTape', nextProps.imageTape);
+        // console.log('nextProps.imageTape', nextProps.imageTape);
         this.state.proposedValue = nextProps.imageTape.openChoiceValue;
     }
 

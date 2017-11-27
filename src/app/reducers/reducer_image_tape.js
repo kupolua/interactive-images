@@ -6,7 +6,7 @@ const initialImagesListState = {
         images: [],
         transitions: []
     },
-    _model: {
+    model: {
         "initialImageId": "a4ac7cbc09f7f86b4ce24055763ecf07",
         "images": [
             {
@@ -109,7 +109,7 @@ const initialImagesListState = {
             }
         ]
     },
-    model: {
+    _model: {
         "initialImageId": "a4ac7cbc09f7f86b4ce24055763ecf07",
         "images": [
             {
