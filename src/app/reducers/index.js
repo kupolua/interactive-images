@@ -30,12 +30,4 @@ const rootReducer = combineReducers({
   setProposedValue: ImageTape,
 });
 
-function isEven(value){
-  if(value & 2) {
-    return true
-  } else {
-    return false
-  }
-};
-
 export default rootReducer;

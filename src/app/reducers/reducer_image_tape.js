@@ -1,12 +1,12 @@
 import _ from 'lodash';
 
 const initialImagesListState = {
-    __model: {
+    model: {
         initialImageId: null,
         images: [],
         transitions: []
     },
-    model: {
+    __model: {
         "initialImageId": "a4ac7cbc09f7f86b4ce24055763ecf07",
         "images": [
             {
@@ -142,8 +142,8 @@ const initialImagesListState = {
         ],
         "transitions": []
     },
-    _predicateSelectedImage: "",
-    predicateSelectedImage: "a4ac7cbc09f7f86b4ce24055763ecf07",
+    predicateSelectedImage: "",
+    _predicateSelectedImage: "a4ac7cbc09f7f86b4ce24055763ecf07",
     transitionQuestion: '',
     targetImageId: null,
     predicate: null,

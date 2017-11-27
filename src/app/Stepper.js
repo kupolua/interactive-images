@@ -13,6 +13,7 @@ import ImagesSelection from './ImagesSelection/ImagesSelection';
 import PredicatesConfigure from './PredicatesConfigure/PredicatesConfigure'
 import CoursePreview from './CoursePreview/CoursePreview'
 
+import  { getCoursesList } from './actions/getCoursesList';
 import  { storeCourse } from './actions/storeCourse';
 
 /**
@@ -35,8 +36,21 @@ class HorizontalLinearStepper extends React.Component {
 
         this.state = {
             finished: false,
-            stepIndex: 1,
+            stepIndex: 0,
+            isCourseStored: false,
         };
+
+        this._saveToStore = this._saveToStore.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        // console.log('componentWillReceiveProps(nextProps) {', nextProps, this.state);
+        if(this.state.isCourseStored) {
+            // console.log('if(this.state.isCourseStored) {');
+            this.props.getCoursesList();
+
+            this.state.isCourseStored = false;
+        }
     }
 
     handleNext = () => {
@@ -62,7 +76,9 @@ class HorizontalLinearStepper extends React.Component {
         // console.log('_saveToStore', this.props.imageTape.model)
         this.props.storeCourse({
             course: this.props.imageTape.model
-        })
+        });
+
+        this.state.isCourseStored = true;
     }
 
     _loadStepContent(stepIndex) {
@@ -152,12 +168,14 @@ class HorizontalLinearStepper extends React.Component {
 function mapStateToProps(state) {
     return {
         imageTape: state.imageTape,
+        storeCourse: state.storeCourse,
         // image: state.previewImage
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
+        getCoursesList: getCoursesList,
         storeCourse: storeCourse,
     }, dispatch)
 }

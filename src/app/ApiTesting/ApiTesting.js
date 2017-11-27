@@ -69,6 +69,7 @@ class ApiTesting extends Component {
 
     }
     componentWillReceiveProps(nextProps) {
+        // console.log('componentWillReceiveProps(nextProps) {', nextProps);
         if(c > 100) {
             console.log('Looping... ');
             return;
@@ -115,49 +116,6 @@ class ApiTesting extends Component {
                 // course: nextProps.imageTape.model
             })
         }
-
-
-
-
-
-
-        // if(c <= 2) {
-        //     if(_.isEqual(nextProps.imageTape.model, JSON.parse( nextProps.course.course.js_object))) {
-        //         return
-        //     } else {
-        //         c++;
-        //         // console.log(this.props.course.course)
-        //         if(this.props.course.course) {
-        //             if(_.isEqual(JSON.parse( this.props.course.course.js_object), JSON.parse(nextProps.course.course.js_object))) {
-        //                 this.setState({
-        //                     course: nextProps.imageTape.model
-        //                 });
-        //
-        //                 this.props.setCourse({
-        //                     course: nextProps.imageTape.model
-        //                 })
-        //             } else {
-        //                 this.setState({
-        //                     course: JSON.parse( nextProps.course.course.js_object)
-        //                 });
-        //
-        //                 this.props.setCourse({
-        //                     course: JSON.parse( nextProps.course.course.js_object)
-        //                 })
-        //             }
-        //         } else {
-        //             this.setState({
-        //                 course: JSON.parse( nextProps.course.course.js_object)
-        //             });
-        //
-        //             this.props.setCourse({
-        //                 course: JSON.parse( nextProps.course.course.js_object)
-        //             })
-        //         }
-        //     }
-        // } else {
-        //     return
-        // }
     }
 
     _getUnique() {
@@ -194,21 +152,19 @@ class ApiTesting extends Component {
 
     render() {
         return (
-        <List>
-            <ListItem
-                key={2}
-                primaryText="List courses"
-                disabled={true}
-                nestedItems={[this._renderList()]}
-            />
-        </List>
+            <List>
+                <ListItem
+                    key={1}
+                    primaryText="List courses"
+                    disabled={true}
+                    nestedItems={[this._renderList()]}
+                />
+            </List>
         );
     }
 }
 
 function mapStateToProps({ imageTape, coursesList, course }) {
-    // console.log('mapStateToProps(imageTape)', imageTape)
-
     return { imageTape, coursesList, course };
 }
 

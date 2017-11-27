@@ -14,10 +14,12 @@ export function storeCourse(course) {
     // console.log('JSON.stringify(data)', JSON.stringify(data));
 
     const storedCourseId = axios.put(API_URL, JSON.stringify(data));
+    // const storedCourseId = 'added';
+
+    // console.log('storeCourse(course) {', storedCourseId);
 
     return {
         type: UPLOAD_COURSE,
-        // payload: data
         payload: storedCourseId
     }
 }
