@@ -1,12 +1,12 @@
 import _ from 'lodash';
 
 const initialImagesListState = {
-    model: {
+    __model: {
         initialImageId: null,
         images: [],
         transitions: []
     },
-    __model: {
+    _model: {
         "initialImageId": "a4ac7cbc09f7f86b4ce24055763ecf07",
         "images": [
             {
@@ -109,7 +109,7 @@ const initialImagesListState = {
             }
         ]
     },
-    _model: {
+    model: {
         "initialImageId": "a4ac7cbc09f7f86b4ce24055763ecf07",
         "images": [
             {
@@ -591,6 +591,10 @@ export default function (state = initialImagesListState, action) {
         case 'SET_PROPOSED_VALUE':
 
         return { ...state, targetComponentValue: action.payload.targetComponentValue };
+
+        case 'SET_OPEN_CHOICE_VALUE':
+
+        return { ...state, openChoiceValue: action.payload.openChoiceValue };
     }
 
     return state

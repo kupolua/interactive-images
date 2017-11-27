@@ -181,7 +181,6 @@ class ApiTesting extends Component {
     _renderList() {
         if(this.state.coursesList.length == 0) {return;}
         return this.state.coursesList.coursesList.map((course) => {
-            console.log(this.state.coursesList.coursesList);
             return (
                 <div
                     key={course}

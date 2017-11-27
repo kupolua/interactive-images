@@ -81,15 +81,16 @@ class ImagesListSelectable extends Component {
             transitionQuestion: this.props.imageTape.transitionQuestion.transitionQuestion || '',
             proposition: {
                 type: this.props.propositionType,
-                values: [ this.props.imageTape.targetComponentValue || '' ]
+                values: [ this.props.imageTape.openChoiceValue || '' ]
             },
             conditions: [{
-                predicate: this._getPredicate(this.props.imageTape.targetComponentValue || ''),
+                predicate: this._getPredicate(this.props.imageTape.openChoiceValue || ''),
                 targetImageId: targetImage.key
             }]
         };
 
         // console.log('transition', transition);
+        this.props.imageTape.openChoiceValue = '';
         this.props.addTransition(transition);
 
         // this.props.addTargetImage({

@@ -25,10 +25,12 @@ import TargetImageNoSelectableList from './TargetImageNoSelectableList'
 import CustomPredicate from './CustomPredicate'
 
 import { setTabValue } from '../actions/setTabValue'
+import { setProposedValue } from '../actions/setProposedValue'
 import { addPredicate } from '../actions/addPredicate'
 import { updatePredicate } from '../actions/updatePredicate'
 import { updatePredicateCode } from '../actions/updatePredicateCode'
 import { deleteCondition } from '../actions/deleteCondition';
+import { setOpenChoiceValue } from '../actions/setOpenChoiceValue';
 
 const styles = {
     headline: {
@@ -82,8 +84,8 @@ class PredicateTabsControlled extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        // console.log('nextProps.imageTape', nextProps.imageTape);
-        this.state.proposedValue = nextProps.imageTape.targetComponentValue;
+        console.log('nextProps.imageTape', nextProps.imageTape);
+        this.state.proposedValue = nextProps.imageTape.openChoiceValue;
     }
 
     handleChange = (value) => {
@@ -118,7 +120,7 @@ class PredicateTabsControlled extends React.Component {
     }
 
     _onEditProposedValue(overlayTitle) {
-        this.props.setProposedValue({targetComponentValue: overlayTitle})
+        this.props.setOpenChoiceValue({openChoiceValue: overlayTitle})
     }
 
     _onUpdatePredicateValue(condition, proposition, overlayTitle, i) {
@@ -326,10 +328,12 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         setTabValue: setTabValue,
+        setProposedValue: setProposedValue,
         addPredicate: addPredicate,
         updatePredicate: updatePredicate,
         updatePredicateCode: updatePredicateCode,
         deleteCondition: deleteCondition,
+        setOpenChoiceValue: setOpenChoiceValue,
     }, dispatch)
 }
 
