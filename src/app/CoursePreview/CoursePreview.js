@@ -113,27 +113,33 @@ SelectableList = wrapState(SelectableList);
 class CoursePreview extends Component {
     constructor(props) {
         super(props);
-        // console.log("constructor", props)
+        // console.log("class CoursePreview extends Component { constructor(props)", props)
         // log.info('constructor');
         // log.on();
         // console.log(logger.info())
         this.state = {
-            initialImageId: this.props.imageTape.model.initialImageId === null ? this.props.imageTape.model.images.length > 0 ? this.props.imageTape.model.images[0].key : null : this.props.imageTape.model.initialImageId,
+            initialImageId: this.props.imageTape.model.initialImageId === null ?
+                this.props.imageTape.model.images.length > 0 ?
+                    this.props.imageTape.model.images[0].key : null
+                : this.props.imageTape.model.initialImageId,
             isInitialImage: true,
             imageSource: null,
             value: 1,
             open: false,
         };
-        // console.log("constructor after")
+        // console.log("constructor after", this.state)
         this.props.selectImage({
             key: this.state.initialImageId,
             src: this._getAvatarSrc(this.state.initialImageId),
         });
-        this.props.setInitialImage({
-            initialImageId: this.props.imageTape.model.initialImageId === null ? this.props.imageTape.model.images.length > 0 ? this.props.imageTape.model.images[0].key : null : this.props.imageTape.model.initialImageId,
-        });
 
-        // console.log('constructor CoursePreview')
+        // console.log('this.props.setInitialImage({');
+        this.props.setInitialImage({
+            initialImageId: this.props.imageTape.model.initialImageId === null
+                ? this.props.imageTape.model.images.length > 0
+                    ? this.props.imageTape.model.images[0].key : null
+                : this.props.imageTape.model.initialImageId,
+        });
 
         this._onBackToPreviewImage = this._onBackToPreviewImage.bind(this);
         this._changePreviewImage = this._changePreviewImage.bind(this);
@@ -207,7 +213,7 @@ class CoursePreview extends Component {
 
     componentWillUnmount() {
         this.props.setInitialImage({
-            initialImageId: this.state.parentImage
+            initialImageId: this.state.parentImage || this.props.imageTape.predicateSelectedImage,
         });
         // console.log('this.state.parentImage', this.state.parentImage);
     }
@@ -252,7 +258,10 @@ class CoursePreview extends Component {
 
         this.props.imageTape.model.transitions.map((transition) => {
             if(transition.imageId == imageKey) {
-                isImageTransition = true;
+                // console.log('_isImageTransition(imageKey) {', imageKey, transition.proposition.type, this.props.imageTape.tabValue);
+                if(transition.proposition.type == this.props.imageTape.tabValue) {
+                    isImageTransition = true;
+                }
             }
         });
 
@@ -304,11 +313,16 @@ class CoursePreview extends Component {
     }
 
     _getTransitionQuestion(imageKey) {
+        // console.log('_getTransitionQuestion(imageKey) {', imageKey);
         let transitionQuestion;
 
         this.props.imageTape.model.transitions.map((transition) => {
             if (transition.imageId == imageKey) {
-                transitionQuestion = transition.transitionQuestion.transitionQuestion;
+                if(typeof transition.transitionQuestion === 'object') {
+                    transitionQuestion = transition.transitionQuestion.transitionQuestion;
+                } else {
+                    transitionQuestion = transition.transitionQuestion;
+                }
             }
         });
 
@@ -316,10 +330,10 @@ class CoursePreview extends Component {
     }
 
     _onEditInputValue(overlayTitle) {
-        console.log(
+        // console.log(
             // '_onEditProposedValue(overlayTitle) {, overlayTitle', overlayTitle,
             // '\nthis.props', this.props,
-        );
+        // );
         // this.setState({
         //     inputValue: overlayTitle
         // });
@@ -346,19 +360,28 @@ class CoursePreview extends Component {
         this.props.imageTape.model.transitions.forEach((transition) => {
             if(transition.proposition.type !== this.props.imageTape.tabValue) {return}
 
+            // console.log('class CoursePreview::_onSubmit() this.props.imageTape.model.transitions.forEach((transition) => {',
+            //     transition, this.props.imageTape,
+            //     transition.imageId, this.props.imageTape.predicateSelectedImage
+            // );
 
-            transition.conditions.map((condition) => {
-                try {
-                    console.log(condition.predicate, eval("(" + condition.predicate + ")(inputValue)"));
-                    if(eval("(" + condition.predicate + ")(inputValue)")) {
-                        targetImageId = condition.targetImageId;
+            // if(this.props.imageTape.predicateSelectedImage == transition.imageId) {
+            if(this.props.imageTape.model.initialImageId == transition.imageId) {
+                transition.conditions.map((condition) => {
+                    try {
+                        // console.log('class CoursePreview::_onSubmit() {if(eval("(" + condition.predicate + ")(inputValue)")) {', condition.predicate, eval("(" + condition.predicate + ")(inputValue)"), condition.targetImageId);
+                        if(eval("(" + condition.predicate + ")(inputValue)")) {
+                            targetImageId = condition.targetImageId;
+                        }
                     }
-                }
-                catch (e) {
-                    targetImageId = this.props.imageTape.model.initialImageId;
-                }
-            })
+                    catch (e) {
+                        targetImageId = this.props.imageTape.model.initialImageId;
+                    }
+                })
+            }
         });
+
+        // console.log('class CoursePreview::_onSubmit() {, targetImageId', targetImageId);
 
         this.props.selectImage({
             key: targetImageId,
@@ -369,7 +392,9 @@ class CoursePreview extends Component {
             initialImageId: targetImageId
         });
 
-
+        this.props.setProposedValue({
+            targetComponentValue: ''
+        });
     }
 
     _renderConditionsButtons(conditions, proposition) {
@@ -389,15 +414,9 @@ class CoursePreview extends Component {
         let conditions = this._getConditions(imageKey);
         let proposition = this._getProposition(imageKey);
 
-            // console.log('this.props', this.props);
         if(!conditions) {
-            // this.setState({
-            //     isInitialImage: false,
-            // });
-
-            return;
+            return (<div></div>);
         }
-
 
         switch (this.props.imageTape.tabValue) {
             case 'CUSTOM_PREDICATE':
@@ -429,9 +448,9 @@ class CoursePreview extends Component {
 
     renderConditionsList() {
         return this.props.imageTape.model.images.map((image) => {
+            // console.log('class CoursePreview::renderConditionsList() {if(this.props.imageTape.model.initialImageId == image.key) {', this.props.imageTape.model.initialImageId, image.key);
             if(this.props.imageTape.model.initialImageId == image.key) {
-                let conditionsLength = this._getConditionsLength(image.key);
-
+                // console.log('true');
                 return (
                     <GridList key={image.key} cellHeight={50} style={styles.predicateGrid} cols={1}>
                         <TextField
@@ -470,21 +489,33 @@ class CoursePreview extends Component {
     }
 
     _onPreviewButton() {
+        // console.log('_onPreviewButton() {if(this._isImageTransition(this.props.image.key)) {', this._isImageTransition(this.props.image.key));
         if(this._isImageTransition(this.props.image.key)) {
+            // console.log('true');
             this.props.imageTape.model.initialImageId = this.props.image.key;
 
             return this.renderConditionsList();
         } else {
-            return (
-                <FlatButton
-                    label="prev"
-                    labelPosition="before"
-                    style={styles.uploadButton}
-                    containerElement="label"
-                    onTouchTap={event => this._onBackToPreviewImage(event)}
-                >
-                </FlatButton>
-            )
+            // console.log('false');
+
+            // console.log('if(this.state.parentImage) {', this.state.parentImage);
+            if(this.state.parentImage) {
+                // console.log('true');
+                return (
+                    <FlatButton
+                        label="prev"
+                        labelPosition="before"
+                        style={styles.uploadButton}
+                        containerElement="label"
+                        onTouchTap={event => this._onBackToPreviewImage(event)}
+                    >
+                    </FlatButton>
+                )
+            } else {
+                // console.log('false:: div');
+                // console.log(this.state.parentImage);
+                return (<div></div>)
+            }
 
         }
     }

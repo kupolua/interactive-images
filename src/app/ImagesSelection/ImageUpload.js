@@ -91,7 +91,9 @@ class ImageUpload extends Component {
 
         let imageID = md5(Math.floor(Date.now() / 1000));
         let imageSrc = e.target.value;
-        let proposalImageName = imageSrc.replace(/^.*\//g, "").replace(/\.[^/.]+$/, "");
+        let proposalImageName = imageSrc.replace(/^.*\//g, "").replace(/\.[^/.]+$/, "").replace(/[_-]/g, " ");
+        console.log('proposalImageName', proposalImageName);
+        
 
         this.setState({
             key: imageID,

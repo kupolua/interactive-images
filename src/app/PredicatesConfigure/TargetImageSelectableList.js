@@ -66,19 +66,39 @@ class ImagesListSelectable extends Component {
         return 'function(value){return value==\'' + overlayTitle + '\';}'
     }
 
+    _getTransitionQuestion(predicateSelectedImage) {
+        let transitionQuestion;
+
+        if(this.props.imageTape.model.transitions.length < 1) {
+            transitionQuestion = this.props.imageTape.transitionQuestion.transitionQuestion;
+        }
+
+        this.props.imageTape.model.transitions.map((transition) => {
+            if (transition.imageId == predicateSelectedImage) {
+                if(typeof transition.transitionQuestion === 'object') {
+                    transitionQuestion = transition.transitionQuestion.transitionQuestion;
+                } else {
+                    transitionQuestion = transition.transitionQuestion;
+                }
+            }
+        });
+
+        return transitionQuestion;
+    }
+
     _addTargetImage(targetImage) {
         // this.props.imageTape.transition.conditions[0].targetImageId = targetImage.key;
 
         console.log(
             // ' _addTargetImage(targetImage), ' +
-        //     '\ntargetImage', targetImage,
+            // '\ntargetImage', targetImage,
         //     '\nthis.props', this.props,
         //     '\nthis.props.imageTape.targetComponentValue', this.props.imageTape.targetComponentValue,
         );
 
         let transition = {
             imageId: this.props.imageTape.predicateSelectedImage,
-            transitionQuestion: this.props.imageTape.transitionQuestion.transitionQuestion || '',
+            transitionQuestion: this._getTransitionQuestion(this.props.imageTape.predicateSelectedImage) || this.props.imageTape.transitionQuestion.transitionQuestion,
             proposition: {
                 type: this.props.propositionType,
                 values: [ this.props.imageTape.openChoiceValue || '' ]
@@ -89,7 +109,7 @@ class ImagesListSelectable extends Component {
             }]
         };
 
-        // console.log('transition', transition);
+        console.log('class ImagesListSelectable::_addTargetImage(targetImage) {, transition', transition);
         this.props.imageTape.openChoiceValue = '';
         this.props.addTransition(transition);
 

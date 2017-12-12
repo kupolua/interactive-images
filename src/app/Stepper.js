@@ -15,13 +15,7 @@ import CoursePreview from './CoursePreview/CoursePreview'
 
 import  { getCoursesList } from './actions/getCoursesList';
 import  { storeCourse } from './actions/storeCourse';
-
-/**
- * Horizontal steppers are ideal when the contents of one step depend on an earlier step.
- * Avoid using long step names in horizontal steppers.
- *
- * Linear steppers require users to complete one step in order to move on to the next.
- */
+import  { setInitialImage } from './actions/setInitialImage';
 
 const styles = {
     conditionButton: {
@@ -31,6 +25,7 @@ const styles = {
 class HorizontalLinearStepper extends React.Component {
     constructor(props) {
         super(props);
+        console.log('class HorizontalLinearStepper::constructor(props) {', props);
         // console.log('this.props.InitStore();', this.props.InitStore);
         // this.props.InitStore({initStore: {}});
 
@@ -44,7 +39,6 @@ class HorizontalLinearStepper extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        // console.log('componentWillReceiveProps(nextProps) {', nextProps, this.state);
         if(this.state.isCourseStored) {
             // console.log('if(this.state.isCourseStored) {');
             this.props.getCoursesList();
@@ -66,6 +60,10 @@ class HorizontalLinearStepper extends React.Component {
         if (stepIndex > 0) {
             this.setState({stepIndex: stepIndex - 1});
         }
+        
+        this.props.setInitialImage({
+            initialImageId: this.props.imageTape.predicateSelectedImage,
+        });
     };
 
     _getUnique() {
@@ -177,6 +175,7 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getCoursesList: getCoursesList,
         storeCourse: storeCourse,
+        setInitialImage: setInitialImage,
     }, dispatch)
 }
 

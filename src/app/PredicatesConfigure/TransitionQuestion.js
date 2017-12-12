@@ -40,11 +40,11 @@ const styles = {
 class TransitionQuestion extends React.Component {
     constructor(props) {
         super(props);
-        // console.log('constructor')
+        // console.log('class TransitionQuestion::constructor', this.props)
         this.state = {
             value: 'FIXED_CHOICE', //todo: set proposition type depend of current tab
-            hintText: this._getTransitionQuestionHintText(this.props.imageTape.predicateSelectedImage),
-            transitionQuestionValue: '',
+            hintText: this._getTransitionQuestionHintText(this.props.imageTape.predicateSelectedImage) || this.props.defaults.transitionQuestionHintText,
+            transitionQuestionValue: this._getTransitionQuestion(this.props) || '',
             showCheckboxes: false,
             isTransitionAdd: false,
             enterProposedValue: null
@@ -52,17 +52,33 @@ class TransitionQuestion extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        // console.log('class TransitionQuestion::componentWillReceiveProps(nextProps) {', nextProps);
+
+        // console.log('class TransitionQuestion::componentWillReceiveProps(nextProps) {::if(nextProps.imageTape.model.transitions.length < 1) {', nextProps.imageTape.model.transitions.length);
         if(nextProps.imageTape.model.transitions.length < 1) {
+            // console.log('true');
             this.state.transitionQuestionValue = this._getTransitionQuestion(nextProps);
-            this.state.hintText = this._getTransitionQuestionHintText(nextProps.imageTape.predicateSelectedImage)
+            this.state.hintText = this._getTransitionQuestionHintText(nextProps.imageTape.predicateSelectedImage) || this.props.defaults.transitionQuestionHintText;
         }
 
         nextProps.imageTape.model.transitions.map((transition) => {
+            // console.log('class TransitionQuestion::componentWillReceiveProps(nextProps) {::if(nextProps.imageTape.predicateSelectedImage == transition.imageId) {', nextProps.imageTape.predicateSelectedImage, transition.imageId);
             if(nextProps.imageTape.predicateSelectedImage == transition.imageId) {
-                this.state.transitionQuestionValue = transition.transitionQuestion.transitionQuestion;
+                // console.log('true');
+                // console.log('if(typeof transition.transitionQuestion === \'object\') {', nextProps.imageTape.model);
+                if(typeof transition.transitionQuestion === 'object') {
+                // console.log('true');
+                    this.state.transitionQuestionValue = transition.transitionQuestion.transitionQuestion;
+                } else {
+                // console.log('false');
+                    this.state.transitionQuestionValue = transition.transitionQuestion;
+                }
+
+                this.state.hintText = this.props.defaults.transitionQuestionHintText;
             } else {
+                // console.log('false');
                 this.state.transitionQuestionValue = this._getTransitionQuestion(nextProps);
-                this.state.hintText = this._getTransitionQuestionHintText(nextProps.imageTape.predicateSelectedImage)
+                this.state.hintText = this._getTransitionQuestionHintText(nextProps.imageTape.predicateSelectedImage) || this.props.defaults.transitionQuestionHintText;
             }
         });
     }
@@ -74,27 +90,46 @@ class TransitionQuestion extends React.Component {
     };
 
     _getTransitionQuestion(nextProps) {
+        // console.log('_getTransitionQuestion(nextProps) {', nextProps);
         let transitionQuestion = '';
 
         if(nextProps.imageTape.transitionQuestion.transitionQuestionImageId == nextProps.imageTape.predicateSelectedImage) {
             transitionQuestion = nextProps.imageTape.transitionQuestion.transitionQuestion;
+
+            return transitionQuestion;
         }
 
         this.props.imageTape.model.transitions.map((transition) => {
+            // console.log('_getTransitionQuestion(nextProps) {::this.props.imageTape.model.transitions.map((transition) => {::if (transition.imageId == nextProps.imageTape.predicateSelectedImage) {', transition.imageId, nextProps.imageTape.predicateSelectedImage);
             if (transition.imageId == nextProps.imageTape.predicateSelectedImage) {
-                transitionQuestion = transition.transitionQuestion.transitionQuestion;
+                // console.log('_getTransitionQuestion(nextProps) {::if (transition.imageId == nextProps.imageTape.predicateSelectedImage) {', transition);
+
+                if(typeof transition.transitionQuestion === 'object') {
+                    transitionQuestion = transition.transitionQuestion.transitionQuestion;
+                } else {
+                    transitionQuestion = transition.transitionQuestion;
+                }
+
+                // console.log('_getTransitionQuestion(nextProps) {::true', transitionQuestion);
             }
         });
+
+        // console.log(transitionQuestion);
 
         return transitionQuestion;
     }
 
     _getTransitionQuestionHintText(imageKey) {
-        let transitionQuestionHintText = this.props.defaults.transitionQuestionHintText;
+        // // console.log(imageKey);
+        let transitionQuestionHintText;
 
         this.props.imageTape.model.transitions.map((transition) => {
             if (transition.imageId == imageKey) {
-                transitionQuestionHintText = transition.transitionQuestion.transitionQuestion;
+                if(typeof transition.transitionQuestion === 'object') {
+                    transitionQuestionHintText = transition.transitionQuestion.transitionQuestion;
+                } else {
+                    transitionQuestionHintText = transition.transitionQuestion;
+                }
             }
         });
 
@@ -102,6 +137,7 @@ class TransitionQuestion extends React.Component {
     }
 
     _onEditTransitionQuestion(transitionQuestion) {
+        // // console.log('_onEditTransitionQuestion(transitionQuestion) {');
         this.props.addTransitionQuestion({
             transitionQuestion: {
                 transitionQuestion: transitionQuestion,
@@ -140,6 +176,7 @@ class TransitionQuestion extends React.Component {
     }
 
     render() {
+        // // console.log('class TransitionQuestion::render() {', this.state);
         return (
             <TextField
                 id={this._getUnique()}

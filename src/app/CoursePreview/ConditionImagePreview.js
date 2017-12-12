@@ -51,14 +51,6 @@ class ConditionImagePreview extends Component {
         return returnedImage;
     }
 
-    _onChangeImageTitle(event, image) {
-        // console.log(event.target.value)
-        this.props.updateImageName({
-            image: image,
-            nextImageName: event.target.value
-        })
-    }
-
     render() {
         // console.log(this.props.image.key, this.props.image.src)
         return (
@@ -69,7 +61,6 @@ class ConditionImagePreview extends Component {
                     multiLine={true}
                     textareaStyle={styles.imageName}
                     value={this._getImageName(this.props.image.key)}
-                    onChange={event => this._onChangeImageTitle(event, this._getImage(this.props.image.key))}
                 />
                 <div>
                     <Card style={styles}>

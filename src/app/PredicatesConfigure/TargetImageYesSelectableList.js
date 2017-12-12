@@ -60,7 +60,7 @@ function wrapState(ComposedComponent) {
 
 SelectableList = wrapState(SelectableList);
 
-class ImagesListSelectable extends Component {
+class TargetImageYesSelectableList extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -70,21 +70,27 @@ class ImagesListSelectable extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.state.targetComponentTrueId = this._getTargetComponentTrueId();
+        // console.log('class TargetImageYesSelectableList::componentWillReceiveProps(nextProps)::nextProps', nextProps);
+        this.state.targetComponentTrueId = this._getTargetComponentTrueId(nextProps.imageTape.predicateSelectedImage);
     }
 
-    _getTargetComponentTrueId() {
+    _getTargetComponentTrueId(nextPredicateSelectedImage) {
         if(this.props.imageTape.model.transitions < 1) {return}
 
         let targetComponentTrueId;
 
         this.props.imageTape.model.transitions.map((transition) => {
             if(transition.proposition.type == "YES_NO") {
-                transition.proposition.values.forEach((value, i) => {
-                    if(value == "YES") {
-                        targetComponentTrueId = transition.conditions[i].targetImageId;
-                    }
-                })
+                // console.log(transition.imageId, nextPredicateSelectedImage);
+                // console.log('class TargetImageYesSelectableList::_getTargetComponentTrueId(nextPredicateSelectedImage)', transition);
+                if(transition.imageId == nextPredicateSelectedImage) {
+                    transition.proposition.values.forEach((value, i) => {
+                        if(value == "YES") {
+                            // console.log('class TargetImageYesSelectableList::_getTargetComponentTrueId(nextPredicateSelectedImage)::if(value == "YES") {', value, i, transition);
+                            targetComponentTrueId = transition.conditions[i].targetImageId;
+                        }
+                    })
+                }
             }
         });
 
@@ -95,10 +101,40 @@ class ImagesListSelectable extends Component {
         return 'function(value){return value==\'' + overlayTitle + '\';}'
     }
 
+    _getTransitionQuestion(predicateSelectedImage) {
+        // console.log('_getTransitionQuestion(predicateSelectedImage) {', predicateSelectedImage);
+        let transitionQuestion;
+
+        if(this.props.imageTape.model.transitions.length < 1) {
+            transitionQuestion = this.props.imageTape.transitionQuestion.transitionQuestion;
+        }
+
+        this.props.imageTape.model.transitions.map((transition) => {
+            // console.log('class TargetImageYesSelectableList::_getTransitionQuestion(predicateSelectedImage) {::if (transition.imageId == predicateSelectedImage) {',
+            //     transition.imageId,
+            //     predicateSelectedImage,
+            //     this.props.imageTape
+            // );
+            if (transition.imageId == predicateSelectedImage) {
+                if(typeof transition.transitionQuestion === 'object') {
+                    transitionQuestion = transition.transitionQuestion.transitionQuestion;
+                    // console.log('true', transitionQuestion);
+                } else {
+                    transitionQuestion = transition.transitionQuestion;
+                    // console.log('false', transitionQuestion);
+                }
+            }
+        });
+
+        // console.log('class TargetImageYesSelectableList::_getTransitionQuestion(predicateSelectedImage) {, transitionQuestion', transitionQuestion);
+        return transitionQuestion;
+    }
+
     _addTargetImage(targetImage) {
+        // console.log('class TargetImageYesSelectableList::_addTargetImage(targetImage) {', this.props.imageTape.transitionQuestion);
         let transition = {
             imageId: this.props.imageTape.predicateSelectedImage,
-            transitionQuestion: this.props.imageTape.transitionQuestion.transitionQuestion || '',
+            transitionQuestion: this._getTransitionQuestion(this.props.imageTape.predicateSelectedImage) || this.props.imageTape.transitionQuestion.transitionQuestion,
             proposition: {
                 type: this.props.propositionType,
                 values: [ this.props.targetComponentValue ]
@@ -109,7 +145,7 @@ class ImagesListSelectable extends Component {
             }]
         };
 
-        // console.log('transition', transition);
+        // console.log('class TargetImageYesSelectableList::_addTargetImage(targetImage) {, transition', transition);
         this.props.addTransition(transition);
 
         // console.log(
@@ -216,4 +252,4 @@ function mapDispatchToProps(dispatch) {
     }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ImagesListSelectable)
+export default connect(mapStateToProps, mapDispatchToProps)(TargetImageYesSelectableList)

@@ -66,9 +66,12 @@ const styles = {
 
 class PredicateTabsControlled extends React.Component {
     constructor(props) {
+        console.log('class PredicateTabsControlled::constructor(props) {', props);
         super(props);
+
+
         this.state = {
-            value: 'OPEN_CHOICE', //todo: set proposition type depend of current tab
+            value: this.props.imageTape.tabValue || 'OPEN_CHOICE', //todo: set proposition type depend of current tab
             // value: 'YES_NO', //todo: set proposition type depend of current tab
             // value: 'CUSTOM_PREDICATE', //todo: set proposition type depend of current tab
             hintText: this.props.defaults.proposedHintText,
@@ -79,17 +82,17 @@ class PredicateTabsControlled extends React.Component {
         };
 
         // this.props.setTabValue({tabValue: this.state.value})
-        // console.log('this.props', this.props);
+        // // console.log('this.props', this.props);
         this.props.imageTape.tabValue = this.state.value;
     }
 
     componentWillReceiveProps(nextProps) {
-        // console.log('nextProps.imageTape', nextProps.imageTape);
+        // console.log('class PredicateTabsControlled::componentWillReceiveProps(nextProps) {, nextProps', nextProps);
         this.state.proposedValue = nextProps.imageTape.openChoiceValue;
     }
 
     handleChange = (value) => {
-        // console.log('handleChange = (value) => {', value);
+        // // console.log('handleChange = (value) => {', value);
         this.setState({
             value: value,
         });
@@ -124,7 +127,7 @@ class PredicateTabsControlled extends React.Component {
     }
 
     _onUpdatePredicateValue(condition, proposition, overlayTitle, i) {
-        console.log('_onUpdatePredicateValue(condition, proposition, overlayTitle) {', proposition.values[i], i);
+        // console.log('_onUpdatePredicateValue(condition, proposition, overlayTitle) {', proposition.values[i], i);
         this.props.updatePredicate({
             condition: condition,
             proposition: proposition,
@@ -134,7 +137,7 @@ class PredicateTabsControlled extends React.Component {
     }
 
     _onUpdatePredicateCode(condition, i, overlayTitle) {
-        console.log('_onUpdatePredicateValue(condition, proposition, overlayTitle) {', condition, i, overlayTitle);
+        // console.log('_onUpdatePredicateValue(condition, proposition, overlayTitle) {', condition, i, overlayTitle);
         this.props.updatePredicateCode({
             targetImageId: condition.targetImageId,
             predicate: overlayTitle
@@ -166,7 +169,7 @@ class PredicateTabsControlled extends React.Component {
     }
 
     _onDeleteCondition(condition) {
-        console.log('_onDeleteCondition(condition) {, condition', condition)
+        // console.log('_onDeleteCondition(condition) {, condition', condition)
         this.props.deleteCondition({
             condition: condition,
         })
@@ -196,19 +199,21 @@ class PredicateTabsControlled extends React.Component {
     }
 
     renderRows() {
-        // console.log('renderRows() {, this.props', this.props);
+        // // console.log('renderRows() {, this.props', this.props);
 
         return this.props.imageTape.model.transitions.map((transition) => {
             // console.log(
+            //     'this.props.imageTape.model.transitions', this.props.imageTape.model.transitions,
             //     'transition.proposition.type', transition.proposition.type,
             //     '\nthis.props.imageTape.tabValue', this.props.imageTape.tabValue,
             // );
             if(transition.proposition.type !== this.props.imageTape.tabValue) {return}
 
-            // console.log('transition.imageId == this.props.imageTape.predicateSelectedImage', transition.imageId, this.props.imageTape.predicateSelectedImage);
+            // // console.log('transition.imageId == this.props.imageTape.predicateSelectedImage', transition.imageId, this.props.imageTape.predicateSelectedImage);
 
+            // console.log('transition.imageId == this.props.imageTape.predicateSelectedImage', transition.imageId, this.props.imageTape.predicateSelectedImage);
             if(transition.imageId == this.props.imageTape.predicateSelectedImage) {
-                    // console.log(
+                    // // console.log(
                     //     'transition.proposition.type == this.state.value',
                     //     transition.proposition.type,
                     //     this.state.value,
@@ -219,7 +224,7 @@ class PredicateTabsControlled extends React.Component {
                 // if(!transition.conditions.length || transition.proposition.type != this.state.value) {return}
                 if(!transition.conditions.length) {return}
 
-                // console.log('transition', transition);
+                // // console.log('transition', transition);
 
                 return transition.conditions.map((condition, i) => {
                     if(condition.predicate && condition.targetImageId) {
@@ -260,8 +265,9 @@ class PredicateTabsControlled extends React.Component {
     }
 
     render() { //todo: refactor code to separate small components
-        // console.log('this.props.imageTape.targetComponentId', this.props.imageTape.targetComponentId)
-        // console.log('render() {', this.props.imageTape);
+        // // console.log('this.props.imageTape.targetComponentId', this.props.imageTape.targetComponentId)
+        // // console.log('render() {', this.props.imageTape);
+        // // console.log('render() {', this.state, this.props.imageTape);
         return (
             <Tabs
                 style={styles.tabsPadding}

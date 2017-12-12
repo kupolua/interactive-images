@@ -70,21 +70,23 @@ class ImagesListSelectable extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.state.targetComponentFalseId = this._getTargetComponentFalseId();
+        this.state.targetComponentFalseId = this._getTargetComponentFalseId(nextProps.imageTape.predicateSelectedImage);
     }
 
-    _getTargetComponentFalseId() {
+    _getTargetComponentFalseId(nextPredicateSelectedImage) {
         if(this.props.imageTape.model.transitions < 1) {return}
 
         let targetComponentTrueId;
 
         this.props.imageTape.model.transitions.map((transition) => {
             if(transition.proposition.type == "YES_NO") {
-                transition.proposition.values.forEach((value, i) => {
-                    if(value == "NO") {
-                        targetComponentTrueId = transition.conditions[i].targetImageId;
-                    }
-                })
+                if(transition.imageId == nextPredicateSelectedImage) {
+                    transition.proposition.values.forEach((value, i) => {
+                        if (value == "NO") {
+                            targetComponentTrueId = transition.conditions[i].targetImageId;
+                        }
+                    })
+                }
             }
         });
 
@@ -95,10 +97,30 @@ class ImagesListSelectable extends Component {
         return 'function(value){return value==\'' + overlayTitle + '\';}'
     }
 
+    _getTransitionQuestion(predicateSelectedImage) {
+        let transitionQuestion;
+
+        if(this.props.imageTape.model.transitions.length < 1) {
+            transitionQuestion = this.props.imageTape.transitionQuestion.transitionQuestion;
+        }
+
+        this.props.imageTape.model.transitions.map((transition) => {
+            if (transition.imageId == predicateSelectedImage) {
+                if(typeof transition.transitionQuestion === 'object') {
+                    transitionQuestion = transition.transitionQuestion.transitionQuestion;
+                } else {
+                    transitionQuestion = transition.transitionQuestion;
+                }
+            }
+        });
+
+        return transitionQuestion;
+    }
+
     _addTargetImage(targetImage) {
         let transition = {
             imageId: this.props.imageTape.predicateSelectedImage,
-            transitionQuestion: this.props.imageTape.transitionQuestion.transitionQuestion || '',
+            transitionQuestion: this._getTransitionQuestion(this.props.imageTape.predicateSelectedImage) || this.props.imageTape.transitionQuestion.transitionQuestion,
             proposition: {
                 type: this.props.propositionType,
                 values: [ this.props.targetComponentValue ]

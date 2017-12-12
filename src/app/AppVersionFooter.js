@@ -12,7 +12,7 @@ const style = {
 const PaperExampleSimple = () => (
     <div>
         <hr />
-        <div style={style}>v.0.1</div>
+        <div style={style}>v.0.2</div>
     </div>
 );
 

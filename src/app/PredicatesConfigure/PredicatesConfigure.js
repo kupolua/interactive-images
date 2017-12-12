@@ -26,6 +26,8 @@ const styles = {
 class PredicatesConfigure extends Component {
     constructor(props) {
         super(props);
+        console.log('class PredicatesConfigure::constructor(props) {', props);
+
     }
 
     _isImageSelected() {

@@ -98,11 +98,27 @@ class CustomPredicate extends Component {
         return overlayTitle
     }
 
+    _getTransitionQuestion(predicateSelectedImage) {
+        let transitionQuestion;
+
+        this.props.imageTape.model.transitions.map((transition) => {
+            if (transition.imageId == predicateSelectedImage) {
+                if(typeof transition.transitionQuestion === 'object') {
+                    transitionQuestion = transition.transitionQuestion.transitionQuestion;
+                } else {
+                    transitionQuestion = transition.transitionQuestion;
+                }
+            }
+        });
+
+        return transitionQuestion;
+    }
+
     _addTargetImage(targetImage) {
         // console.log(this.props.imageTape);
         let transition = {
             imageId: this.props.imageTape.predicateSelectedImage,
-            transitionQuestion: this.props.imageTape.transitionQuestion.transitionQuestion || '',
+            transitionQuestion: this._getTransitionQuestion(this.props.imageTape.predicateSelectedImage),
             proposition: {
                 type: this.props.propositionType,
                 values: [ this.props.imageTape.targetComponentValue ]
@@ -200,13 +216,13 @@ class CustomPredicate extends Component {
                 <TextField
                     id={"inputCustomPredicateMarker"}
                     style={styles.inputCustomPredicateMarker}
-                    hintText={this.state.hintText}
+                    hintText="predicate name"
                     value={this.state.proposedValue}
                     onChange={event => this._onEditProposedValue(event.target.value)}
                 />
                 <TextField
                     style={styles.textareaStyle}
-                    hintText="input code"
+                    hintText="predicate code"
                     multiLine={true}
                     fullWidth={true}
                     value={this.state.predicateCode}
